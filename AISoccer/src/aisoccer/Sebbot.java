@@ -25,7 +25,7 @@ import aisoccer.strategy.UniformCover;
 public class Sebbot
 {
 
-    /** RETEST
+    /**
      * This is the entry point of the application.
      * Launch the soccer client using command line:
      * 
@@ -50,7 +50,7 @@ public class Sebbot
      */
     public static void main(String args[]) throws SocketException, IOException
     {
-        startAgents(args);
+//        startAgents(args);
         //dpsComputation();
         //qitComputation();
         //performanceTest();
