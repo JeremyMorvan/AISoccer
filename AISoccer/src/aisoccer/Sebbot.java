@@ -25,7 +25,7 @@ import aisoccer.strategy.UniformCover;
 public class Sebbot
 {
 
-    /**
+    /** CEC EST UN TEST -------------------------------------------------------
      * This is the entry point of the application.
      * Launch the soccer client using command line:
      * 
