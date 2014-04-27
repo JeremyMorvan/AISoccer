@@ -16,16 +16,18 @@ public abstract class Selector extends CompositeTask {
 	
 	@Override
 	public boolean Call() {
-		Start();
-		for(Task child : this.children){
-			if(child.Call()){
-				End();
-				return true;
+		if(checkConditions()){
+			Start();
+			for(Task child : this.children){
+				if(child.Call()){
+					End();
+					return true;
+				}
 			}
 		}
-		// TODO Auto-generated method stub
 		End();
 		return false;
+		
 	}
 
 }

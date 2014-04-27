@@ -15,16 +15,19 @@ public abstract class Sequencer extends CompositeTask {
 
 	@Override
 	public boolean Call() {
-		Start();
-		for(Task child : this.children){
-			if(!child.Call()){
-				End();
-				return false;
+		if(checkConditions()){
+			Start();
+			for(Task child : this.children){
+				if(!child.Call()){
+					End();
+					return false;
+				}
 			}
+			End();
+			return true;
 		}
-		// TODO Auto-generated method stub
 		End();
-		return true;
+		return false;		
 	}
 
 }

@@ -6,8 +6,11 @@ public abstract class ActionTask implements Task {
 
 	@Override
 	public boolean Call() {
-		DoAction();
-		return true;
+		if(checkConditions()){
+			DoAction();
+			return true;
+		}
+		return false;		
 	}
 
 }

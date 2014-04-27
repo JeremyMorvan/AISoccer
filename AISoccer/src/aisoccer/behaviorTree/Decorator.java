@@ -13,8 +13,11 @@ public abstract class Decorator implements Task {
 
 	@Override
 	public boolean Call(){
-		Start();
-		return Operation(child.Call());
+		if(checkConditions()){
+			Start();
+			return Operation(child.Call());
+		}
+		return false;		
 	}
 	
 	public abstract boolean Operation(boolean childResponse);
