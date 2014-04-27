@@ -2,6 +2,10 @@ package aisoccer.behaviorTree;
 
 import java.util.LinkedList;
 
+import aisoccer.Player;
+import aisoccer.RobocupClient;
+import aisoccer.ballcapture.State;
+
 public abstract class Selector extends CompositeTask {	
 	
 	public Selector(LinkedList<Task> children) {
@@ -15,11 +19,11 @@ public abstract class Selector extends CompositeTask {
 	
 	
 	@Override
-	public boolean Call() {
-		if(checkConditions()){
+	public boolean Call(RobocupClient rc,State s,Player player) {
+		if(checkConditions(s,player)){
 			Start();
 			for(Task child : this.children){
-				if(child.Call()){
+				if(child.Call(rc,s,player)){
 					End();
 					return true;
 				}
