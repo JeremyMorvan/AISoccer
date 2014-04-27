@@ -9,10 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
-import aisoccer.ballcapture.Qiteration;
-import aisoccer.strategy.GoToBallAndShoot;
 import aisoccer.strategy.Strategy;
-import aisoccer.strategy.UniformCover;
+import aisoccer.strategy.myStrategy;
 
 
 /**
@@ -257,8 +255,8 @@ public class RobocupClient implements Runnable
      */
     protected Strategy stringToStrategy(String s)
     {
-        Strategy s1;
-
+        Strategy s1 = new myStrategy();
+        /*
         if (s.equalsIgnoreCase("UniformCover"))
         {
             s1 = new UniformCover(5);
@@ -280,6 +278,7 @@ public class RobocupClient implements Runnable
             s1 = new GoToBallAndShoot();
         }
 
+		*/
         return s1;
     }
 

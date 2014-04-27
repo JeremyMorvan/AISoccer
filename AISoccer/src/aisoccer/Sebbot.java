@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.strategy.UniformCover;
+import aisoccer.strategy.myStrategy;
 
 
 /**
@@ -107,7 +107,7 @@ public class Sebbot
             client.init("");
 
             brain = client.getBrain();
-            brain.setStrategy(new UniformCover(nbOfPlayers));
+            brain.setStrategy(new myStrategy());
 
             new Thread(client).start();
             new Thread(brain).start();
@@ -120,7 +120,7 @@ public class Sebbot
             client.init("");
 
             brain = client.getBrain();
-            brain.setStrategy(new UniformCover(nbOfPlayers));
+            brain.setStrategy(new myStrategy());
 
             new Thread(client).start();
             new Thread(brain).start();

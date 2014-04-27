@@ -14,7 +14,7 @@ import aisoccer.Vector2D;
  * @author Sebastien Lentz
  *
  */
-public class UniformCover implements Strategy
+public class UniformCover
 {
     static GoToBallAndShoot goToBallStrategy = new GoToBallAndShoot();
 

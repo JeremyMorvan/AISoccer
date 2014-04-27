@@ -31,6 +31,7 @@ public class State implements Serializable
     private float                playerBodyDirection;
     private float                relativeDistance;
     private float                relativeDirection;
+    private FullstateInfo        fsi;
 
     static
     {
@@ -90,6 +91,7 @@ public class State implements Serializable
         this.playerBodyDirection = ((float) player.getBodyDirection());
         this.relativeDistance = ((float) player.distanceTo(fsi.getBall()));
         this.relativeDirection = ((float) player.angleFromBody(fsi.getBall()));
+        this.setFsi(fsi);
     }
 
     /*
@@ -325,7 +327,15 @@ public class State implements Serializable
         this.relativeDirection = relativeDirection;
     }
 
-    /**
+    public FullstateInfo getFsi() {
+		return fsi;
+	}
+
+	public void setFsi(FullstateInfo fsi) {
+		this.fsi = fsi;
+	}
+
+	/**
      * @return the isTerminal
      */
     public boolean isTerminal()

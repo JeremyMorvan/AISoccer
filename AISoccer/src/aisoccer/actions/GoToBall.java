@@ -3,6 +3,7 @@ package aisoccer.actions;
 import java.util.LinkedList;
 
 import aisoccer.Player;
+import aisoccer.SoccerParams;
 import aisoccer.ballcapture.State;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
@@ -14,12 +15,14 @@ public class GoToBall extends Selector {
 	}
 	
 	public GoToBall(){
-		
+		children = new LinkedList<Task>();
+		children.add(new GoToBall());
+		children.add(new ShootToGoal());
 	}
 
 	@Override
 	public boolean checkConditions(State s,Player player) {
-		return true;
+		return player.distanceTo(s.getFsi().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override

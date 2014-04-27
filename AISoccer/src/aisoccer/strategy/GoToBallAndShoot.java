@@ -11,7 +11,7 @@ import aisoccer.ballcapture.State;
  * @author Sebastien Lentz
  *
  */
-public class GoToBallAndShoot implements Strategy
+public class GoToBallAndShoot
 {
     
     private aisoccer.ballcapture.Policy ballCaptureAlgorithm;
@@ -37,7 +37,7 @@ public class GoToBallAndShoot implements Strategy
      */
     public GoToBallAndShoot()
     {
-        this(new aisoccer.ballcapture.HandCodedPolicy());
+        /*this(new aisoccer.ballcapture.HandCodedPolicy());*/
     }
     
     /*
@@ -73,7 +73,6 @@ public class GoToBallAndShoot implements Strategy
     /* (non-Javadoc)
      * @see sebbot.strategy.Strategy#doAction(sebbot.RobocupClient, sebbot.FullstateInfo, sebbot.Player)
      */
-    @Override
     public void doAction(RobocupClient rcClient, FullstateInfo fsi,
                          Player player)
     {
