@@ -10,6 +10,7 @@ import aisoccer.ballcapture.State;
  * @author Sebastien Lentz
  *
  */
+@SuppressWarnings("unused")
 public class MathTools
 {
     static SecureRandom random = new SecureRandom();

@@ -5,6 +5,7 @@ package aisoccer;
  * @author Sebastien Lentz
  *
  */
+@SuppressWarnings("serial")
 public class NullVectorException extends NullPointerException
 {
 

@@ -3,6 +3,7 @@ package aisoccer;
  * @author Sebastien Lentz
  *
  */
+@SuppressWarnings("serial")
 public class InvalidArgumentException extends Exception
 {
 

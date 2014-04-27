@@ -46,7 +46,7 @@ public class PlayerAction
      */
     public PlayerAction(aisoccer.ballcapture.Action action, RobocupClient client)
     {
-        this.actionType = action.isTurn() ? actionType.TURN : actionType.DASH;
+        this.actionType = action.isTurn() ? PlayerActionType.TURN : PlayerActionType.DASH;
         this.power = action.isTurn() ? 0f : action.getValue();
         this.direction = action.isTurn() ? action.getValue() : 0f;
         this.client = client;

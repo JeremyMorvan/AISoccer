@@ -6,15 +6,8 @@ package aisoccer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.LinkedList;
 
 import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.ballcapture.HandCodedPolicy;
-import aisoccer.ballcapture.PolicyPerformance;
-import aisoccer.ballcapture.Qiteration;
-import aisoccer.ballcapture.State;
-import aisoccer.strategy.GoToBallAndShoot;
-import aisoccer.strategy.Strategy;
 import aisoccer.strategy.UniformCover;
 
 
@@ -50,19 +43,7 @@ public class Sebbot
      */
     public static void main(String args[]) throws SocketException, IOException
     {
-//        startAgents(args);
-        //dpsComputation();
-        //qitComputation();
-        //performanceTest();
-
-//                DirectPolicySearch dps = DirectPolicySearch.load("DPS_18_1152_100_50.zip");
-//                RadialGaussian[] rgs = dps.getBasicFunctions();
-//                
-//                for (int i =0; i< rgs.length; i++)
-//                {
-//                    System.out.println(rgs[i].getDiscreteActionNb());
-//                }
-
+        startAgents(args);
     }
 
     public static void startAgents(String args[]) throws IOException
@@ -70,7 +51,8 @@ public class Sebbot
         String hostname = "127.0.0.1";
         int port = 6000;
         String team = "team1";
-        String strategy = "Default";
+        @SuppressWarnings("unused")
+		String strategy = "Default";
 
         try
         {
@@ -118,8 +100,6 @@ public class Sebbot
         Brain brain;
         int nbOfPlayers = 5;
 
-        //DirectPolicySearch dps = DirectPolicySearch.load("savedDPS.zip");
-        //Strategy dpsGoToBall = new GoToBallAndShoot(dps);
         for (int i = 0; i < nbOfPlayers; i++)
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port,
@@ -132,14 +112,6 @@ public class Sebbot
             new Thread(client).start();
             new Thread(brain).start();
         }
-
-        //        dps = DirectPolicySearch.load("30_1920_30.zip");
-        //        dpsGoto = new DPSGoTo(dps);
-        //Qiteration qit = Qiteration.loadQl("Qit_4_8_1_1_20_200_20_0-9_197.zip");
-        //GoToBallAndShoot qitGotoBall = new GoToBallAndShoot(qit);
-        
-//        UniformCover.setGoToBallStrategy(qitGotoBall);
-//        Strategy uniformCover = new UniformCover(5);
         
         for (int i = 0; i < nbOfPlayers; i++)
         {
@@ -169,47 +141,5 @@ public class Sebbot
             dps.run();
             nbOfBFs += 4;
         }
-    }
-    
-    private static void qitComputation()
-    {
-        Qiteration qit;
-        
-        for (float g = 0.5f; g < 0.9f; g += 0.05f)
-        {
-            qit = new Qiteration(1, 1, 1, 1, 50, 400, 50, 10, 2, g);
-            qit.run();
-            qit = null;
-        }
-        
-        for (float g = 0.9f; g < 1f; g += 0.02f)
-        {
-            qit = new Qiteration(1, 1, 1, 1, 50, 400, 50, 10, 2, g);
-            qit.run();
-            qit = null;
-        }
-        
-        for (float g = 0.5f; g < 0.9f; g += 0.05f)
-        {
-            qit = new Qiteration(4, 8, 1, 1, 20, 200, 20, 10, 2, g);
-            qit.run();
-            qit = null;
-        }
-        
-        for (float g = 0.9f; g < 1f; g += 0.02f)
-        {
-            qit = new Qiteration(4, 8, 1, 1, 20, 200, 20, 10, 2, g);
-            qit.run();
-            qit = null;
-        }
-        
-    }
-
-    public static void performanceTest()
-    {
-        //DirectPolicySearch dps = DirectPolicySearch.load("DPS_30_2880_100_50.zip");        
-        Qiteration qit = Qiteration.loadQl("Qit_4_8_1_1_20_200_20_0-9_197.zip");
-        //PolicyPerformance.testAllDps();
-        PolicyPerformance.logPerformances(qit, false);
     }
 }
