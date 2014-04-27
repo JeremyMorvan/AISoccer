@@ -12,6 +12,10 @@ public abstract class Selector extends CompositeTask {
 		super(children);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Selector(){
+		
+	}
 
 	public abstract void Start();
 	

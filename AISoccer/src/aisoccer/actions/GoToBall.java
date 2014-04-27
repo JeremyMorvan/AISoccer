@@ -1,13 +1,21 @@
 package aisoccer.actions;
 
-import aisoccer.Player;
-import aisoccer.PlayerAction;
-import aisoccer.RobocupClient;
-import aisoccer.ballcapture.Action;
-import aisoccer.ballcapture.State;
-import aisoccer.behaviorTree.ActionTask;
+import java.util.LinkedList;
 
-public class GoToBall extends ActionTask {
+import aisoccer.Player;
+import aisoccer.ballcapture.State;
+import aisoccer.behaviorTree.Selector;
+import aisoccer.behaviorTree.Task;
+
+public class GoToBall extends Selector {
+
+	public GoToBall(LinkedList<Task> children) {
+		super(children);
+	}
+	
+	public GoToBall(){
+		
+	}
 
 	@Override
 	public boolean checkConditions(State s,Player player) {
@@ -15,17 +23,13 @@ public class GoToBall extends ActionTask {
 	}
 
 	@Override
-	public void DoAction(RobocupClient rc,State s,Player player) {
-		Action action;
-        if (Math.abs(s.getRelativeDirection()) > 36f)
-        {
-            action = new Action(s.getRelativeDirection(),true);
-        }
-        else
-        {
-            action = new Action(100f,false);
-        }
-		rc.getBrain().getActionsQueue().addLast(new PlayerAction(action, rc));
+	public void Start() {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void End() {
+		// TODO Auto-generated method stub		
 	}
 
 }

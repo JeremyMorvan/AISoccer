@@ -12,6 +12,10 @@ public abstract class Sequencer extends CompositeTask {
 		super(children);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Sequencer(){
+		
+	}
 
 	public abstract void Start();
 

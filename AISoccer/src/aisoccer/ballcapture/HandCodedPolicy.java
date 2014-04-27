@@ -27,7 +27,7 @@ public class HandCodedPolicy implements Policy
         }
         else
         {
-            action = new Action(100f,false);
+            action = ;
         }
         
         return action;
