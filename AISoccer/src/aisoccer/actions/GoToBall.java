@@ -16,8 +16,8 @@ public class GoToBall extends Selector {
 	
 	public GoToBall(){
 		children = new LinkedList<Task>();
-		children.add(new GoToBall());
-		children.add(new ShootToGoal());
+		children.add(new TurnToBall());
+		children.add(new GoStraightAhead());
 	}
 
 	@Override
