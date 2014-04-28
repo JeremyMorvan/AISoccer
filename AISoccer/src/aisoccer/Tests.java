@@ -14,8 +14,7 @@ public class Tests {
 		  Vector2D playerPos = new Vector2D(0.0, 0.0);
 		  double playerSpeed = 10.0;
 
-	      System.out.println("hello");
-	      System.out.println(s.optimumInterception(ballPos, ballVelocity, playerPos, playerSpeed));	      
+	      System.out.println("hello");      
 	      
 	
 	}
