@@ -249,5 +249,32 @@ public class MathTools
 
         return Math.exp(-argExp);
     }
+    
+
+    
+    // Find a zero in a monotone continuous function on a segment, with a specified accuracy
+    public static double zeroCrossing(MathFunction f, double a0, double b0, double accuracy) throws InvalidArgumentException{
+    	double a = a0;
+    	double b = b0;
+		double va = f.value(a);
+		double vb = f.value(b);
+		if(va*vb>0){
+			throw new InvalidArgumentException("va and vb have same sign");
+		}
+    	double c, vc;
+    	while(Math.abs(a-b)>accuracy){
+    		c = (a+b)/2.0;
+    		vc = f.value(c);
+    		if(va*vc>=0){
+    			a = c;
+    			va = vc;
+    		}
+    		if(vb*vc>=0){
+    			b = c;
+    			vb = vc;
+    		}
+    	}		
+    	return a;
+    }
 
 }
