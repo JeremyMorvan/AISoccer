@@ -81,8 +81,7 @@ public class GoToBallAndShoot
             State state = new State(fsi, player);
             Action action = ballCaptureAlgorithm.chooseAction(state);
 
-            rcClient.getBrain().getActionsQueue().addLast(
-                new PlayerAction(action, rcClient));
+            rcClient.getBrain().getActionsQueue().addLast(new PlayerAction(action, rcClient));
         }
     }
 }

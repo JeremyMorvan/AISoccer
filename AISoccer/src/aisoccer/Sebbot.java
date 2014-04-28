@@ -98,7 +98,7 @@ public class Sebbot
 
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 5;
+        int nbOfPlayers = 4;
 
         for (int i = 0; i < nbOfPlayers; i++)
         {

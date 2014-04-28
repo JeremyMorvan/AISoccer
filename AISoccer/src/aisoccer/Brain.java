@@ -150,7 +150,7 @@ public class Brain implements Runnable
     public void run()
     {
         // Before kick off, position the player somewhere in his side.
-        robocupClient.move(-Math.random() * 52.5, Math.random() * 34.0);
+        robocupClient.move(-Math.random() * 52.5, (2*Math.random()-1) * 34.0);
         
         int lastTimeStep = 0;
         int currentTimeStep = 0;

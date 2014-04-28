@@ -1,5 +1,6 @@
 package aisoccer.actions;
 
+import aisoccer.FullstateInfo;
 import aisoccer.InvalidArgumentException;
 import aisoccer.MathFunction;
 import aisoccer.MathTools;
@@ -25,12 +26,24 @@ public class InterceptBall extends ActionTask {
 
 	@Override
 	public void DoAction(RobocupClient rc, State s, Player player) {
-		Vector2D target = optimumInterception(s.getFsi().getBall().getPosition(), s.getFsi().getBall().getVelocity(), player.getPosition(), SoccerParams.PLAYER_SPEED_MAX);
-		double angle = target.subtract(player.getPosition()).polarAngle();
+		FullstateInfo fsi = s.getFsi();
+		Vector2D target = optimumInterception(fsi.getBall().getPosition(), 
+												fsi.getBall().getVelocity(), 
+												player.getPosition(), 
+												SoccerParams.PLAYER_SPEED_MAX*0.6);
+
+//		System.err.println("ball :" +fsi.getBall().getPosition());
+//		System.err.println("target :" +target);
 		
-		if(angle > 5 ){
-			rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action((float) angle,true), rc));	
+		Vector2D diff = target.subtract(player.getPosition());
+		double angle = diff.polarAngle() - player.getBodyDirection();
+		angle = (angle+180.0)%(360.0)-180.0;
+//		System.err.println(angle);
+		if(Math.abs(angle) > 5 ){
+//			System.err.println("left :" +player.isLeftSide()+" : tourne");
+			rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action((float)angle,true), rc));	
 		}else{
+//			System.err.println("left :" +player.isLeftSide()+" : avance");
 			rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action(100f,false), rc));				
 		}
 	}
@@ -38,15 +51,19 @@ public class InterceptBall extends ActionTask {
 
 	
 	private Vector2D ballPositionPrediction(Vector2D ballPos,  Vector2D ballVelocity, double time){
-    	double delta = ((double) SoccerParams.SIMULATOR_STEP)/1000.0; // deltaT in seconds
-    	double tau = delta/(1-SoccerParams.BALL_DECAY);
-    	double coeff = ( 1-Math.exp(-time/tau) )*tau;
-    	
+//    	double delta = ((double) SoccerParams.SIMULATOR_STEP)/1000.0; // deltaT in seconds
+    	double tau = 1.0/(1.0-SoccerParams.BALL_DECAY);
+//    	System.err.println("b decay : "+SoccerParams.BALL_DECAY);
+    	double coeff = ( 1.0-Math.exp(-time/tau) )*tau;    	
         Vector2D prediction = ballVelocity.multiply(coeff);
         return prediction.add(ballPos);
 	}
 	
-	public Vector2D optimumInterception(final Vector2D ballPos, final Vector2D ballVelocity, final Vector2D playerPos, final double playerSpeed){
+	
+	public Vector2D optimumInterception(final Vector2D ballPos, 
+										final Vector2D ballVelocity, 
+										final Vector2D playerPos, 
+										final double playerSpeed){
 	      
 	      MathFunction f = new  MathFunction() {
 	            public double value(double t) {	                
