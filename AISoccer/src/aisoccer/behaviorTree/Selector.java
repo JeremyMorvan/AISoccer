@@ -15,25 +15,24 @@ public abstract class Selector extends CompositeTask {
 		
 	}
 
-	public abstract void Start();
+	public abstract void Start(Brain brain);
 	
-	public abstract void End();
+	public abstract void End(Brain brain);
 	
 	
 	@Override
 	public boolean Call(Brain brain) {
 		if(checkConditions(brain)){
-			Start();
+			Start(brain);
 			for(Task child : this.children){
 				if(child.Call(brain)){
-					End();
+					End(brain);
 					return true;
 				}
 			}
 		}
-		End();
-		return false;
-		
+		End(brain);
+		return false;		
 	}
 
 }

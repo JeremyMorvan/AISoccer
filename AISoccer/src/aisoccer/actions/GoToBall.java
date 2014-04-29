@@ -1,23 +1,9 @@
 package aisoccer.actions;
 
-import java.util.LinkedList;
-
 import aisoccer.Brain;
 import aisoccer.SoccerParams;
-import aisoccer.behaviorTree.Selector;
-import aisoccer.behaviorTree.Task;
 
-public class GoToBall extends Selector {
-
-	public GoToBall(LinkedList<Task> children) {
-		super(children);
-	}
-	
-	public GoToBall(){
-		children = new LinkedList<Task>();
-		children.add(new TurnToBall());
-		children.add(new GoStraightAhead());
-	}
+public class GoToBall extends GoTo {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
@@ -25,11 +11,8 @@ public class GoToBall extends Selector {
 	}
 
 	@Override
-	public void Start() {
-	}
-
-	@Override
-	public void End() {	
+	public void Start(Brain brain) {
+		brain.setInterestPos(brain.getFullstateInfo().getBall().getPosition());		
 	}
 
 }

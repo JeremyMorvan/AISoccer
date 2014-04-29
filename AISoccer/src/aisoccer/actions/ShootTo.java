@@ -5,10 +5,7 @@ import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.behaviorTree.ActionTask;
 
-public class ShootTo extends ActionTask {
-
-	double targetX = 0;
-	double targetY = 0;
+public abstract class ShootTo extends ActionTask {
 	
 	@Override
 	public boolean checkConditions(Brain brain) {
@@ -17,7 +14,10 @@ public class ShootTo extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
-        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(targetX, targetY), brain.getRobocupClient()));
+        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
+
+	@Override
+	public abstract void Start(Brain brain);
 
 }

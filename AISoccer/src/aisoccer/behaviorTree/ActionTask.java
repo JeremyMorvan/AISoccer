@@ -9,10 +9,13 @@ public abstract class ActionTask implements Task {
 	@Override
 	public boolean Call(Brain brain) {
 		if(checkConditions(brain)){
+			Start(brain);
 			DoAction(brain);
 			return true;
 		}
 		return false;		
 	}
+	
+	public abstract void Start(Brain brain);
 
 }

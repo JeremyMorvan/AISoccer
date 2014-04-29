@@ -1,21 +1,13 @@
 package aisoccer.actions;
 
 import aisoccer.Brain;
-import aisoccer.PlayerAction;
-import aisoccer.PlayerActionType;
-import aisoccer.behaviorTree.ActionTask;
+import aisoccer.Vector2D;
 
-public class ShootToGoal extends ActionTask {
+public class ShootToGoal extends ShootTo {
 
 	@Override
-	public boolean checkConditions(Brain brain) {
-		return true;
-	}
-
-	@Override
-	public void DoAction(Brain brain) {
-		double goalPosX = brain.getPlayer().isLeftSide() ? 52.5d : -52.5d;
-        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(goalPosX, 0.0d), brain.getRobocupClient()));
+	public void Start(Brain brain) {
+		brain.setInterestPos(new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0));	
 	}
 
 }

@@ -16,4 +16,10 @@ public class GoStraightAhead extends ActionTask {
 		brain.doAction(new Action(100f,false));		
 	}
 
+	@Override
+	public void Start(Brain brain) {		
+	}
+	
+	
+
 }
