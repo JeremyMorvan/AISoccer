@@ -1,5 +1,7 @@
 package aisoccer;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -252,6 +254,17 @@ public class FullstateInfo
         }
         
         return fs;
+    }
+    
+    public LinkedList<Player> getTeammates(Player player){
+    	LinkedList<Player> answer;
+    	if(player.isLeftSide()){
+    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
+    	}else{
+    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
+    	}
+    	answer.remove(player);
+    	return answer;
     }
 
 }
