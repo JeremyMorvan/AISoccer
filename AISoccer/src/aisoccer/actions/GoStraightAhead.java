@@ -1,11 +1,7 @@
 package aisoccer.actions;
 
 import aisoccer.Brain;
-import aisoccer.Player;
-import aisoccer.PlayerAction;
-import aisoccer.RobocupClient;
 import aisoccer.ballcapture.Action;
-import aisoccer.ballcapture.State;
 import aisoccer.behaviorTree.ActionTask;
 
 public class GoStraightAhead extends ActionTask {

@@ -25,7 +25,7 @@ public class GoToBall extends Selector {
 	}
 
 	@Override
-	public void Start() {	
+	public void Start() {
 	}
 
 	@Override

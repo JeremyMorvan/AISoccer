@@ -2,8 +2,6 @@ package aisoccer.strategy;
 
 import java.util.LinkedList;
 
-import aisoccer.*;
-import aisoccer.actions.GoToBall;
 import aisoccer.actions.InterceptBall;
 import aisoccer.actions.ShootToGoal;
 import aisoccer.behaviorTree.Task;

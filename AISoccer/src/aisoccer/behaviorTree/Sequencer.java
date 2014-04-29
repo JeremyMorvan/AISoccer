@@ -3,9 +3,6 @@ package aisoccer.behaviorTree;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.Player;
-import aisoccer.RobocupClient;
-import aisoccer.ballcapture.State;
 
 public abstract class Sequencer extends CompositeTask {
 
