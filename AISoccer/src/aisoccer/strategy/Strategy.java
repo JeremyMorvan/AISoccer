@@ -1,6 +1,7 @@
 package aisoccer.strategy;
 import java.util.LinkedList;
 
+import aisoccer.Brain;
 import aisoccer.FullstateInfo;
 import aisoccer.Player;
 import aisoccer.RobocupClient;
@@ -18,10 +19,9 @@ public abstract class Strategy
 	
 	public Strategy(){}
 	
-    public void doAction(RobocupClient rc, FullstateInfo fsi, Player player){
-    	State s = new State(fsi,player);
+    public void doAction(Brain brain){
     	for(Task t:children){
-    		if(t.Call(rc, s, player)){
+    		if(t.Call(brain)){
     			return;
     		}
     	}

@@ -2,6 +2,7 @@ package aisoccer.behaviorTree;
 
 import java.util.LinkedList;
 
+import aisoccer.Brain;
 import aisoccer.Player;
 import aisoccer.RobocupClient;
 import aisoccer.ballcapture.State;
@@ -19,7 +20,7 @@ public abstract class CompositeTask implements Task{
 	}
 
 	@Override
-	public abstract boolean Call(RobocupClient rc,State s,Player player);
+	public abstract boolean Call(Brain brain);
 	
 	public void addChildren(LinkedList<Task> c){
 		this.children = c;

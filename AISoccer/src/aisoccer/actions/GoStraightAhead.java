@@ -1,5 +1,6 @@
 package aisoccer.actions;
 
+import aisoccer.Brain;
 import aisoccer.Player;
 import aisoccer.PlayerAction;
 import aisoccer.RobocupClient;
@@ -10,13 +11,13 @@ import aisoccer.behaviorTree.ActionTask;
 public class GoStraightAhead extends ActionTask {
 
 	@Override
-	public boolean checkConditions(State s, Player player) {
+	public boolean checkConditions(Brain brain) {
 		return true;
 	}
 
 	@Override
-	public void DoAction(RobocupClient rc, State s, Player player) {
-		rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action(100f,false), rc));		
+	public void DoAction(Brain brain) {
+		brain.doAction(new Action(100f,false));		
 	}
 
 }

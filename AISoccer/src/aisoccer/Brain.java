@@ -3,6 +3,8 @@ package aisoccer;
 import java.lang.Math;
 import java.util.ArrayDeque;
 
+import aisoccer.ballcapture.Action;
+import aisoccer.ballcapture.State;
 import aisoccer.strategy.Strategy;
 
 /**
@@ -19,6 +21,7 @@ public class Brain implements Runnable
     private RobocupClient            robocupClient; // For communicating with the server 
     private FullstateInfo            fullstateInfo; // Contains all info about the
                                                     //   current state of the game
+    private State					 state;
     private Player                   player;       // The player this brain controls
     private Strategy                 strategy;     // Strategy used by this brain
     private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
@@ -136,6 +139,14 @@ public class Brain implements Runnable
     {
         this.fullstateInfo = fullstateInfo;
     }
+    
+    public void doAction(PlayerAction action){
+        this.actionsQueue.addLast(action);
+    }
+    
+    public void doAction(Action action){
+    	this.actionsQueue.addLast(new PlayerAction(action,robocupClient));
+    }
 
     /*
      * =========================================================================
@@ -162,7 +173,8 @@ public class Brain implements Runnable
             {
                 if (actionsQueue.isEmpty())
                 { // The queue is empty, check if we need to add an action.
-                    strategy.doAction(robocupClient, fullstateInfo, player);
+                	actualizeState();
+                    strategy.doAction(this);
                 }
                 
                 if (!actionsQueue.isEmpty())
@@ -194,4 +206,12 @@ public class Brain implements Runnable
         }
 
     }
+
+	private void actualizeState() {
+		this.state = new State(this.fullstateInfo,this.player);
+	}
+	
+	public State getState(){
+		return this.state;
+	}
 }

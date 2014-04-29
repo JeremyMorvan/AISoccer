@@ -2,9 +2,8 @@ package aisoccer.actions;
 
 import java.util.LinkedList;
 
-import aisoccer.Player;
+import aisoccer.Brain;
 import aisoccer.SoccerParams;
-import aisoccer.ballcapture.State;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
@@ -21,18 +20,16 @@ public class GoToBall extends Selector {
 	}
 
 	@Override
-	public boolean checkConditions(State s,Player player) {
-		return player.distanceTo(s.getFsi().getBall()) > SoccerParams.KICKABLE_MARGIN;
+	public boolean checkConditions(Brain brain) {
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override
-	public void Start() {
-		// TODO Auto-generated method stub		
+	public void Start() {	
 	}
 
 	@Override
-	public void End() {
-		// TODO Auto-generated method stub		
+	public void End() {	
 	}
 
 }

@@ -1,5 +1,6 @@
 package aisoccer.behaviorTree;
 
+import aisoccer.Brain;
 import aisoccer.Player;
 import aisoccer.RobocupClient;
 import aisoccer.ballcapture.State;
@@ -16,10 +17,10 @@ public abstract class Decorator implements Task {
 	public abstract void Start();
 
 	@Override
-	public boolean Call(RobocupClient rc,State s,Player player){
-		if(checkConditions(s,player)){
+	public boolean Call(Brain brain){
+		if(checkConditions(brain)){
 			Start();
-			return Operation(child.Call(rc,s,player));
+			return Operation(child.Call(brain));
 		}
 		return false;		
 	}

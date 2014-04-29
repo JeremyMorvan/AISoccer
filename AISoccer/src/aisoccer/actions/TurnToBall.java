@@ -1,5 +1,6 @@
 package aisoccer.actions;
 
+import aisoccer.Brain;
 import aisoccer.Player;
 import aisoccer.PlayerAction;
 import aisoccer.RobocupClient;
@@ -14,14 +15,14 @@ public class TurnToBall extends ActionTask {
 	public TurnToBall(){}
 	
 	@Override
-	public boolean checkConditions(State s, Player player) {
-		return Math.abs(s.getRelativeDirection()) > angleLimit;
+	public boolean checkConditions(Brain brain) {
+		return Math.abs(brain.getState().getRelativeDirection()) > angleLimit;
 	}	
 	
 
 	@Override
-	public void DoAction(RobocupClient rc, State s, Player player) {
-		rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action(s.getRelativeDirection(),true), rc));
+	public void DoAction(Brain brain) {
+		brain.doAction(new PlayerAction(new Action(brain.getState().getRelativeDirection(),true), brain.getRobocupClient()));
 	}
 
 }

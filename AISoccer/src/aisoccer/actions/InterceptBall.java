@@ -1,32 +1,33 @@
 package aisoccer.actions;
 
+import aisoccer.Brain;
 import aisoccer.FullstateInfo;
 import aisoccer.InvalidArgumentException;
 import aisoccer.MathFunction;
 import aisoccer.MathTools;
 import aisoccer.Player;
-import aisoccer.PlayerAction;
-import aisoccer.RobocupClient;
 import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
 import aisoccer.ballcapture.Action;
-import aisoccer.ballcapture.State;
 import aisoccer.behaviorTree.ActionTask;
 
 public class InterceptBall extends ActionTask {
 
+	public static float angleLimit = 5f;
+	
 	public InterceptBall() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean checkConditions(State s, Player player) {
-		return player.distanceTo(s.getFsi().getBall()) > SoccerParams.KICKABLE_MARGIN;
+	public boolean checkConditions(Brain brain) {
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override
-	public void DoAction(RobocupClient rc, State s, Player player) {
-		FullstateInfo fsi = s.getFsi();
+	public void DoAction(Brain brain) {
+		FullstateInfo fsi = brain.getFullstateInfo();
+		Player player = brain.getPlayer();
 		Vector2D target = optimumInterception(fsi.getBall().getPosition(), 
 												fsi.getBall().getVelocity(), 
 												player.getPosition(), 
@@ -39,12 +40,12 @@ public class InterceptBall extends ActionTask {
 		double angle = diff.polarAngle() - player.getBodyDirection();
 		angle = (angle+180.0)%(360.0)-180.0;
 //		System.err.println(angle);
-		if(Math.abs(angle) > 5 ){
+		if(Math.abs(angle) > angleLimit ){
 //			System.err.println("left :" +player.isLeftSide()+" : tourne");
-			rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action((float)angle,true), rc));	
+			brain.doAction(new Action((float)angle,true));	
 		}else{
 //			System.err.println("left :" +player.isLeftSide()+" : avance");
-			rc.getBrain().getActionsQueue().addLast(new PlayerAction(new Action(100f,false), rc));				
+			brain.doAction(new Action(100f,false));				
 		}
 	}
 	
