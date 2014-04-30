@@ -9,7 +9,7 @@ public abstract class ShootTo extends ActionTask {
 	
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return true;
+		return (brain.getInterestPos()!=null);
 	}
 
 	@Override

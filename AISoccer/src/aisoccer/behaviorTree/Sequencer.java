@@ -11,9 +11,7 @@ public abstract class Sequencer extends CompositeTask {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Sequencer(){
-		
-	}
+	public Sequencer(){}
 
 	public abstract void Start(Brain brain);
 

@@ -266,5 +266,13 @@ public class FullstateInfo
     	answer.remove(player);
     	return answer;
     }
+    
+    public LinkedList<Player> getOpponents(Player player){
+    	if(player.isLeftSide()){
+    		return  new LinkedList<Player>(Arrays.asList(this.rightTeam));
+    	}else{
+    		return  new LinkedList<Player>(Arrays.asList(this.leftTeam));
+    	}
+    }
 
 }
