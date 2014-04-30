@@ -28,10 +28,11 @@ public class FindUnmarkedTeammate extends ActionTask {
 		for(Player op : opponents){
 			opponentsRP.add(op.getPosition().subtract(me.getPosition()));
 		}
+		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
 		double dmin = 300;
 		Vector2D bestTeammateP = null;
 		for(Player tm : teammates){
-			if(checkMarked(tm.getPosition().subtract(me.getPosition()), opponentsRP)&&tm.getPosition().distanceTo(brain.getFullstateInfo().getBall())<dmin){
+			if(checkMarked(tm.getPosition().subtract(me.getPosition()), opponentsRP)&&tm.getPosition().distanceTo(goal)<dmin){
 				bestTeammateP = tm.getPosition();				
 			}
 		}
