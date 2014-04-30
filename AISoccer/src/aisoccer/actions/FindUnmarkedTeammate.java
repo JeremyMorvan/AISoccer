@@ -16,7 +16,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 	@Override
 	public boolean checkConditions(Brain brain) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

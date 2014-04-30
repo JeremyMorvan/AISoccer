@@ -18,7 +18,7 @@ public class PassToTeammate extends Sequencer {
 	@Override
 	public boolean checkConditions(Brain brain) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
