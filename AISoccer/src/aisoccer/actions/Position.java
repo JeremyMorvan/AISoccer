@@ -12,7 +12,7 @@ public class Position extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
-		
+		//System.out.println(brain.getPlayer().toString() + " : I am moving to my position !");
 	}
 
 	@Override

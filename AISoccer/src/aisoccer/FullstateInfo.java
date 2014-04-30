@@ -264,15 +264,35 @@ public class FullstateInfo
     		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
     	}
     	answer.remove(player);
+    	LinkedList<Player> toRemove = new LinkedList<Player>();
+    	for(Player p : answer){
+    		if(p.getPosition().polarRadius()==0){
+    			toRemove.add(p);
+    		}
+    	}
+    	for(Player p : toRemove){
+    		answer.remove(p);
+    	}
     	return answer;
     }
     
     public LinkedList<Player> getOpponents(Player player){
+    	LinkedList<Player> answer;
     	if(player.isLeftSide()){
-    		return  new LinkedList<Player>(Arrays.asList(this.rightTeam));
+    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
     	}else{
-    		return  new LinkedList<Player>(Arrays.asList(this.leftTeam));
+    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
     	}
+    	LinkedList<Player> toRemove = new LinkedList<Player>();
+    	for(Player p : answer){
+    		if(p.getPosition().polarRadius()==0){
+    			toRemove.add(p);
+    		}
+    	}
+    	for(Player p : toRemove){
+    		answer.remove(p);
+    	}
+    	return answer;
     }
 
 }

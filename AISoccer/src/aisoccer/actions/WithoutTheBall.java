@@ -18,11 +18,13 @@ public class WithoutTheBall extends Selector {
 	
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) < SoccerParams.KICKABLE_MARGIN;
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start(Brain brain) {
+		//System.out.println(brain.getPlayer().toString() + " : I don't have the ball !");
+	}
 
 	@Override
 	public void End(Brain brain) {}

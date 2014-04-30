@@ -22,7 +22,9 @@ public class PassToTeammate extends Sequencer {
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start(Brain brain) {
+		System.out.println(brain.getPlayer().toString() + " : Let's find a teammate !");
+	}
 
 	@Override
 	public void End(Brain brain) {}

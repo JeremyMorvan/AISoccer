@@ -29,6 +29,7 @@ public abstract class ShootTo extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
+		System.out.println(brain.getPlayer().toString() + " : I am going to shoot ! : " + brain.getInterestPos().toString());
         brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 

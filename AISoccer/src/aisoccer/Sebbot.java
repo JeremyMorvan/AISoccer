@@ -9,6 +9,7 @@ import java.net.SocketException;
 
 import aisoccer.ballcapture.DirectPolicySearch;
 import aisoccer.strategy.myStrategy;
+import aisoccer.strategy.myStrategy2;
 
 
 /**
@@ -98,7 +99,7 @@ public class Sebbot
 
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 4;
+        int nbOfPlayers = 5;
 
         for (int i = 0; i < nbOfPlayers; i++)
         {
@@ -107,7 +108,7 @@ public class Sebbot
             client.init("");
 
             brain = client.getBrain();
-            brain.setStrategy(new myStrategy());
+            brain.setStrategy(new myStrategy2());
 
             new Thread(client).start();
             new Thread(brain).start();

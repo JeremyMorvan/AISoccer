@@ -29,7 +29,8 @@ public class AttackTheBall extends Sequencer {
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start(Brain brain) {
+	}
 
 	@Override
 	public void End(Brain brain) {}
