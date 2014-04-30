@@ -5,6 +5,10 @@ import aisoccer.Vector2D;
 
 public class ShootToGoal extends ShootTo {
 
+	public ShootToGoal(boolean checkDistance) {
+		super(checkDistance);
+	}
+
 	@Override
 	public void Start(Brain brain) {
 		brain.setInterestPos(new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0));	

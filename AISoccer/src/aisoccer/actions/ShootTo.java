@@ -7,9 +7,24 @@ import aisoccer.behaviorTree.ActionTask;
 
 public abstract class ShootTo extends ActionTask {
 	
+	boolean checkDistance;
+	
+	public ShootTo(boolean checkDistance){
+		super();
+		this.checkDistance = checkDistance;
+	}
+	
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return (brain.getInterestPos()!=null);
+		if(brain.getInterestPos()==null){
+			return false;
+		}
+		if(checkDistance){
+			if(brain.getPlayer().distanceTo((brain.getInterestPos()))>40){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

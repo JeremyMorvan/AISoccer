@@ -13,7 +13,7 @@ public class myStrategy extends Strategy {
 	public myStrategy() {
 		children = new LinkedList<Task>();
 		children.add(new InterceptBall());
-		children.add(new ShootToGoal());
+		children.add(new ShootToGoal(false));
 	}
 	
 
