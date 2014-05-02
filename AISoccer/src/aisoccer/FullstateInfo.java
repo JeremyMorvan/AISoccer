@@ -1,5 +1,7 @@
 package aisoccer;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
@@ -323,8 +325,10 @@ public class FullstateInfo
 		return fs;
 	}
     
-    public Player[] getTeammates(Player player){
-    	return (player.isLeftSide()) ? leftTeam : rightTeam;
+    public ArrayList<Player> getTeammates(Player player){
+    	ArrayList<Player> answer = (player.isLeftSide()) ? new ArrayList<Player>(Arrays.asList(leftTeam)) : new ArrayList<Player>(Arrays.asList(rightTeam));
+    	answer.remove(player);
+    	return answer;
     }
     
     public Player[] getOpponents(Player player){
