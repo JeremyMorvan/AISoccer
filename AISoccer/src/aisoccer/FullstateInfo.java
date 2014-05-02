@@ -46,6 +46,7 @@ public class FullstateInfo
 	private Ball        ball;         // The ball of the game
 	private Player[]    leftTeam;     // Players of left and right team,
 	private Player[]    rightTeam;    //  indexed by their uniform number - 1
+	private int nbPlayers;
 
 	private boolean 	leftGotBall;
 	private Vector2D	ballPrediction;
@@ -55,17 +56,18 @@ public class FullstateInfo
 	 * 
 	 * @param fullstateMsg
 	 */
-	public FullstateInfo(String fullstateMsg)
+	public FullstateInfo(int nbPlayers)
 	{
-		this.fullstateMsg = fullstateMsg;
+		this.fullstateMsg = "";
 		this.ball = new Ball(0, 0, 0, 0);
-		leftTeam = new Player[11];
-		rightTeam = new Player[11];
-		for (int i = 0; i < 11; i++)
+		leftTeam = new Player[nbPlayers];
+		rightTeam = new Player[nbPlayers];
+		for (int i = 0; i < nbPlayers; i++)
 		{
 			leftTeam[i] = new Player(0, 0, 0, 0, true, '0', 0);
 			rightTeam[i] = new Player(0, 0, 0, 0, false, '0', 0);
 		}
+		this.nbPlayers = nbPlayers;
 
 	}
 
@@ -228,6 +230,8 @@ public class FullstateInfo
 			}
 
 			playerNumber = Integer.valueOf(matcher.group(2));
+			if (playerNumber > nbPlayers)
+				continue;
 
 			if (matcher.group(3).compareToIgnoreCase("g") == 0)
 			{
@@ -235,8 +239,7 @@ public class FullstateInfo
 			}
 			else
 			{
-				team[playerNumber - 1].setPlayerType(Integer.valueOf(matcher
-						.group(3)));
+				team[playerNumber - 1].setPlayerType(Integer.valueOf(matcher.group(3)));
 			}
 
 			team[playerNumber - 1].setUniformNumber(playerNumber);
@@ -244,8 +247,7 @@ public class FullstateInfo
 			team[playerNumber - 1].getPosition().setY(Double.valueOf(matcher.group(5)));
 			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(6)));
 			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(7)));
-			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher
-					.group(8)));
+			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(8)));
 		}
 
 		detectKick();
@@ -253,7 +255,7 @@ public class FullstateInfo
 
 	
 	private void detectKick(){
-		boolean before = leftGotBall;
+//		boolean before = leftGotBall;
 
 		if(playMode.equals("before_kick_off")){
 			
@@ -277,7 +279,7 @@ public class FullstateInfo
 				for (Player p : leftTeam) {
 					pp = p.getPosition().subtract(p.getVelocity().multiply(1.0/SoccerParams.PLAYER_DECAY));
 					pb = ball.getPosition().subtract(ball.getVelocity().multiply(1.0/SoccerParams.BALL_DECAY));
-					if(p.getUniformNumber()>0 && pp.distanceTo(pb)<min){
+					if(pp.distanceTo(pb)<min){
 						min = pp.distanceTo(pb);
 						closest = p;
 					}
@@ -285,7 +287,7 @@ public class FullstateInfo
 				for (Player p : rightTeam) {
 					pp = p.getPosition().subtract(p.getVelocity().multiply(1.0/SoccerParams.PLAYER_DECAY));
 					pb = ball.getPosition().subtract(ball.getVelocity().multiply(1.0/SoccerParams.BALL_DECAY));
-					if(p.getUniformNumber()>0 && pp.distanceTo(pb)<min){
+					if(pp.distanceTo(pb)<min){
 						min = pp.distanceTo(pb);
 						closest = p;
 					}
@@ -321,43 +323,12 @@ public class FullstateInfo
 		return fs;
 	}
     
-    public LinkedList<Player> getTeammates(Player player){
-    	LinkedList<Player> answer;
-    	if(player.isLeftSide()){
-    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
-    	}else{
-    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
-    	}
-    	answer.remove(player);
-    	LinkedList<Player> toRemove = new LinkedList<Player>();
-    	for(Player p : answer){
-    		if(p.getPosition().polarRadius()==0){
-    			toRemove.add(p);
-    		}
-    	}
-    	for(Player p : toRemove){
-    		answer.remove(p);
-    	}
-    	return answer;
+    public Player[] getTeammates(Player player){
+    	return (player.isLeftSide()) ? leftTeam : rightTeam;
     }
     
-    public LinkedList<Player> getOpponents(Player player){
-    	LinkedList<Player> answer;
-    	if(player.isLeftSide()){
-    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
-    	}else{
-    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
-    	}
-    	LinkedList<Player> toRemove = new LinkedList<Player>();
-    	for(Player p : answer){
-    		if(p.getPosition().polarRadius()==0){
-    			toRemove.add(p);
-    		}
-    	}
-    	for(Player p : toRemove){
-    		answer.remove(p);
-    	}
-    	return answer;
+    public Player[] getOpponents(Player player){
+    	return (! player.isLeftSide()) ? leftTeam : rightTeam;
     }
 
 }

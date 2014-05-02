@@ -1,13 +1,13 @@
 package aisoccer.actions;
 
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 
 public class PositionDef extends GoTo {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
-		// TODO Auto-generated method stub
-		return false;
+		return brain.getPlayer().isLeftSide() == brain.getFullstateInfo().LeftGotBall();			
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package aisoccer.actions;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
@@ -18,7 +19,7 @@ public class WithTheBall extends Selector {
 	
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return true;
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) <= SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override

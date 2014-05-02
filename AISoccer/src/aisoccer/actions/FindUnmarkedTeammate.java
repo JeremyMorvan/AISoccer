@@ -12,8 +12,8 @@ public class FindUnmarkedTeammate extends ActionTask {
 	@Override
 	public void Start(Brain brain) {
 		Player me = brain.getPlayer();
-		LinkedList<Player> teammates = brain.getFullstateInfo().getTeammates(me);
-		LinkedList<Player> opponents = brain.getFullstateInfo().getOpponents(me);
+		Player[] teammates = brain.getFullstateInfo().getTeammates(me);
+		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
 		LinkedList<Vector2D> opponentsRP = new LinkedList<Vector2D>();
 		for(Player op : opponents){
 			opponentsRP.add(op.getPosition().subtract(me.getPosition()));
