@@ -26,7 +26,8 @@ public class FindUnmarkedTeammate extends ActionTask {
 		}
 		Vector2D bestTeammateP = null;
 		for(Player tm : teammates){
-			if(brain.checkMarked(tm.getPosition().subtract(me.getPosition()), opponentsRP) && tm.getPosition().distanceTo(goal)<dmin){
+			Vector2D tmRP = tm.getPosition().subtract(me.getPosition());
+			if(tmRP.polarRadius()<=40 && brain.checkMarked(tmRP, opponentsRP) && tm.getPosition().distanceTo(goal)<dmin){
 				bestTeammateP = tm.getPosition();				
 			}
 		}
@@ -35,7 +36,6 @@ public class FindUnmarkedTeammate extends ActionTask {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
