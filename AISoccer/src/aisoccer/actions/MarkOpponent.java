@@ -1,12 +1,10 @@
 package aisoccer.actions;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import aisoccer.Ball;
 import aisoccer.Brain;
 import aisoccer.Player;
-import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
 
 public class MarkOpponent extends GoTo {
