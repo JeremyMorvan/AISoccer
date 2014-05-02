@@ -1,4 +1,4 @@
-package aisoccer.actions;
+package aisoccer.actions.positionning;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -7,6 +7,7 @@ import aisoccer.Area;
 import aisoccer.Brain;
 import aisoccer.Player;
 import aisoccer.Vector2D;
+import aisoccer.actions.motion.GoTo;
 
 public class PositionOff extends GoTo {
 

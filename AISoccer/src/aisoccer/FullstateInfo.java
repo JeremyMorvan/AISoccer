@@ -70,7 +70,6 @@ public class FullstateInfo
 			rightTeam[i] = new Player(0, 0, 0, 0, false, '0', 0);
 		}
 		this.nbPlayers = nbPlayers;
-
 	}
 
 	/*
@@ -260,17 +259,29 @@ public class FullstateInfo
 //		boolean before = leftGotBall;
 
 		if(playMode.equals("before_kick_off")){
-			
+			ballPrediction = new Vector2D(0.0, 0.0);			
 		}else if(playMode.equals("kick_off_l")){
 			ballPrediction = new Vector2D(0.0, 0.0);
 			leftGotBall = true;
 		}else if(playMode.equals("kick_off_r")){
 			ballPrediction = new Vector2D(0.0, 0.0);
 			leftGotBall = false;			
+		}else if(playMode.equals("goal_r")){
+			ballPrediction = new Vector2D(0.0, 0.0);
+			leftGotBall = true;
+		}else if(playMode.equals("goal_l")){
+			ballPrediction = new Vector2D(0.0, 0.0);
+			leftGotBall = false;			
 		}else if(playMode.equals("free_kick_l")){
 			ballPrediction = ball.getPosition();
 			leftGotBall = true;			
 		}else if(playMode.equals("free_kick_r")){
+			ballPrediction = ball.getPosition();
+			leftGotBall = false;			
+		}else if(playMode.equals("corner_kick_l")){
+			ballPrediction = ball.getPosition();
+			leftGotBall = true;			
+		}else if(playMode.equals("corner_kick_r")){
 			ballPrediction = ball.getPosition();
 			leftGotBall = false;			
 		}else if(playMode.equals("play_on")){
