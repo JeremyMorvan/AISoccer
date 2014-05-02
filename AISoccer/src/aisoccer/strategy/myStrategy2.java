@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 import aisoccer.actions.playModes.BeforeKickOff;
+import aisoccer.actions.playModes.FreeKick;
+import aisoccer.actions.playModes.KickIn;
 import aisoccer.actions.playModes.PlayOn;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
@@ -13,6 +15,8 @@ public class myStrategy2 extends Selector implements Strategy {
 	public myStrategy2(int numberOfPlayers,Brain brain) {
 		children = new LinkedList<Task>();
 		children.add(new BeforeKickOff());
+		children.add(new FreeKick());
+		children.add(new KickIn());
 		children.add(new PlayOn());
 		Formation442.setMyAreas(numberOfPlayers, brain);
 	}
