@@ -8,11 +8,6 @@ import aisoccer.behaviorTree.Task;
 
 public class BeforeKickOff extends Selector {
 
-	public BeforeKickOff(LinkedList<Task> children) {
-		super(children);
-		// TODO Auto-generated constructor stub
-	}
-
 	public BeforeKickOff() {
 		children = new LinkedList<Task>();
 		children.add(new BeforeKickOffAttack());

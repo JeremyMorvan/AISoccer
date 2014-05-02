@@ -30,6 +30,7 @@ public class Brain implements Runnable
     private Vector2D				 interestPos;
     private Area[]					 allAreas;
     private HashSet<Area>			 myAreas;
+    private Vector2D 				 posIni;
 
     /*
      * =========================================================================
@@ -194,7 +195,7 @@ public class Brain implements Runnable
         {
             lastTimeStep = currentTimeStep;
             currentTimeStep = fullstateInfo.getTimeStep();
-            if (currentTimeStep == lastTimeStep + 1)
+            if (currentTimeStep == lastTimeStep + 1||currentTimeStep == 0)
             {
                 if (actionsQueue.isEmpty())
                 { // The queue is empty, check if we need to add an action.
@@ -316,5 +317,17 @@ public class Brain implements Runnable
 		}
 		return xmin2;
 
+	}
+
+	public Vector2D getPosIni() {
+		return posIni;
+	}
+
+	public void setPosIni(Vector2D posIni) {
+		this.posIni = posIni;
+	}
+	
+	public void engage(){
+		this.robocupClient.move(this.posIni.getX(), this.posIni.getY());
 	}
 }
