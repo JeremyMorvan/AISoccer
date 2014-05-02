@@ -99,7 +99,7 @@ public class Sebbot
 
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 5;
+        int nbOfPlayers = 6;
 
         for (int i = 0; i < nbOfPlayers; i++)
         {
@@ -108,7 +108,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2());
+            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
 
             new Thread(client).start();
             new Thread(brain).start();
