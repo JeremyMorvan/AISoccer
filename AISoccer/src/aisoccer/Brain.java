@@ -2,6 +2,7 @@ package aisoccer;
 
 import java.lang.Math;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import aisoccer.ballcapture.Action;
@@ -27,6 +28,8 @@ public class Brain implements Runnable
     private Strategy                 strategy;     // Strategy used by this brain
     private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
     private Vector2D				 interestPos;
+    private Area[]					 allAreas;
+    private HashSet<Area>			 myAreas;
 
     /*
      * =========================================================================
@@ -132,6 +135,28 @@ public class Brain implements Runnable
     {
         return fullstateInfo;
     }
+    
+    public void computeAreas(){
+    	allAreas = new Area[70];
+    	double stepX = SoccerParams.FIELD_LENGTH/10;
+    	double stepY = SoccerParams.FIELD_WIDTH/7;
+    	double xmin = -SoccerParams.FIELD_LENGTH/2;
+    	double ymin = -SoccerParams.FIELD_WIDTH/2;
+    	if(this.getPlayer().isLeftSide()){
+    		for(int i=0;i<10;i++){
+        		for(int j=0;j<7;j++){
+        			allAreas[j+7*i] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
+        		}
+        	}
+    	}else{
+    		for(int i=9;i>-1;i--){
+        		for(int j=9;j>-1;j--){
+        			allAreas[j+7*i] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
+        		}
+        	}
+    	}
+    	
+    }
 
     /**
      * @param fullstateInfo
@@ -225,6 +250,18 @@ public class Brain implements Runnable
 		return this.interestPos;
 	}
 	
+
+	public HashSet<Area> getMyAreas() {
+		return myAreas;
+	}
+
+	public void setMyAreas(HashSet<Area> myAreas) {
+		this.myAreas = myAreas;
+	}	
+	
+	public Area getArea(int i,int j){
+		return this.allAreas[j+i*7];
+	}
 
 	
 	public boolean checkMarked(Vector2D teammateRP, Vector2D opponentRP){

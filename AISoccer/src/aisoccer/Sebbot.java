@@ -108,6 +108,7 @@ public class Sebbot
             client.init("");
 
             brain = client.getBrain();
+            brain.computeAreas();
             brain.setStrategy(new myStrategy2());
 
             new Thread(client).start();

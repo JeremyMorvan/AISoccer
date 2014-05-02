@@ -6,14 +6,12 @@ public class PositionOff extends GoTo {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
-		// TODO Auto-generated method stub
-		return false;
+		return brain.getPlayer().isLeftSide() == brain.getFullstateInfo().LeftGotBall();
 	}
 
 	@Override
 	public void Start(Brain brain) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
