@@ -2,6 +2,7 @@ package aisoccer;
 
 import java.lang.Math;
 import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
@@ -222,5 +223,34 @@ public class Brain implements Runnable
 	
 	public Vector2D getInterestPos(){
 		return this.interestPos;
+	}
+	
+
+	
+	public boolean checkMarked(Vector2D teammateRP, Vector2D opponentRP){
+		if(teammateRP.multiply(opponentRP)<0){
+			return true;
+		}
+		double angle = Math.toRadians(teammateRP.directionOf(opponentRP));
+		if(Math.abs(Math.tan(angle))>SoccerParams.PLAYER_SPEED_MAX/SoccerParams.BALL_SPEED_MAX){
+			return true;
+		}
+		double norm = opponentRP.polarRadius();
+		if(norm*(Math.cos(angle)+Math.sin(angle))>teammateRP.polarRadius()){
+			return true;
+		}
+		return false;		
+	}
+	
+	public boolean checkMarked(Vector2D teammateRP, LinkedList<Vector2D> opponentsRP){
+		for(Vector2D oRP : opponentsRP){
+			if(teammateRP.polarRadius()>40){
+				return false;
+			}
+			if(!checkMarked(teammateRP,oRP)){
+				return false;
+			}
+		}
+		return true;
 	}
 }
