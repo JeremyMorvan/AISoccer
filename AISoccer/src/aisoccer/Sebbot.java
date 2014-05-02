@@ -103,9 +103,8 @@ public class Sebbot
 
         for (int i = 0; i < nbOfPlayers; i++)
         {
-            client = new RobocupClient(InetAddress.getByName(hostname), port,
-                team);
-            client.init("");
+            client = new RobocupClient(InetAddress.getByName(hostname), port, team);
+            client.init(nbOfPlayers);
 
             brain = client.getBrain();
             brain.computeAreas();
@@ -119,7 +118,7 @@ public class Sebbot
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port,
                 "team2");
-            client.init("");
+            client.init(nbOfPlayers);
 
             brain = client.getBrain();
             brain.setStrategy(new myStrategy());

@@ -134,8 +134,7 @@ public class Player extends MobileObject
      */
     public double angleFromBody(double x, double y)
     {
-        return MathTools.normalizeAngle(position.directionOf(x, y)
-                - bodyDirection);
+        return MathTools.normalizeAngle(position.directionOf(x, y) - bodyDirection);
     }
 
     /**
@@ -149,8 +148,7 @@ public class Player extends MobileObject
      */
     public double angleFromBody(Vector2D p)
     {
-        return MathTools
-                .normalizeAngle(position.directionOf(p) - bodyDirection);
+        return MathTools.normalizeAngle(position.directionOf(p) - bodyDirection);
     }
 
     /**

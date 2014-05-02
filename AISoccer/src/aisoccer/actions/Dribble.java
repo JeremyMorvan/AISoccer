@@ -44,8 +44,7 @@ public class Dribble extends ActionTask {
 		RtargetDribble = RtargetDribble.normalize(1);
 		Vector2D modifier = new Vector2D(0,0);
 		int i = 0;
-		LinkedList<Player> opponents = brain.getFullstateInfo().getOpponents(me);
-		for(Player op : opponents){
+		for(Player op : brain.getFullstateInfo().getOpponents(me)){
 			Vector2D opRP = op.getPosition().subtract(me.getPosition());
 			if(opRP.multiply(RtargetDribble)<0){
 				continue;

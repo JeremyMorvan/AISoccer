@@ -9,9 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
-import aisoccer.strategy.Strategy;
-import aisoccer.strategy.myStrategy;
-
 
 /**
  * This class implements the commands of the Robocup Soccer Simulation 2D
@@ -215,7 +212,7 @@ public class RobocupClient implements Runnable
      * 
      * @throws IOException if the init message could not be parsed.
      */
-    protected void init(String strategy) throws IOException
+    protected void init(int nbPlayers) throws IOException
     {
         byte[] buffer = new byte[MSG_SIZE];
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
@@ -236,8 +233,7 @@ public class RobocupClient implements Runnable
             boolean leftTeam = matcher.group(1).charAt(0) == 'l' ? true : false;
             int playerNumber = Integer.valueOf(matcher.group(2));
 
-            brain = new Brain(this, leftTeam, playerNumber,
-                stringToStrategy(strategy));
+            brain = new Brain(this, leftTeam, playerNumber, nbPlayers);
             brain.getFullstateInfo().setPlayMode(matcher.group(3));
         }
         else
@@ -247,41 +243,7 @@ public class RobocupClient implements Runnable
 
     }
 
-    /**
-     * Creates a strategy object based on its name.
-     * 
-     * @param s the name of the strategy.
-     * @return the created strategy.
-     */
-    protected Strategy stringToStrategy(String s)
-    {
-        Strategy s1 = new myStrategy();
-        /*
-        if (s.equalsIgnoreCase("UniformCover"))
-        {
-            s1 = new UniformCover(5);
-        }
-        else if (s.equalsIgnoreCase("GoToBallAndShoot"))
-        {
-            s1 = new GoToBallAndShoot();
-        }
-        else if (s.equalsIgnoreCase("QiterationGoTo"))
-        {
-            s1 = new GoToBallAndShoot(Qiteration.loadQl("backupQl.zip"));
-        }
-        else if (s.equalsIgnoreCase("DPSGoto"))
-        {
-            s1 = new GoToBallAndShoot(Qiteration.loadQl("savedBFs.zip"));
-        }
-        else
-        {
-            s1 = new GoToBallAndShoot();
-        }
-
-		*/
-        return s1;
-    }
-
+    
     /** 
      * This methods will just keep waiting for server messages
      * to arrive on the socket then parse them.

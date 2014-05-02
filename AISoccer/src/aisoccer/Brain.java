@@ -46,14 +46,11 @@ public class Brain implements Runnable
      * @param playerNumber
      * @param strategy
      */
-    public Brain(RobocupClient robocupClient, boolean leftSide,
-            int playerNumber, Strategy strategy)
+    public Brain(RobocupClient robocupClient, boolean leftSide, int playerNumber, int nbPlayers)
     {
         this.robocupClient = robocupClient;
-        this.fullstateInfo = new FullstateInfo("");
-        this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1]
-                : fullstateInfo.getRightTeam()[playerNumber - 1];
-        this.strategy = strategy;
+        this.fullstateInfo = new FullstateInfo(nbPlayers);
+        this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1] : fullstateInfo.getRightTeam()[playerNumber - 1];
         this.actionsQueue = new ArrayDeque<PlayerAction>();
     }
 

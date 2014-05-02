@@ -10,8 +10,8 @@ public class Position extends Selector {
 
 	public Position(){
 		children = new LinkedList<Task>();
-		children.add(new PositionDef());
-		children.add(new PositionOff());
+//		children.add(new PositionDef());
+//		children.add(new PositionOff());
 	}
 	
 	@Override
