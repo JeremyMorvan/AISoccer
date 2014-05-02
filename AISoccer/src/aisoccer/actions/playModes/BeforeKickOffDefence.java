@@ -19,8 +19,7 @@ public class BeforeKickOffDefence extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
-		// TODO Auto-generated method stub
-
+		brain.engage();
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class PlayOn extends Selector {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return brain.getFullstateInfo().getPlayMode().equals("play_on");
+		return brain.getFullstateInfo().getPlayMode().equals("play_on")||brain.getFullstateInfo().getPlayMode().equals("kick_off_l")||brain.getFullstateInfo().getPlayMode().equals("kick_off_r");
 	}
 
 	@Override
