@@ -19,7 +19,7 @@ public class PositionDef extends GoTo {
 	@Override
 	public void Start(Brain brain) {
 		Player me = brain.getPlayer();	
-		Player[] teammates = brain.getFullstateInfo().getTeammates(me);
+		ArrayList<Player> teammates = brain.getFullstateInfo().getTeammates(me);
 		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
 		Ball b = brain.getFullstateInfo().getBall();	
 		
