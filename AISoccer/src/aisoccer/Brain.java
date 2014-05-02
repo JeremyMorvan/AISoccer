@@ -271,7 +271,7 @@ public class Brain implements Runnable
 			return true;
 		}
 		double norm = opponentRP.polarRadius();
-		if(norm*(Math.cos(angle)+Math.sin(angle))>teammateRP.polarRadius()){
+		if(norm*(Math.abs(Math.cos(angle))+Math.abs(Math.sin(angle)))>teammateRP.polarRadius()){
 			return true;
 		}
 		return false;		
@@ -291,6 +291,18 @@ public class Brain implements Runnable
 		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
 		double xmin1 = 0;
 		double xmin2 = 0;
+		if(this.player.isLeftSide()){
+			if(this.fullstateInfo.getBall().getPosition().getX()>0){
+				xmin1 = this.fullstateInfo.getBall().getPosition().getX();
+				xmin2 = this.fullstateInfo.getBall().getPosition().getX();
+			}
+		}else{
+			if(this.fullstateInfo.getBall().getPosition().getX()<0){
+				xmin1 = -this.fullstateInfo.getBall().getPosition().getX();
+				xmin2 = -this.fullstateInfo.getBall().getPosition().getX();
+			}
+		}
+		
 		@SuppressWarnings("unused")
 		double temp;
 		for(Player op : opponents){

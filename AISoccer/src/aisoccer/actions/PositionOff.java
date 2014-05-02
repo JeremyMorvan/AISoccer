@@ -32,29 +32,60 @@ public class PositionOff extends GoTo {
 			interestingPoints.addAll(a.getInterestingPoints(xOffSide, p));
 		}
 		if(interestingPoints.size()==0){
-			if(me.isLeftSide()&&me.getUniformNumber()==1){
-				System.out.println("No interesting point");
-			}
+//			if(me.isLeftSide()&&me.getUniformNumber()==1){
+//				System.out.println("No interesting point");
+//			}
 			
 			if(p*me.getPosition().getX()<p*xOffSide){
-				brain.setInterestPos(me.getPosition());
+				for(Area a : brain.getMyAreas()){
+					
+					if(a.isInArea(me.getPosition())){
+						brain.setInterestPos(me.getPosition());
+						return;
+					}
+					interestingPoints.addAll(a.getInterestingPoints());
+				}
+				double 	minDist = 300;
+				Vector2D best = null;
+				for(Vector2D v2 : interestingPoints){
+					if(me.getPosition().distanceTo(v2)<minDist){
+						minDist = me.getPosition().distanceTo(v2);
+						best = v2;
+					}
+				}
+				brain.setInterestPos(best);
 			}else{
 				Vector2D pos = new Vector2D(-p*52.5,me.getPosition().getY());
 				brain.setInterestPos(pos);
 			}
 			return;			
 		}
-		for(Vector2D v2 : interestingPoints){			
+		for(Vector2D v2 : interestingPoints){	
 			if(brain.checkMarked(v2.subtract(ballP), opRP)){
 				goodPoints.add(v2);
 			}
 		}
 		if(goodPoints.size()==0){
-			if(me.isLeftSide()&&me.getUniformNumber()==1){
-				System.out.println("No good point");
-			}
+//			if(me.isLeftSide()&&me.getUniformNumber()==1){
+//				System.out.println("No good point");
+//			}
 			if(p*me.getPosition().getX()<p*xOffSide){
-				brain.setInterestPos(me.getPosition());
+				for(Area a : brain.getMyAreas()){
+					if(a.isInArea(me.getPosition())){
+						brain.setInterestPos(me.getPosition());
+						return;
+					}
+				}
+				double 	minDist = 300;
+				Vector2D best = null;
+				for(Vector2D v2 : interestingPoints){
+					if(me.getPosition().distanceTo(v2)<minDist){
+						minDist = me.getPosition().distanceTo(v2);
+						best = v2;
+					}
+				}
+				brain.setInterestPos(best);
+
 			}else{
 				brain.setInterestPos(new Vector2D(-p*52.5,me.getPosition().getY()));
 			}
@@ -69,9 +100,9 @@ public class PositionOff extends GoTo {
 				best = v2;
 			}
 		}
-		if(me.isLeftSide()&&me.getUniformNumber()==1){
-			System.out.println(best);
-		}		
+//		if(me.isLeftSide()&&me.getUniformNumber()==1){
+//			System.out.println(best);
+//		}		
 		brain.setInterestPos(best);
 	}
 

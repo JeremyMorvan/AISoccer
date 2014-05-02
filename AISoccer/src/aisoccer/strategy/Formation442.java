@@ -15,7 +15,7 @@ public abstract class Formation442{
 			if(brain.getPlayer().getUniformNumber()==1){//G
 				System.out.println("G");
 				for(int i=0;i<2;i++){
-					for(int j=1;j<6;j++){
+					for(int j=2;j<5;j++){
 						answer.add(brain.getArea(i, j));
 					}
 				}
