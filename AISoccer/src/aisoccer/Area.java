@@ -1,5 +1,6 @@
 package aisoccer;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Area {
@@ -26,8 +27,8 @@ public class Area {
 		return new Vector2D((xmin+xmax)/2,(ymin+ymax)/2);
 	}
 	
-	public LinkedList<Vector2D> getInterestingPoints(){
-		LinkedList<Vector2D>  answer = new LinkedList<Vector2D>();
+	public HashSet<Vector2D> getInterestingPoints(){
+		HashSet<Vector2D>  answer = new HashSet<Vector2D>();
 		answer.add(new Vector2D((xmin+xmax)/2,(ymin+ymax)/2));
 		answer.add(new Vector2D(xmin,ymin));
 		answer.add(new Vector2D(xmax,ymax));
@@ -35,4 +36,15 @@ public class Area {
 		answer.add(new Vector2D(xmax,ymin));
 		return answer;
 	}	
+	
+	public HashSet<Vector2D> getInterestingPoints(double xLimOffSide,int parity){
+		HashSet<Vector2D>  allPoints = getInterestingPoints();
+		HashSet<Vector2D>  answer = new HashSet<Vector2D>();
+		for(Vector2D v2 : allPoints){
+			if(parity*v2.getX()<parity*xLimOffSide){
+				answer.add(v2);
+			}
+		}
+		return answer;		
+	}
 }

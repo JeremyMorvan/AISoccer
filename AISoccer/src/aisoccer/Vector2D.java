@@ -207,5 +207,15 @@ public class Vector2D implements Cloneable
     {
         return String.format("(%g - %g)", x, y);
     }
+    
+    @Override
+    public int hashCode() {
+        return (int) Math.floor(x+y);
+    }
+    
+    @Override
+    public boolean equals(Object other){
+    	return (x==((Vector2D) other).getX())&&(y==((Vector2D) other).getY());
+    }
 
 }

@@ -284,4 +284,24 @@ public class Brain implements Runnable
 		}
 		return true;
 	}
+	
+	public double getXLimOffSide(){
+		int p = this.player.isLeftSide() ? 1:-1;		
+		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
+		double xmin1 = 300;
+		double xmin2 = 300;
+		@SuppressWarnings("unused")
+		double temp;
+		for(Player op : opponents){
+			if(p*op.getPosition().getX()>p*xmin1){
+				temp = xmin1;
+				xmin2 = xmin1;
+				xmin1 = op.getPosition().getX();
+			}else if(p*op.getPosition().getX()>p*xmin2){
+				xmin2 = op.getPosition().getX();
+			}
+		}
+		return xmin2;
+
+	}
 }

@@ -1,5 +1,6 @@
 package aisoccer.actions;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
@@ -12,7 +13,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 	@Override
 	public void Start(Brain brain) {
 		Player me = brain.getPlayer();
-		Player[] teammates = brain.getFullstateInfo().getTeammates(me);
+		ArrayList<Player> teammates = brain.getFullstateInfo().getTeammates(me);
 		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
 		LinkedList<Vector2D> opponentsRP = new LinkedList<Vector2D>();
 		for(Player op : opponents){
