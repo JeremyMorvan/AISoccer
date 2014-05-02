@@ -1,4 +1,4 @@
-package aisoccer.actions;
+package aisoccer.actions.playModes;
 
 import aisoccer.Brain;
 import aisoccer.behaviorTree.ActionTask;

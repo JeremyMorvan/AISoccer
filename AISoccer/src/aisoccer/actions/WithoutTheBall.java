@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 import aisoccer.SoccerParams;
+import aisoccer.actions.motion.AttackTheBall;
+import aisoccer.actions.positionning.Position;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 

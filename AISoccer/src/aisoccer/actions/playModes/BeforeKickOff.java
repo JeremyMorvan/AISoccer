@@ -1,4 +1,4 @@
-package aisoccer.actions;
+package aisoccer.actions.playModes;
 
 import java.util.LinkedList;
 

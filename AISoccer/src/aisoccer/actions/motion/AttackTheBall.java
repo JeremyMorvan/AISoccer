@@ -1,4 +1,4 @@
-package aisoccer.actions;
+package aisoccer.actions.motion;
 
 import java.util.LinkedList;
 
