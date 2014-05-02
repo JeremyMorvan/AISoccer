@@ -52,6 +52,7 @@ public class Brain implements Runnable
         this.fullstateInfo = new FullstateInfo(nbPlayers);
         this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1] : fullstateInfo.getRightTeam()[playerNumber - 1];
         this.actionsQueue = new ArrayDeque<PlayerAction>();
+        this.player.setUniformNumber(playerNumber);
     }
 
     /*
@@ -146,9 +147,9 @@ public class Brain implements Runnable
         		}
         	}
     	}else{
-    		for(int i=9;i>-1;i--){
-        		for(int j=9;j>-1;j--){
-        			allAreas[j+7*i] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
+    		for(int i=0;i<10;i++){
+        		for(int j=0;j<7;j++){
+        			allAreas[69-(j+7*i)] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
         		}
         	}
     	}
@@ -288,8 +289,8 @@ public class Brain implements Runnable
 	public double getXLimOffSide(){
 		int p = this.player.isLeftSide() ? 1:-1;		
 		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
-		double xmin1 = 300;
-		double xmin2 = 300;
+		double xmin1 = 0;
+		double xmin2 = 0;
 		@SuppressWarnings("unused")
 		double temp;
 		for(Player op : opponents){

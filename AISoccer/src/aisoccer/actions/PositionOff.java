@@ -32,19 +32,27 @@ public class PositionOff extends GoTo {
 			interestingPoints.addAll(a.getInterestingPoints(xOffSide, p));
 		}
 		if(interestingPoints.size()==0){
+			if(me.isLeftSide()&&me.getUniformNumber()==1){
+				System.out.println("No interesting point");
+			}
+			
 			if(p*me.getPosition().getX()<p*xOffSide){
 				brain.setInterestPos(me.getPosition());
 			}else{
-				brain.setInterestPos(new Vector2D(-p*52.5,me.getPosition().getY()));
+				Vector2D pos = new Vector2D(-p*52.5,me.getPosition().getY());
+				brain.setInterestPos(pos);
 			}
 			return;			
 		}
-		for(Vector2D v2 : interestingPoints){
+		for(Vector2D v2 : interestingPoints){			
 			if(brain.checkMarked(v2.subtract(ballP), opRP)){
 				goodPoints.add(v2);
 			}
 		}
 		if(goodPoints.size()==0){
+			if(me.isLeftSide()&&me.getUniformNumber()==1){
+				System.out.println("No good point");
+			}
 			if(p*me.getPosition().getX()<p*xOffSide){
 				brain.setInterestPos(me.getPosition());
 			}else{
@@ -61,6 +69,9 @@ public class PositionOff extends GoTo {
 				best = v2;
 			}
 		}
+		if(me.isLeftSide()&&me.getUniformNumber()==1){
+			System.out.println(best);
+		}		
 		brain.setInterestPos(best);
 	}
 

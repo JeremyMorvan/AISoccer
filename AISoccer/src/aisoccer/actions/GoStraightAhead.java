@@ -8,7 +8,7 @@ public class GoStraightAhead extends ActionTask {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
-		return true;
+		return brain.getPlayer().getPosition().distanceTo(brain.getInterestPos())!=0;
 	}
 
 	@Override
