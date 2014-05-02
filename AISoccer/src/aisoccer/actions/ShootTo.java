@@ -5,19 +5,23 @@ import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.behaviorTree.ActionTask;
 
-public class ShootTo extends ActionTask {
-
-	double targetX = 0;
-	double targetY = 0;
+public abstract class ShootTo extends ActionTask {
 	
-	@Override
-	public boolean checkConditions(Brain brain) {
-		return true;
+	boolean checkDistance;
+	
+	public ShootTo(boolean checkDistance){
+		super();
+		this.checkDistance = checkDistance;
 	}
+	public abstract boolean checkConditions(Brain brain);
 
 	@Override
 	public void DoAction(Brain brain) {
-        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(targetX, targetY), brain.getRobocupClient()));
+		//System.out.println(brain.getPlayer().toString() + " : I am going to shoot ! : " + brain.getInterestPos().toString());
+        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
+
+	@Override
+	public abstract void Start(Brain brain);
 
 }

@@ -3,9 +3,6 @@ package aisoccer.behaviorTree;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.Player;
-import aisoccer.RobocupClient;
-import aisoccer.ballcapture.State;
 
 public abstract class Sequencer extends CompositeTask {
 
@@ -14,28 +11,26 @@ public abstract class Sequencer extends CompositeTask {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Sequencer(){
-		
-	}
+	public Sequencer(){}
 
-	public abstract void Start();
+	public abstract void Start(Brain brain);
 
-	public abstract void End();
+	public abstract void End(Brain brain);
 
 	@Override
 	public boolean Call(Brain brain) {
 		if(checkConditions(brain)){
-			Start();
+			Start(brain);
 			for(Task child : this.children){
 				if(!child.Call(brain)){
-					End();
+					End(brain);
 					return false;
 				}
 			}
-			End();
+			End(brain);
 			return true;
 		}
-		End();
+		End(brain);
 		return false;		
 	}
 

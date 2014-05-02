@@ -1,5 +1,7 @@
 package aisoccer;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -318,5 +320,44 @@ public class FullstateInfo
 
 		return fs;
 	}
+    
+    public LinkedList<Player> getTeammates(Player player){
+    	LinkedList<Player> answer;
+    	if(player.isLeftSide()){
+    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
+    	}else{
+    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
+    	}
+    	answer.remove(player);
+    	LinkedList<Player> toRemove = new LinkedList<Player>();
+    	for(Player p : answer){
+    		if(p.getPosition().polarRadius()==0){
+    			toRemove.add(p);
+    		}
+    	}
+    	for(Player p : toRemove){
+    		answer.remove(p);
+    	}
+    	return answer;
+    }
+    
+    public LinkedList<Player> getOpponents(Player player){
+    	LinkedList<Player> answer;
+    	if(player.isLeftSide()){
+    		answer =  new LinkedList<Player>(Arrays.asList(this.rightTeam));
+    	}else{
+    		answer =  new LinkedList<Player>(Arrays.asList(this.leftTeam));
+    	}
+    	LinkedList<Player> toRemove = new LinkedList<Player>();
+    	for(Player p : answer){
+    		if(p.getPosition().polarRadius()==0){
+    			toRemove.add(p);
+    		}
+    	}
+    	for(Player p : toRemove){
+    		answer.remove(p);
+    	}
+    	return answer;
+    }
 
 }

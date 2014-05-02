@@ -25,6 +25,7 @@ public class Brain implements Runnable
     private Player                   player;       // The player this brain controls
     private Strategy                 strategy;     // Strategy used by this brain
     private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
+    private Vector2D				 interestPos;
 
     /*
      * =========================================================================
@@ -213,5 +214,13 @@ public class Brain implements Runnable
 	
 	public State getState(){
 		return this.state;
+	}
+	
+	public void setInterestPos(Vector2D pos){
+		this.interestPos = pos;
+	}
+	
+	public Vector2D getInterestPos(){
+		return this.interestPos;
 	}
 }

@@ -1,10 +1,9 @@
 package aisoccer.actions;
 
 import aisoccer.Brain;
-import aisoccer.ballcapture.Action;
 import aisoccer.behaviorTree.ActionTask;
 
-public class GoStraightAhead extends ActionTask {
+public class Position extends ActionTask {
 
 	@Override
 	public boolean checkConditions(Brain brain) {
@@ -13,13 +12,12 @@ public class GoStraightAhead extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
-		brain.doAction(new Action(100f,false));		
+		//System.out.println(brain.getPlayer().toString() + " : I am moving to my position !");
 	}
 
 	@Override
-	public void Start(Brain brain) {		
+	public void Start(Brain brain) {
+
 	}
-	
-	
 
 }

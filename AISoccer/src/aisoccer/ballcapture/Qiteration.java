@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.Format;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -621,52 +619,6 @@ public class Qiteration implements Policy, Serializable, Runnable
         }
 
         return true;
-
-    }
-
-    /**
-     * 
-     */
-    private void testQ()
-    {
-
-        for (int i = 0; i < qTable.length; i++)
-        {
-            for (int j = 0; j < qTable[i].length; j++)
-            {
-                for (int k = 0; k < qTable[i][j].length; k++)
-                {
-                    for (int l = 0; l < qTable[i][j][k].length; l++)
-                    {
-                        for (int m = 0; m < qTable[i][j][k][l].length; m++)
-                        {
-                            for (int n = 0; n < qTable[i][j][k][l][m].length; n++)
-                            {
-                                for (int o = 0; o < qTable[i][j][k][l][m][n].length; o++)
-                                {
-                                    for (int p = 0; p < qTable[i][j][k][l][m][n][o].length; p++)
-                                    {
-                                        if (qTable[i][j][k][l][m][n][o][p] > 2f * MarkovDecisionProcess.BIG_REWARD)
-                                        {
-                                            System.out
-                                                .println("prob: "
-                                                        + qTable[i][j][k][l][m][n][o][p]);
-                                        }
-                                    }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
 
     }
 

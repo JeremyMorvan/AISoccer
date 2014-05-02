@@ -1,9 +1,6 @@
 package aisoccer.behaviorTree;
 
 import aisoccer.Brain;
-import aisoccer.Player;
-import aisoccer.RobocupClient;
-import aisoccer.ballcapture.State;
 
 public abstract class Decorator implements Task {
 
