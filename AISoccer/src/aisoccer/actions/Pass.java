@@ -11,4 +11,12 @@ public class Pass extends ShootTo {
 	@Override
 	public void Start(Brain brain) {}
 
+	@Override
+	public boolean checkConditions(Brain brain) {
+		if(brain.getInterestPos()==null){
+			return false;
+		}
+		return true;
+	}
+
 }

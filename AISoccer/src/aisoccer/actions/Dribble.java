@@ -11,7 +11,7 @@ import aisoccer.behaviorTree.ActionTask;
 
 public class Dribble extends ActionTask {
 
-	final static double power = 2.0;
+	final static double power = 40.0;
 	
 	@Override
 	public boolean checkConditions(Brain brain) {
@@ -20,7 +20,7 @@ public class Dribble extends ActionTask {
 
 	@Override
 	public void DoAction(Brain brain) {
-		System.out.println(brain.getPlayer().toString() + " : I am moving with the ball !");
+		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
         brain.doAction(new PlayerAction(PlayerActionType.KICK,power, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 
