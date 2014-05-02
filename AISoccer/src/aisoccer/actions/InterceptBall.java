@@ -8,48 +8,26 @@ import aisoccer.MathTools;
 import aisoccer.Player;
 import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
-import aisoccer.ballcapture.Action;
-import aisoccer.behaviorTree.ActionTask;
 
-public class InterceptBall extends ActionTask {
+public class InterceptBall extends GoTo {
 
 	public static float angleLimit = 5f;
-	
-	public InterceptBall() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public boolean checkConditions(Brain brain) {
 		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
-
+	
 	@Override
-	public void DoAction(Brain brain) {
+	public void Start(Brain brain) {
 		FullstateInfo fsi = brain.getFullstateInfo();
 		Player player = brain.getPlayer();
-		Vector2D target = optimumInterception(fsi.getBall().getPosition(), 
+		brain.setInterestPos(optimumInterception(fsi.getBall().getPosition(), 
 												fsi.getBall().getVelocity(), 
 												player.getPosition(), 
-												SoccerParams.PLAYER_SPEED_MAX*0.6);
-
-//		System.err.println("ball :" +fsi.getBall().getPosition());
-//		System.err.println("target :" +target);
-		
-		Vector2D diff = target.subtract(player.getPosition());
-		double angle = diff.polarAngle() - player.getBodyDirection();
-		angle = (angle+180.0)%(360.0)-180.0;
-//		System.err.println(angle);
-		if(Math.abs(angle) > angleLimit ){
-//			System.err.println("left :" +player.isLeftSide()+" : tourne");
-			brain.doAction(new Action((float)angle,true));	
-		}else{
-//			System.err.println("left :" +player.isLeftSide()+" : avance");
-			brain.doAction(new Action(100f,false));				
-		}
+												SoccerParams.PLAYER_SPEED_MAX*0.6));		
 	}
 	
-
 	
 	private Vector2D ballPositionPrediction(Vector2D ballPos,  Vector2D ballVelocity, double time){
 //    	double delta = ((double) SoccerParams.SIMULATOR_STEP)/1000.0; // deltaT in seconds
@@ -87,5 +65,4 @@ public class InterceptBall extends ActionTask {
 	      }
 	      return null;
 	}
-
 }
