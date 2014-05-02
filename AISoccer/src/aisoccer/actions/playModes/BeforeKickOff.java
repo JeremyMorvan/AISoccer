@@ -20,15 +20,9 @@ public class BeforeKickOff extends Selector {
 	}
 
 	@Override
-	public void Start(Brain brain) {
-		// TODO Auto-generated method stub
-
-	}
+	public void Start(Brain brain) {}
 
 	@Override
-	public void End(Brain brain) {
-		// TODO Auto-generated method stub
-
-	}
+	public void End(Brain brain) {}
 
 }
