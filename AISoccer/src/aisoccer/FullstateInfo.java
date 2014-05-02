@@ -309,12 +309,12 @@ public class FullstateInfo
 		fs += "------ " + System.currentTimeMillis() + " ---------\n";
 		fs += "ball: " + ball + "\n";
 		Player pi;
-		for (int i = 0; i < 11; i++)
+		for (int i = 0; i < nbPlayers; i++)
 		{
 			pi = leftTeam[i];
 			fs += "Player " + i + " " + pi + "\n";
 		}
-		for (int i = 0; i < 11; i++)
+		for (int i = 0; i < nbPlayers; i++)
 		{
 			pi = rightTeam[i];
 			fs += "Player " + i + " " + pi + "\n";

@@ -276,11 +276,8 @@ public class Brain implements Runnable
 		return false;		
 	}
 	
-	public boolean checkMarked(Vector2D teammateRP, LinkedList<Vector2D> opponentsRP){
+	public boolean checkMarked(Vector2D teammateRP, Iterable<Vector2D> opponentsRP){
 		for(Vector2D oRP : opponentsRP){
-			if(teammateRP.polarRadius()>40){
-				return false;
-			}
 			if(!checkMarked(teammateRP,oRP)){
 				return false;
 			}
