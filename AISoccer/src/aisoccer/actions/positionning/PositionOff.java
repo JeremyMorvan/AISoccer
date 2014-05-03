@@ -96,18 +96,17 @@ public class PositionOff extends GoTo {
 			}
 			return;			
 		}
-		double minDist = 300;
-		Vector2D best = null;
-		Vector2D opGoal = new Vector2D(me.isLeftSide() ? 52.5:-52.5,0);
+		Vector2D best = new Vector2D(0,0);
+		int count = 0;
 		for(Vector2D v2 : goodPoints){
-			if(v2.distanceTo(opGoal)<minDist){
-				minDist = v2.distanceTo(opGoal);
-				best = v2;
-			}
+			best.add(v2);
+			count++;
 		}
 //		if(me.isLeftSide()&&me.getUniformNumber()==1){
 //			System.out.println(best);
 //		}		
+		best.multiply(1/((double)count));
+		best.add(new Vector2D(ballP.getX()/10.0,ballP.getY()/7.0));
 		brain.setInterestPos(best);
 	}
 

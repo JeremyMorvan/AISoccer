@@ -3,7 +3,6 @@ package aisoccer;
 import java.lang.Math;
 import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;

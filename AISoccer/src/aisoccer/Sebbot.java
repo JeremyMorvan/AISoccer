@@ -8,7 +8,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.strategy.myStrategy;
 import aisoccer.strategy.myStrategy2;
 
 

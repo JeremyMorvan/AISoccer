@@ -11,7 +11,7 @@ public class FreeKick extends ActionTask {
 
 	@Override
 	public boolean CheckConditions() {
-		String pm = brain.getFullstateInfo().getPlayMode();
+		//String pm = brain.getFullstateInfo().getPlayMode();
 		return false;
 //		return pm.equals("free_kick_l") && brain.getPlayer().isLeftSide() || pm.equals("free_kick_r") && !brain.getPlayer().isLeftSide();
 	}

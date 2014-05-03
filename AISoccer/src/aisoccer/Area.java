@@ -1,7 +1,6 @@
 package aisoccer;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class Area {
 	private double xmin;

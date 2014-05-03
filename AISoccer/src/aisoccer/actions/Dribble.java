@@ -1,7 +1,5 @@
 package aisoccer.actions;
 
-import java.util.LinkedList;
-
 import aisoccer.Brain;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
