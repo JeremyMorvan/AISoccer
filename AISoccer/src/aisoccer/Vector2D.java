@@ -1,5 +1,7 @@
 package aisoccer;
 
+import aisoccer.fullStateInfo.MobileObject;
+
 /**
  * @author Sebastien Lentz
  *

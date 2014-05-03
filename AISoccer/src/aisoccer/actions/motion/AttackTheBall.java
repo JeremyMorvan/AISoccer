@@ -3,20 +3,21 @@ package aisoccer.actions.motion;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.Player;
 import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
+import aisoccer.fullStateInfo.Player;
 
 public class AttackTheBall extends Sequencer {
 
 	
-	public AttackTheBall(){
+	public AttackTheBall(Brain b){
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new InterceptBall());		
+		children.add(new InterceptBall(b));		
 	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		Player me = brain.getPlayer();
 		double myDist = me.distanceTo(brain.getFullstateInfo().getBall());
 		for(Player tm : brain.getFullstateInfo().getTeammates(me) ){
@@ -28,10 +29,10 @@ public class AttackTheBall extends Sequencer {
 	}
 
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 	}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 
 }

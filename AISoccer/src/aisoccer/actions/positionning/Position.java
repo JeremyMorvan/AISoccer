@@ -8,22 +8,23 @@ import aisoccer.behaviorTree.Task;
 
 public class Position extends Selector {
 
-	public Position(){
+	public Position(Brain b){
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new PositionDef());
-		children.add(new PositionOff());
+		children.add(new PositionDef(b));
+		children.add(new PositionOff(b));
 	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 	
 	
 

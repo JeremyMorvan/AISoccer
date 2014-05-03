@@ -5,10 +5,12 @@ import aisoccer.behaviorTree.ActionTask;
 
 public class BeforeKickOffAttack extends ActionTask {
 
-	public BeforeKickOffAttack() {}
+	public BeforeKickOffAttack(Brain b) {
+		super(b);
+	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		String pm = brain.getFullstateInfo().getPlayMode();
 		boolean left = brain.getPlayer().isLeftSide();
 		boolean firstHalf = brain.getFullstateInfo().getTimeStep() == 0;
@@ -18,12 +20,12 @@ public class BeforeKickOffAttack extends ActionTask {
 	}
 
 	@Override
-	public void DoAction(Brain brain) {
+	public void DoAction() {
 		brain.engage();
 	}
 
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		// TODO Auto-generated method stub
 
 	}

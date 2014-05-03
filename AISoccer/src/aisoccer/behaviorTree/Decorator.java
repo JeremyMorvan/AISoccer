@@ -2,11 +2,12 @@ package aisoccer.behaviorTree;
 
 import aisoccer.Brain;
 
-public abstract class Decorator implements Task {
+public abstract class Decorator extends Task {
 
 	Task child;
 	
-	public Decorator(Task child){
+	public Decorator(Brain b, Task child){
+		super(b);
 		this.child = child;
 	}
 
@@ -14,10 +15,10 @@ public abstract class Decorator implements Task {
 	public abstract void Start();
 
 	@Override
-	public boolean Call(Brain brain){
-		if(checkConditions(brain)){
+	public boolean Call(){
+		if(CheckConditions()){
 			Start();
-			return Operation(child.Call(brain));
+			return Operation(child.Call());
 		}
 		return false;		
 	}

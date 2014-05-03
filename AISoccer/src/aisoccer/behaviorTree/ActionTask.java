@@ -2,20 +2,24 @@ package aisoccer.behaviorTree;
 
 import aisoccer.Brain;
 
-public abstract class ActionTask implements Task {
+public abstract class ActionTask extends Task {
 
-	public abstract void DoAction(Brain brain);
+	public ActionTask(Brain b) {
+		super(b);
+	}
+
+	public abstract void DoAction();
 
 	@Override
-	public boolean Call(Brain brain) {
-		if(checkConditions(brain)){
-			Start(brain);
-			DoAction(brain);
+	public boolean Call() {
+		if(CheckConditions()){
+			Start();
+			DoAction();
 			return true;
 		}
 		return false;		
 	}
 	
-	public abstract void Start(Brain brain);
+	public abstract void Start();
 
 }

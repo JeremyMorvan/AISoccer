@@ -5,20 +5,22 @@ import aisoccer.behaviorTree.ActionTask;
 
 public class KickIn extends ActionTask {
 
-	public KickIn() {}
+	public KickIn(Brain b) {
+		super(b);
+	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return false;
 	}
 
 	@Override
-	public void DoAction(Brain brain) {
+	public void DoAction() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 }

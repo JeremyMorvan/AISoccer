@@ -3,29 +3,27 @@ package aisoccer.actions;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.Player;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.Vector2D;
 import aisoccer.behaviorTree.ActionTask;
+import aisoccer.fullStateInfo.Player;
 
 public class Dribble extends ActionTask {
+
+	public Dribble(Brain b) {
+		super(b);
+	}
 
 	final static double power = 40.0;
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void DoAction(Brain brain) {
-		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
-        brain.doAction(new PlayerAction(PlayerActionType.KICK,power, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
-	}
-
-	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		Player me = brain.getPlayer();
 		Vector2D RtargetDribble;
 		if(me.isLeftSide()){
@@ -58,6 +56,12 @@ public class Dribble extends ActionTask {
 			RtargetDribble.add(modifier.multiply(1/i));
 		}
 		brain.setInterestPos(RtargetDribble.add(me.getPosition()));
+	}
+
+	@Override
+	public void DoAction() {
+		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
+        brain.doAction(new PlayerAction(PlayerActionType.KICK,power, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 
 }

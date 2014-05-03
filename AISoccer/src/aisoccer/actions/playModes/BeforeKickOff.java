@@ -8,21 +8,22 @@ import aisoccer.behaviorTree.Task;
 
 public class BeforeKickOff extends Selector {
 
-	public BeforeKickOff() {
+	public BeforeKickOff(Brain b) {
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new BeforeKickOffAttack());
-		children.add(new BeforeKickOffDefence());		
+		children.add(new BeforeKickOffAttack(b));
+		children.add(new BeforeKickOffDefence(b));		
 	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 
 }

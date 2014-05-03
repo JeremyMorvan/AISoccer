@@ -10,32 +10,23 @@ import aisoccer.behaviorTree.Task;
 
 public class PlayOn extends Selector {
 
-	public PlayOn(LinkedList<Task> children) {
-		super(children);
-	}
-
-	public PlayOn() {
+	public PlayOn(Brain b) {
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new WithoutTheBall());
-		children.add(new WithTheBall());
+		children.add(new WithoutTheBall(b));
+		children.add(new WithTheBall(b));
 	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 //		return brain.getFullstateInfo().getPlayMode().equals("play_on")||brain.getFullstateInfo().getPlayMode().equals("kick_off_l")||brain.getFullstateInfo().getPlayMode().equals("kick_off_r");
 		return true;
 	}
 
 	@Override
-	public void Start(Brain brain) {
-		// TODO Auto-generated method stub
-
-	}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {
-		// TODO Auto-generated method stub
-
-	}
+	public void End() {}
 
 }

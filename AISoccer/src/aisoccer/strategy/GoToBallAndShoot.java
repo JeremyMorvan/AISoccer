@@ -1,11 +1,11 @@
 package aisoccer.strategy;
 
-import aisoccer.FullstateInfo;
-import aisoccer.Player;
 import aisoccer.PlayerAction;
 import aisoccer.RobocupClient;
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 
 /**
  * @author Sebastien Lentz

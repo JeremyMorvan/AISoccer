@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 import aisoccer.strategy.Strategy;
 
 /**
@@ -166,8 +168,8 @@ public class Brain implements Runnable
         this.fullstateInfo = fullstateInfo;
     }
     
-    public void doAction(PlayerAction action){
-        this.actionsQueue.addLast(action);
+    public void doAction(PlayerAction pAction){
+        this.actionsQueue.addLast(pAction);
     }
     
     public void doAction(Action action){

@@ -7,26 +7,26 @@ import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
 
 public class PassToTeammate extends Sequencer {
-
 	
-	public PassToTeammate(){
+	public PassToTeammate(Brain b){
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new FindUnmarkedTeammate());
-		children.add(new Pass());
+		children.add(new FindUnmarkedTeammate(brain));
+		children.add(new Pass(brain));
 	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 //		System.out.println(brain.getPlayer().toString() + " : Let's find a teammate !");
 	}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 
 }

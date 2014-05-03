@@ -4,15 +4,15 @@ import aisoccer.Brain;
 
 public class Pass extends ShootTo {
 
-	public Pass() {
-		super(false);
+	public Pass(Brain b) {
+		super(b, false);
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		if(brain.getInterestPos()==null){
 			return false;
 		}

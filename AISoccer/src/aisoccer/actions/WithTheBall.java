@@ -10,22 +10,23 @@ import aisoccer.behaviorTree.Task;
 public class WithTheBall extends Selector {
 
 	
-	public WithTheBall(){
+	public WithTheBall(Brain b){
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new ShootToGoal(true));
-		children.add(new PassToTeammate());
-		children.add(new Dribble());
+		children.add(new ShootToGoal(b, true));
+		children.add(new PassToTeammate(b));
+		children.add(new Dribble(b));
 	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) <= SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 
 }

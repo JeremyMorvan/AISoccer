@@ -1,6 +1,10 @@
-package aisoccer;
+package aisoccer.fullStateInfo;
 
 import java.util.ArrayList;
+
+import aisoccer.MathTools;
+import aisoccer.SoccerParams;
+import aisoccer.Vector2D;
 
 /**
  * @author Sebastien Lentz

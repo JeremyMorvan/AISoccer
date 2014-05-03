@@ -8,20 +8,21 @@ public class TurnTo extends ActionTask {
 
 	public static float angleLimit = 5f;
 	
-	public TurnTo(){}
+	public TurnTo(Brain b){
+		super(b);
+	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return Math.abs(((float) brain.getPlayer().angleFromBody(brain.getInterestPos()))) > angleLimit;
 	}	
 	
-
 	@Override
-	public void DoAction(Brain brain) {
+	public void DoAction() {
 		brain.doAction(new Action(((float) brain.getPlayer().angleFromBody(brain.getInterestPos())),true));
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 }

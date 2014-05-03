@@ -12,23 +12,24 @@ import aisoccer.behaviorTree.Task;
 public class WithoutTheBall extends Selector {
 
 	
-	public WithoutTheBall(){
+	public WithoutTheBall(Brain b){
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new AttackTheBall());
-		children.add(new Position());
+		children.add(new AttackTheBall(b));
+		children.add(new Position(b));
 	}
 	
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		//System.out.println(brain.getPlayer().toString() + " : I don't have the ball !");
 	}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 
 }

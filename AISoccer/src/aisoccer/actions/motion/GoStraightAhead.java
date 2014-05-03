@@ -6,19 +6,22 @@ import aisoccer.behaviorTree.ActionTask;
 
 public class GoStraightAhead extends ActionTask {
 
+	public GoStraightAhead(Brain b) {
+		super(b);
+	}
+
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return brain.getPlayer().getPosition().distanceTo(brain.getInterestPos())!=0;
 	}
 
 	@Override
-	public void DoAction(Brain brain) {
+	public void DoAction() {
 		brain.doAction(new Action(100f,false));		
 	}
 
 	@Override
-	public void Start(Brain brain) {		
-	}
+	public void Start() {}
 	
 	
 

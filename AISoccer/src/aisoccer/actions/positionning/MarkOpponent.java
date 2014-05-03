@@ -2,18 +2,22 @@ package aisoccer.actions.positionning;
 
 import java.util.ArrayList;
 
-import aisoccer.Ball;
 import aisoccer.Brain;
-import aisoccer.Player;
 import aisoccer.Vector2D;
 import aisoccer.actions.motion.GoTo;
+import aisoccer.fullStateInfo.Ball;
+import aisoccer.fullStateInfo.Player;
 
 public class MarkOpponent extends GoTo {
 	
+	public MarkOpponent(Brain b) {
+		super(b);
+	}
+
 	Player toMark;
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		Player me = brain.getPlayer();	
 		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
 		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
@@ -41,7 +45,7 @@ public class MarkOpponent extends GoTo {
 	}
 
 	@Override
-	public void Start(Brain brain) {	
+	public void Start() {	
 		Vector2D b = brain.getFullstateInfo().getBall().getPosition();	
 		brain.setInterestPos( b.multiply(0.2).add(toMark.getPosition().multiply(0.8)) );
 	}

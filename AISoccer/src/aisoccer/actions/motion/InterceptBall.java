@@ -1,25 +1,30 @@
 package aisoccer.actions.motion;
 
 import aisoccer.Brain;
-import aisoccer.FullstateInfo;
 import aisoccer.InvalidArgumentException;
 import aisoccer.MathFunction;
 import aisoccer.MathTools;
-import aisoccer.Player;
 import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 
 public class InterceptBall extends GoTo {
+
+	public InterceptBall(Brain b) {
+		super(b);
+	}
+
 
 	public static float angleLimit = 5f;
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
 	}
 	
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		FullstateInfo fsi = brain.getFullstateInfo();
 		Player player = brain.getPlayer();
 		brain.setInterestPos(optimumInterception(fsi.getBall().getPosition(), 

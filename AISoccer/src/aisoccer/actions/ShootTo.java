@@ -9,19 +9,20 @@ public abstract class ShootTo extends ActionTask {
 	
 	boolean checkDistance;
 	
-	public ShootTo(boolean checkDistance){
-		super();
+	public ShootTo(Brain b, boolean checkDistance){
+		super(b);
 		this.checkDistance = checkDistance;
 	}
-	public abstract boolean checkConditions(Brain brain);
+	
+	public abstract boolean CheckConditions();
 
 	@Override
-	public void DoAction(Brain brain) {
+	public void DoAction() {
 		//System.out.println(brain.getPlayer().toString() + " : I am going to shoot ! : " + brain.getInterestPos().toString());
         brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 
 	@Override
-	public abstract void Start(Brain brain);
+	public abstract void Start();
 
 }

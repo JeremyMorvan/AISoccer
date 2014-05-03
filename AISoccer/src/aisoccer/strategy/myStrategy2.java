@@ -12,29 +12,30 @@ import aisoccer.behaviorTree.Task;
 
 public class myStrategy2 extends Selector implements Strategy {
 
-	public myStrategy2(int numberOfPlayers,Brain brain) {
+	public myStrategy2(int numberOfPlayers,Brain b) {
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new BeforeKickOff());
-		children.add(new FreeKick());
-		children.add(new KickIn());
-		children.add(new PlayOn());
+		children.add(new BeforeKickOff(brain));
+		children.add(new FreeKick(brain));
+		children.add(new KickIn(brain));
+		children.add(new PlayOn(brain));
 		Formation442.setMyAreas(numberOfPlayers, brain);
 	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void doAction(Brain brain) {
-		Call(brain);		
+	public void doAction(Brain b) {
+		Call();		
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 	
 }

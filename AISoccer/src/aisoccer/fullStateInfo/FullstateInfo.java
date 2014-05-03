@@ -1,4 +1,4 @@
-package aisoccer;
+package aisoccer.fullStateInfo;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import aisoccer.SoccerParams;
+import aisoccer.Vector2D;
 
 /**
  * This class is used to store all the game information given in a fullstate

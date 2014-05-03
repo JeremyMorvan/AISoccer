@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.Player;
 import aisoccer.Vector2D;
 import aisoccer.behaviorTree.ActionTask;
+import aisoccer.fullStateInfo.Player;
 
 public class FindUnmarkedTeammate extends ActionTask {
 
+	public FindUnmarkedTeammate(Brain b) {
+		super(b);
+	}
+
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		Player me = brain.getPlayer();
 		ArrayList<Player> teammates = brain.getFullstateInfo().getTeammates(me);
 		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
@@ -35,12 +39,12 @@ public class FindUnmarkedTeammate extends ActionTask {
 	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void DoAction(Brain brain) {	
+	public void DoAction() {	
 	}
 
 }

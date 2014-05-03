@@ -10,27 +10,28 @@ import aisoccer.behaviorTree.Task;
 
 public class myStrategy extends Selector implements Strategy {
 	
-	public myStrategy() {
+	public myStrategy(Brain b) {
+		super(b);
 		children = new LinkedList<Task>();
-		children.add(new InterceptBall());
-		children.add(new ShootToGoal(false));
+		children.add(new InterceptBall(brain));
+		children.add(new ShootToGoal(brain, false));
 	}
 
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return true;
 	}
 
 	@Override
-	public void doAction(Brain brain) {
-		Call(brain);		
+	public void doAction(Brain b) {
+		Call();		
 	}
 
 	@Override
-	public void Start(Brain brain) {}
+	public void Start() {}
 
 	@Override
-	public void End(Brain brain) {}
+	public void End() {}
 	
 
 	

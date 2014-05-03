@@ -1,13 +1,13 @@
 package aisoccer.strategy;
 
-import aisoccer.FullstateInfo;
-import aisoccer.MobileObject;
-import aisoccer.Player;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.RobocupClient;
 import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.MobileObject;
+import aisoccer.fullStateInfo.Player;
 
 /**
  * @author Sebastien Lentz

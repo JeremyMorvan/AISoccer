@@ -2,12 +2,12 @@ package aisoccer.strategy;
 
 import java.util.HashSet;
 
-import aisoccer.Ball;
-import aisoccer.FullstateInfo;
-import aisoccer.Player;
 import aisoccer.RobocupClient;
 import aisoccer.SoccerParams;
 import aisoccer.Vector2D;
+import aisoccer.fullStateInfo.Ball;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 
 
 /**

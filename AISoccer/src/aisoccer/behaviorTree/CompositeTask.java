@@ -4,27 +4,16 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 
-public abstract class CompositeTask implements Task{
+public abstract class CompositeTask extends Task{
 
 	protected LinkedList<Task> children;
 	
-	public CompositeTask(){
+	public CompositeTask(Brain b){
+		super(b);
 		this.children = new LinkedList<Task>();
 	}
-	
-	public CompositeTask(LinkedList<Task> children){
-		this.children = children;
-	}
 
-	@Override
-	public abstract boolean Call(Brain brain);
-	
-	public void addChildren(LinkedList<Task> c){
-		this.children = c;
-	}
-	
-	public void addChild(Task c){
-		this.children.addLast(c);
-	}
+	public abstract void Start();	
+	public abstract void End();	
 
 }

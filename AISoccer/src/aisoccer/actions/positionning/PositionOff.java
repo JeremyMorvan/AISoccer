@@ -5,19 +5,23 @@ import java.util.LinkedList;
 
 import aisoccer.Area;
 import aisoccer.Brain;
-import aisoccer.Player;
 import aisoccer.Vector2D;
 import aisoccer.actions.motion.GoTo;
+import aisoccer.fullStateInfo.Player;
 
 public class PositionOff extends GoTo {
 
+	public PositionOff(Brain b) {
+		super(b);
+	}
+
 	@Override
-	public boolean checkConditions(Brain brain) {
+	public boolean CheckConditions() {
 		return brain.getPlayer().isLeftSide() == brain.getFullstateInfo().LeftGotBall();
 	}
 
 	@Override
-	public void Start(Brain brain) {
+	public void Start() {
 		Player me = brain.getPlayer();
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
 		Player[] ops = brain.getFullstateInfo().getOpponents(me);

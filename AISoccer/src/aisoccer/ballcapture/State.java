@@ -3,10 +3,10 @@ package aisoccer.ballcapture;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
-import aisoccer.FullstateInfo;
 import aisoccer.MathTools;
-import aisoccer.Player;
 import aisoccer.SoccerParams;
+import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 
 
 public class State implements Serializable
