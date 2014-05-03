@@ -98,15 +98,13 @@ public class PositionOff extends GoTo {
 		}
 		Vector2D best = new Vector2D(0,0);
 		int count = 0;
+		System.out.println(goodPoints.size());
 		for(Vector2D v2 : goodPoints){
-			best.add(v2);
+			best.addM(v2);
 			count++;
 		}
-//		if(me.isLeftSide()&&me.getUniformNumber()==1){
-//			System.out.println(best);
-//		}		
-		best.multiply(1/((double)count));
-		best.add(new Vector2D(ballP.getX()/10.0,ballP.getY()/7.0));
+		best.multiplyM(1/((double)count));
+		best.addM(new Vector2D(ballP.getX()/10.0,ballP.getY()/7.0));
 		brain.setInterestPos(best);
 	}
 

@@ -104,6 +104,34 @@ public class Vector2D implements Cloneable
     {
         return new Vector2D(x * f, y * f);
     }
+    
+    public void subtractM(Vector2D v) throws NullVectorException
+    {
+        if (v == null)
+        {
+            throw new NullVectorException();
+        }
+
+        x = x - v.getX();
+        y = y - v.getY();
+    }
+
+    public void addM(Vector2D v) throws NullVectorException
+    {
+        if (v == null)
+        {
+            throw new NullVectorException();
+        }
+
+        x = x + v.getX();
+        y = y + v.getY();
+    }
+
+    public void multiplyM(double f)
+    {
+    	x = f*x;
+        y = f*y;
+    }
 
     public double multiply(Vector2D v) throws NullVectorException
     {

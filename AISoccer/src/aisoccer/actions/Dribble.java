@@ -47,13 +47,14 @@ public class Dribble extends ActionTask {
 			}
 			double dist = opRP.polarRadius();
 			opRP = opRP.normalize(1);
-			modifier = modifier.add(opRP.multiply(1/((1+Math.pow(dist, 2))*(1+Math.pow(opRP.directionOf(RtargetDribble)/10, 2)))));
+			modifier.addM(opRP.multiply(1/((1+Math.pow(dist, 2))*(1+Math.pow(opRP.directionOf(RtargetDribble)/10, 2)))));
 			i++;
 		}
 		if(i>0){
-			RtargetDribble.add(modifier.multiply(1/i));
+			RtargetDribble.addM(modifier.multiply(1/i));
 		}
-		brain.setInterestPos(RtargetDribble.add(me.getPosition()));
+		RtargetDribble.addM(me.getPosition());
+		brain.setInterestPos(RtargetDribble);
 	}
 
 	@Override
