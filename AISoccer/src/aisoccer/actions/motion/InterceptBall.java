@@ -54,12 +54,9 @@ public class InterceptBall extends GoTo {
 	                return ballPositionPrediction(ballPos, ballVelocity, t).distanceTo(playerPos)/playerSpeed - t;
 	            }
 	      };
-	      
-	      
+	      	      
 	      double distanceMax = ballPositionPrediction(ballPos, ballVelocity, Double.POSITIVE_INFINITY).distanceTo(playerPos);
 	      distanceMax = Math.max(distanceMax, ballPos.distanceTo(playerPos));
-//	      System.out.println("finalPos = "+ ballPositionPrediction(ballPos, ballVelocity, Double.POSITIVE_INFINITY));
-//	      System.out.println("distanceMax = "+ distanceMax);
 	      double time = -1.0;
 	      try {
 	    	  time = MathTools.zeroCrossing(f, 0.0, distanceMax/playerSpeed, 0.1);
