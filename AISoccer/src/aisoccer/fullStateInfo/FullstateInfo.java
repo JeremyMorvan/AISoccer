@@ -178,7 +178,7 @@ public class FullstateInfo
 		Pattern pattern = Pattern.compile(PLAYMODE_PATTERN);
 		Matcher matcher = pattern.matcher(fullstateMsg);
 		if (matcher.find())
-		{
+		{			
 			this.playMode = matcher.group(1);
 		}
 		else

@@ -15,11 +15,11 @@ public class myStrategy2 extends Selector implements Strategy {
 	public myStrategy2(int numberOfPlayers,Brain b) {
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new BeforeKickOff(brain));
-		children.add(new FreeKick(brain));
-		children.add(new KickIn(brain));
-		children.add(new PlayOn(brain));
-		Formation442.setMyAreas(numberOfPlayers, brain);
+		children.add(new BeforeKickOff(b));
+		children.add(new FreeKick(b));
+		children.add(new KickIn(b));
+		children.add(new PlayOn(b));
+		Formation442.setMyAreas(numberOfPlayers, b);
 	}
 
 	@Override
