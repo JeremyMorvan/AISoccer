@@ -320,7 +320,7 @@ public class Brain implements Runnable
 		if(teammateRP.multiply(opponentRP)<0){
 			return true;
 		}
-		double angle = Math.toRadians(teammateRP.directionOf(opponentRP));
+		double angle = Math.toRadians(MathTools.normalizeAngle(teammateRP.polarAngle()-opponentRP.polarAngle()));
 		if(Math.abs(Math.tan(angle))>SoccerParams.PLAYER_SPEED_MAX/SoccerParams.BALL_SPEED_MAX){
 			return true;
 		}

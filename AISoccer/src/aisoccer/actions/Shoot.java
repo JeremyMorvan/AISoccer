@@ -20,6 +20,7 @@ public class Shoot extends ActionTask {
 	public boolean CheckConditions() {
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
+		System.err.println(ballV.polarRadius());
 		Vector2D dir = brain.getInterestPos().subtract(ballP).normalize();
 		Vector2D dirComponent = dir.multiply(dir.multiply(ballV));
 		Vector2D orthogonalComponent = ballV.subtract( dirComponent );
@@ -30,18 +31,18 @@ public class Shoot extends ActionTask {
 //		Vector2D accNeeded = velocityNeeded.subtract(ballV);
 		
 		if(orthogonalComponent.polarRadius()>100*epr){
-			return false;
+//			return false;
 		}
 		
 		double effectiveAccelerationDirMax = Math.sqrt(Math.pow(100*epr, 2) - Math.pow(orthogonalComponent.polarRadius(), 2));
 		if (effectiveAccelerationDirMax + dir.multiply(ballV) < ballMinSpeed){
-			return false;
+//			return false;
 		}
 
 		// change here to modify ball speed after kick
 		acc = orthogonalComponent.multiply(-1.0).add(dir.multiply(effectiveAccelerationDirMax));
 		acc = acc.multiply(1/epr);
-		return true;
+		return ballV.polarRadius()<0.1;
 	}
 
 	@Override
@@ -50,7 +51,9 @@ public class Shoot extends ActionTask {
 	@Override
 	public void DoAction() {		
 		//System.out.println(brain.getPlayer().toString() + " : I am going to shoot ! : " + brain.getInterestPos().toString());
-        brain.doAction(new PlayerAction(PlayerActionType.KICK, 100, brain.getPlayer().angleFromBody(brain.getPlayer().getPosition().add(acc)), brain.getRobocupClient()));
+		double speed = (1-SoccerParams.BALL_DECAY)*brain.getFullstateInfo().getBall().distanceTo(brain.getInterestPos()) + 0.8;
+		double powerNeeded = speed/brain.getEffectivePowerRate();
+        brain.doAction(new PlayerAction(PlayerActionType.KICK, powerNeeded, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 	
 
