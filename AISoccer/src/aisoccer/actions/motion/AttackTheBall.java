@@ -19,9 +19,10 @@ public class AttackTheBall extends Sequencer {
 	@Override
 	public boolean CheckConditions() {
 		Player me = brain.getPlayer();
-		double myDist = me.distanceTo(brain.getFullstateInfo().getBall());
+		double myDist = brain.timeToIntercept(me);
 		for(Player tm : brain.getFullstateInfo().getTeammates(me) ){
-			if(tm.distanceTo(brain.getFullstateInfo().getBall())<myDist){
+			double t = brain.timeToIntercept(tm);
+			if(t>0 && t<myDist){
 				return false;
 			}
 		}

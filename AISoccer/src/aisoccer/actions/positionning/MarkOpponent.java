@@ -33,7 +33,7 @@ public class MarkOpponent extends GoTo {
 		double dist = Double.POSITIVE_INFINITY;
 		for(Player op : opponents){
 			opRP = op.getPosition().subtract(b.getPosition());
-			if (opRP.polarRadius()>40){
+			if (opRP.polarRadius()>50){
 				continue;
 			}
 			if(op.distanceTo(me.getPosition())<dist && brain.checkMarked(opRP, teammatesRP) ){

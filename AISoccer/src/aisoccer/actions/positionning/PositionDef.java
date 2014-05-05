@@ -13,6 +13,7 @@ public class PositionDef extends Selector {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new MarkOpponent(b));
+//		children.add(new GoMarkOpponent(b));
 	}
 	
 	

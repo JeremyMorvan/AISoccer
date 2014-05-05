@@ -12,11 +12,11 @@ public class Pass extends ShootTo {
 	public void Start() {}
 
 	@Override
+	public void End() {}
+
+	@Override
 	public boolean CheckConditions() {
-		if(brain.getInterestPos()==null){
-			return false;
-		}
-		return true;
+		return brain.getInterestPos() !=null;
 	}
 
 }

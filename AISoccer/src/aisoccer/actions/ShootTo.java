@@ -1,28 +1,25 @@
 package aisoccer.actions;
 
-import aisoccer.Brain;
-import aisoccer.PlayerAction;
-import aisoccer.PlayerActionType;
-import aisoccer.behaviorTree.ActionTask;
+import java.util.LinkedList;
 
-public abstract class ShootTo extends ActionTask {
+import aisoccer.Brain;
+import aisoccer.behaviorTree.Selector;
+import aisoccer.behaviorTree.Task;
+
+public abstract class ShootTo extends Selector {
 	
 	boolean checkDistance;
 	
 	public ShootTo(Brain b, boolean checkDistance){
 		super(b);
 		this.checkDistance = checkDistance;
+		children = new LinkedList<Task>();
+		children.add(new Shoot(brain));
+		children.add(new ControlBall(brain));
 	}
 	
-	public abstract boolean CheckConditions();
+	
+	
 
-	@Override
-	public void DoAction() {
-		//System.out.println(brain.getPlayer().toString() + " : I am going to shoot ! : " + brain.getInterestPos().toString());
-        brain.doAction(new PlayerAction(PlayerActionType.KICK,100.0d, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
-	}
-
-	@Override
-	public abstract void Start();
 
 }

@@ -98,7 +98,7 @@ public class PositionOff extends GoTo {
 		}
 		Vector2D best = new Vector2D(0,0);
 		int count = 0;
-		System.out.println(goodPoints.size());
+//		System.out.println(goodPoints.size());
 		for(Vector2D v2 : goodPoints){
 			best.addM(v2);
 			count++;

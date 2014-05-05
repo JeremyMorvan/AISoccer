@@ -175,6 +175,14 @@ public class Vector2D implements Cloneable
         
         return this;
     }
+    
+    public Vector2D normalize(){
+    	double norme = this.polarRadius();
+    	if(norme>0){
+    		return this.multiply(1/norme);
+    	}
+    	throw new NullVectorException();
+    }
 
     public double distanceTo(double x, double y)
     {

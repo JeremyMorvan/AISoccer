@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
+import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
 import aisoccer.strategy.Strategy;
@@ -18,238 +19,136 @@ import aisoccer.strategy.Strategy;
  */
 public class Brain implements Runnable
 {
-    /*
-     * Private members.
-     */
-    private RobocupClient            robocupClient; // For communicating with the server 
-    private FullstateInfo            fullstateInfo; // Contains all info about the
-                                                    //   current state of the game
-    private State					 state;
-    private Player                   player;       // The player this brain controls
-    private Strategy                 strategy;     // Strategy used by this brain
-    private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
-    private Vector2D				 interestPos;
-    private Area[]					 allAreas;
-    private HashSet<Area>			 myAreas;
-    private Vector2D 				 posIni;
+	/*
+	 * Private members.
+	 */
+	private RobocupClient            robocupClient; // For communicating with the server 
+	private FullstateInfo            fullstateInfo; // Contains all info about the
+	//   current state of the game
+	private State					 state;
+	private Player                   player;       // The player this brain controls
+	private Strategy                 strategy;     // Strategy used by this brain
+	private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
+	private Vector2D				 interestPos;
+	private Area[]					 allAreas;
+	private HashSet<Area>			 myAreas;
+	private Vector2D 				 posIni;
 
-    /*
-     * =========================================================================
-     * 
-     *                     Constructors and destructors
-     * 
-     * =========================================================================
-     */
-    /**
-     * Constructor.
-     * 
-     * @param robocupClient
-     * @param teamSide
-     * @param playerNumber
-     * @param strategy
-     */
-    public Brain(RobocupClient robocupClient, boolean leftSide, int playerNumber, int nbPlayers)
-    {
-        this.robocupClient = robocupClient;
-        this.fullstateInfo = new FullstateInfo(nbPlayers);
-        this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1] : fullstateInfo.getRightTeam()[playerNumber - 1];
-        this.actionsQueue = new ArrayDeque<PlayerAction>();
-        this.player.setUniformNumber(playerNumber);
-    }
+	/*
+	 * =========================================================================
+	 * 
+	 *                     Constructors and destructors
+	 * 
+	 * =========================================================================
+	 */
+	/**
+	 * Constructor.
+	 * 
+	 * @param robocupClient
+	 * @param teamSide
+	 * @param playerNumber
+	 * @param strategy
+	 */
+	public Brain(RobocupClient robocupClient, boolean leftSide, int playerNumber, int nbPlayers)
+	{
+		this.robocupClient = robocupClient;
+		this.fullstateInfo = new FullstateInfo(nbPlayers);
+		this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1] : fullstateInfo.getRightTeam()[playerNumber - 1];
+		this.actionsQueue = new ArrayDeque<PlayerAction>();
+		this.player.setUniformNumber(playerNumber);
+	}
 
-    /*
-     * =========================================================================
-     * 
-     *                      Getters and Setters
-     * 
-     * =========================================================================
-     */
-    /**
-     * @return the robocupClient
-     */
-    public RobocupClient getRobocupClient()
-    {
-        return robocupClient;
-    }
+	/*
+	 * =========================================================================
+	 * 
+	 *                      Getters and Setters
+	 * 
+	 * =========================================================================
+	 */
+	/**
+	 * @return the robocupClient
+	 */
+	public RobocupClient getRobocupClient()
+	{
+		return robocupClient;
+	}
 
-    /**
-     * @param robocupClient the robocupClient to set
-     */
-    public void setRobocupClient(RobocupClient robocupClient)
-    {
-        this.robocupClient = robocupClient;
-    }
+	/**
+	 * @param robocupClient the robocupClient to set
+	 */
+	public void setRobocupClient(RobocupClient robocupClient)
+	{
+		this.robocupClient = robocupClient;
+	}
 
-    /**
-     * @return the player
-     */
-    public Player getPlayer()
-    {
-        return player;
-    }
+	/**
+	 * @return the player
+	 */
+	public Player getPlayer()
+	{
+		return player;
+	}
 
-    /**
-     * @param player the player to set
-     */
-    public void setPlayer(Player player)
-    {
-        this.player = player;
-    }
+	/**
+	 * @param player the player to set
+	 */
+	public void setPlayer(Player player)
+	{
+		this.player = player;
+	}
 
-    /**
-     * @return the strategy
-     */
-    public Strategy getStrategy()
-    {
-        return strategy;
-    }
+	/**
+	 * @return the strategy
+	 */
+	public Strategy getStrategy()
+	{
+		return strategy;
+	}
 
-    /**
-     * @param strategy the strategy to set
-     */
-    public void setStrategy(Strategy strategy)
-    {
-        this.strategy = strategy;
-    }
+	/**
+	 * @param strategy the strategy to set
+	 */
+	public void setStrategy(Strategy strategy)
+	{
+		this.strategy = strategy;
+	}
 
-    /**
-     * @return the actionsQueue
-     */
-    public ArrayDeque<PlayerAction> getActionsQueue()
-    {
-        return actionsQueue;
-    }
+	/**
+	 * @return the actionsQueue
+	 */
+	public ArrayDeque<PlayerAction> getActionsQueue()
+	{
+		return actionsQueue;
+	}
 
-    /**
-     * @param actionsQueue the actionsQueue to set
-     */
-    public void setActionsQueue(ArrayDeque<PlayerAction> actionsQueue)
-    {
-        this.actionsQueue = actionsQueue;
-    }
+	/**
+	 * @param actionsQueue the actionsQueue to set
+	 */
+	public void setActionsQueue(ArrayDeque<PlayerAction> actionsQueue)
+	{
+		this.actionsQueue = actionsQueue;
+	}
 
-    /**
-     * @return the fullstateInfo
-     */
-    public FullstateInfo getFullstateInfo()
-    {
-        return fullstateInfo;
-    }
-    
-    public void computeAreas(){
-    	allAreas = new Area[70];
-    	double stepX = SoccerParams.FIELD_LENGTH/10;
-    	double stepY = SoccerParams.FIELD_WIDTH/7;
-    	double xmin = -SoccerParams.FIELD_LENGTH/2;
-    	double ymin = -SoccerParams.FIELD_WIDTH/2;
-    	if(this.getPlayer().isLeftSide()){
-    		for(int i=0;i<10;i++){
-        		for(int j=0;j<7;j++){
-        			allAreas[j+7*i] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
-        		}
-        	}
-    	}else{
-    		for(int i=0;i<10;i++){
-        		for(int j=0;j<7;j++){
-        			allAreas[69-(j+7*i)] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
-        		}
-        	}
-    	}
-    	
-    }
-
-    /**
-     * @param fullstateInfo
-     *            the fullstateInfo to set
-     */
-    public void setFullstateInfo(FullstateInfo fullstateInfo)
-    {
-        this.fullstateInfo = fullstateInfo;
-    }
-    
-    public void doAction(PlayerAction pAction){
-        this.actionsQueue.addLast(pAction);
-    }
-    
-    public void doAction(Action action){
-    	this.actionsQueue.addLast(new PlayerAction(action,robocupClient));
-    }
-
-    /*
-     * =========================================================================
-     * 
-     *                          Other methods
-     * 
-     * =========================================================================
-     */
-    /**
-     * This is the main function of the Brain.
-     */
-    public void run()
-    {
-        // Before kick off, position the player somewhere in his side.
-        robocupClient.move(-Math.random() * 52.5, (2*Math.random()-1) * 34.0);
-        
-        int lastTimeStep = 0;
-        int currentTimeStep = 0;
-        while (true) // TODO: change according to the play mode.
-        {
-            lastTimeStep = currentTimeStep;
-            currentTimeStep = fullstateInfo.getTimeStep();
-            if (currentTimeStep == lastTimeStep + 1||currentTimeStep == 0)
-            {
-                if (actionsQueue.isEmpty())
-                { // The queue is empty, check if we need to add an action.
-                	actualizeState();
-                    strategy.doAction(this);
-                }
-                
-                if (!actionsQueue.isEmpty())
-                { // An action needs to be executed at this time step, so do it.
-                    actionsQueue.removeFirst().execute();
-                }
-                
-//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
-//                System.out.println("Next position: " + player.nextPosition(100.0d));
-//                System.out.println("Next velocity: " + player.nextVelocity(100.0d));
-
-            }
-            else if (currentTimeStep != lastTimeStep)
-            {
-                System.out.println("A time step has been skipped:");
-                System.out.println("Last time step: " + lastTimeStep);
-                System.out.println("Current time step: " + currentTimeStep);
-            }
-            
-            // Wait for next cycle before sending another command.
-            try
-            {
-                Thread.sleep(SoccerParams.SIMULATOR_STEP / 5);
-            }
-            catch (Exception e)
-            {
-                System.err.println(e);
-            }
-        }
-
-    }
-
-	private void actualizeState() {
-		this.state = new State(this.fullstateInfo,this.player);
+	/**
+	 * @return the fullstateInfo
+	 */
+	public FullstateInfo getFullstateInfo()
+	{
+		return fullstateInfo;
 	}
 	
 	public State getState(){
 		return this.state;
 	}
-	
+
 	public void setInterestPos(Vector2D pos){
 		this.interestPos = pos;
 	}
-	
+
 	public Vector2D getInterestPos(){
 		return this.interestPos;
 	}
-	
+
 
 	public HashSet<Area> getMyAreas() {
 		return myAreas;
@@ -258,12 +157,165 @@ public class Brain implements Runnable
 	public void setMyAreas(HashSet<Area> myAreas) {
 		this.myAreas = myAreas;
 	}	
-	
+
 	public Area getArea(int i,int j){
 		return this.allAreas[j+i*7];
 	}
 
+
+	public void computeAreas(){
+		allAreas = new Area[70];
+		double stepX = SoccerParams.FIELD_LENGTH/10;
+		double stepY = SoccerParams.FIELD_WIDTH/7;
+		double xmin = -SoccerParams.FIELD_LENGTH/2;
+		double ymin = -SoccerParams.FIELD_WIDTH/2;
+		if(this.getPlayer().isLeftSide()){
+			for(int i=0;i<10;i++){
+				for(int j=0;j<7;j++){
+					allAreas[j+7*i] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
+				}
+			}
+		}else{
+			for(int i=0;i<10;i++){
+				for(int j=0;j<7;j++){
+					allAreas[69-(j+7*i)] = new Area(xmin+i*stepX,xmin+(i+1)*stepX,ymin+j*stepY,ymin+(j+1)*stepY);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * @param fullstateInfo
+	 *            the fullstateInfo to set
+	 */
+	public void setFullstateInfo(FullstateInfo fullstateInfo)
+	{
+		this.fullstateInfo = fullstateInfo;
+	}
+
+	public void doAction(PlayerAction pAction){
+		this.actionsQueue.addLast(pAction);
+	}
+
+	public void doAction(Action action){
+		this.actionsQueue.addLast(new PlayerAction(action,robocupClient));
+	}
+
+	/*
+	 * =========================================================================
+	 * 
+	 *                          Other methods
+	 * 
+	 * =========================================================================
+	 */
+	/**
+	 * This is the main function of the Brain.
+	 */
+	public void run()
+	{
+		// Before kick off, position the player somewhere in his side.
+		robocupClient.move(-Math.random() * 52.5, (2*Math.random()-1) * 34.0);
+
+		int lastTimeStep = 0;
+		int currentTimeStep = 0;
+		while (true) // TODO: change according to the play mode.
+		{
+			lastTimeStep = currentTimeStep;
+			currentTimeStep = fullstateInfo.getTimeStep();
+			if (currentTimeStep == lastTimeStep + 1||currentTimeStep == 0)
+			{
+				if (actionsQueue.isEmpty())
+				{ // The queue is empty, check if we need to add an action.
+					actualizeState();
+					strategy.doAction(this);
+				}
+
+				if (!actionsQueue.isEmpty())
+				{ // An action needs to be executed at this time step, so do it.
+					actionsQueue.removeFirst().execute();
+				}
+
+				//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
+				//                System.out.println("Next position: " + player.nextPosition(100.0d));
+				//                System.out.println("Next velocity: " + player.nextVelocity(100.0d));
+
+			}
+			else if (currentTimeStep != lastTimeStep)
+			{
+				System.out.println("A time step has been skipped:");
+				System.out.println("Last time step: " + lastTimeStep);
+				System.out.println("Current time step: " + currentTimeStep);
+			}
+
+			// Wait for next cycle before sending another command.
+			try
+			{
+				Thread.sleep(SoccerParams.SIMULATOR_STEP / 5);
+			}
+			catch (Exception e)
+			{
+				System.err.println(e);
+			}
+		}
+
+	}
+
+	private void actualizeState() {
+		this.state = new State(this.fullstateInfo,this.player);
+	}
+
 	
+	public Vector2D ballPositionPrediction(double steps){
+		Ball b = fullstateInfo.getBall();
+		double k = SoccerParams.BALL_DECAY;
+		double coeff = (1-Math.pow(k, (double) steps))/(1-k);   
+		return b.getPosition().add(b.getVelocity().multiply(coeff));
+	}
+
+	///////////////////////////////////////////////////
+	/////	 INTERCEPTION METHODS
+	public double timeToIntercept(final Player p, final double playerSpeed){
+		double time = -1.0;
+
+		MathFunction f = new  MathFunction() {
+			public double value(double steps) {	                
+				return p.distanceTo(ballPositionPrediction(steps))/playerSpeed - steps;
+			}
+		};
+		
+		double finalDist = p.distanceTo(ballPositionPrediction(Double.POSITIVE_INFINITY));
+		double distanceMax = Math.max( finalDist, p.distanceTo(fullstateInfo.getBall()) );		
+		try {
+			time = MathTools.zeroCrossing(f, 0.0, distanceMax/playerSpeed, 0.1);
+			//    	  System.out.println("time = "+ time);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+		return time;		
+	}
+	
+	public double timeToIntercept(final Player p){
+		return timeToIntercept(p, SoccerParams.PLAYER_SPEED_MAX*0.6);
+	}
+
+	public Vector2D optimumInterceptionPosition(double playerSpeed){
+		double time = timeToIntercept(player, playerSpeed);
+		return (time>0) ? ballPositionPrediction(time) : null;
+	}
+	/////////////////////////////////////////////
+	
+
+	public double getEffectivePowerRate(){
+		double realDistance = player.distanceTo(fullstateInfo.getBall())-SoccerParams.PLAYER_SIZE-SoccerParams.BALL_SIZE;
+		realDistance = Math.max(0, realDistance);
+		double distCoeff = realDistance/SoccerParams.KICKABLE_MARGIN;
+		double dirCoeff = player.angleFromBody(fullstateInfo.getBall())/180;
+		return SoccerParams.KICK_POWER_RATE*( 1 - 0.25*(distCoeff + dirCoeff) );
+	}
+	
+	/////////////////////////////////////////////
+	////	MARK METHODS
 	public boolean checkMarked(Vector2D teammateRP, Vector2D opponentRP){
 		if(teammateRP.multiply(opponentRP)<0){
 			return true;
@@ -278,7 +330,7 @@ public class Brain implements Runnable
 		}
 		return false;		
 	}
-	
+
 	public boolean checkMarked(Vector2D teammateRP, Iterable<Vector2D> opponentsRP){
 		for(Vector2D oRP : opponentsRP){
 			if(!checkMarked(teammateRP,oRP)){
@@ -287,7 +339,7 @@ public class Brain implements Runnable
 		}
 		return true;
 	}
-	
+
 	public double getXLimOffSide(){
 		int p = this.player.isLeftSide() ? 1:-1;		
 		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
@@ -304,7 +356,7 @@ public class Brain implements Runnable
 				xmin2 = -this.fullstateInfo.getBall().getPosition().getX();
 			}
 		}
-		
+
 		@SuppressWarnings("unused")
 		double temp;
 		for(Player op : opponents){
@@ -327,7 +379,7 @@ public class Brain implements Runnable
 	public void setPosIni(Vector2D posIni) {
 		this.posIni = posIni;
 	}
-	
+
 	public void engage(){
 		this.robocupClient.move(this.posIni.getX(), this.posIni.getY());
 	}
