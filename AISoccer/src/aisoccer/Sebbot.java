@@ -145,4 +145,8 @@ public class Sebbot
             nbOfBFs += 4;
         }
     }
+    
+    public static void loadANNIntercepted(){
+    	
+    }
 }
