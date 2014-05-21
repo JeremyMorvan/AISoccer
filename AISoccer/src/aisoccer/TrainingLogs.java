@@ -66,7 +66,7 @@ public class TrainingLogs {
 //			vAcc = vAcc.multiply(pow*SoccerParams.KICK_POWER_RATE).normalize(SoccerParams.BALL_ACCEL_MAX);
 //			Vector2D newVel = fsi.getBall().getVelocity().add(vAcc).normalize(SoccerParams.BALL_SPEED_MAX);
 			
-			this.fsi = fsi;
+			
 			this.ballVelocityAfterKick = null;
 		}
 	}
@@ -90,7 +90,7 @@ public class TrainingLogs {
 			Vector2D relPos;
 			for(Player p : kickSnapshot.fsi.getLeftTeam()){
 				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
+				boolean equals = intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){
 					System.out.println("je suis l'intercepteur");
 					res +=" "+relPos.getX()+" "+relPos.getY();
@@ -100,7 +100,7 @@ public class TrainingLogs {
 			}
 			for(Player p : kickSnapshot.fsi.getRightTeam()){
 				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
+				boolean equals = !intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){
 					System.out.println("je suis l'intercepteur");
 					res +=" "+relPos.getX()+" "+relPos.getY();
