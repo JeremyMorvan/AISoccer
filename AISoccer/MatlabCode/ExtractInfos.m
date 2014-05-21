@@ -12,26 +12,28 @@ end
 fclose(fid);
 
 nb = length(flines);
-X1 = zeros(7,20*nb);
-X2 = zeros(7,20*nb);
-X1(7,:) = ones(1,20*nb);
-X2(7,:) = ones(1,20*nb);
-T1 = ones(1,20*nb);
-T2 = -ones(1,20*nb);
+X1 = zeros(7,21*nb);
+X2 = zeros(7,21*nb);
+X1(7,:) = ones(1,21*nb);
+X2(7,:) = ones(1,21*nb);
+T1 = ones(1,21*nb);
+T2 = -ones(1,21*nb);
 
 for i=1:nb
     line = flines{i};
     values = sscanf(line, '%f');
-    x1 = values(1);
-    y1 = values(2);
-    x2 = values(3);
-    y2 = values(4);
-    xt = values(5);
-    yt = values(6);
-    xp = [x1;y1;x2;y2;xt;yt];
-    xn = [x2;y2;x1;y1;xt;yt];
-    X1(:,i) = xp;
-    X2(:,i) = xn;
+    xt = values(1);
+    yt = values(2);
+    x1 = values(3);
+    y1 = values(4);
+    for j=1:21
+        x2 = values(5+(j-1)*2);
+        y2 = values(6+(j-1)*2);
+        xp = [xt;yt;x1;y1;x2;y2];
+        xn = [xt;yt;x2;y2;x1;y1];
+        X1(:,j+(i-1)*21) = xp;
+        X2(:,j+(i-1)*21) = xn;
+    end
 end
 
 end
