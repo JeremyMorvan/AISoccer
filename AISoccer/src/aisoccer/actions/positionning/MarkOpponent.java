@@ -2,8 +2,8 @@ package aisoccer.actions.positionning;
 
 import java.util.ArrayList;
 
+import math.Vector2D;
 import aisoccer.Brain;
-import aisoccer.Vector2D;
 import aisoccer.actions.motion.GoTo;
 import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.Player;

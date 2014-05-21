@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import aisoccer.MathTools;
+import math.MathTools;
 import aisoccer.SoccerParams;
 
 

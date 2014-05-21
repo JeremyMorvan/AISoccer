@@ -2,9 +2,9 @@ package aisoccer.ballcapture;
 
 import java.util.LinkedList;
 
-import aisoccer.MathTools;
+import math.MathTools;
+import math.Vector2D;
 import aisoccer.SoccerParams;
-import aisoccer.Vector2D;
 
 
 /**

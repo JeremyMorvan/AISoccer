@@ -3,7 +3,7 @@ package aisoccer.ballcapture;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
-import aisoccer.MathTools;
+import math.MathTools;
 import aisoccer.SoccerParams;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;

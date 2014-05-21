@@ -1,10 +1,10 @@
 package aisoccer.actions;
 
+import math.Vector2D;
 import aisoccer.Brain;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.SoccerParams;
-import aisoccer.Vector2D;
 import aisoccer.behaviorTree.ActionTask;
 
 public class Shoot extends ActionTask {

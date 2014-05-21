@@ -3,6 +3,7 @@ package aisoccer;
 import java.io.*;
 import java.util.ArrayList;
 
+import math.Vector2D;
 import aisoccer.fullStateInfo.*;
 
 public class TrainingLogs {

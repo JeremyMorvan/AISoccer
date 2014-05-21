@@ -1,5 +1,5 @@
 
-package aisoccer;
+package math;
 
 /**
  * @author Sebastien Lentz

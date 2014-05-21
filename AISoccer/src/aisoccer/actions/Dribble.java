@@ -1,9 +1,9 @@
 package aisoccer.actions;
 
+import math.Vector2D;
 import aisoccer.Brain;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
-import aisoccer.Vector2D;
 import aisoccer.behaviorTree.ActionTask;
 import aisoccer.fullStateInfo.Player;
 

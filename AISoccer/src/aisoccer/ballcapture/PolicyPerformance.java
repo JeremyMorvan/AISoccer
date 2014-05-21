@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
-import aisoccer.MathTools;
+import math.MathTools;
 import aisoccer.SoccerParams;
 
 

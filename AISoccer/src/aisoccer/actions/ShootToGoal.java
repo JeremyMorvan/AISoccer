@@ -1,7 +1,7 @@
 package aisoccer.actions;
 
+import math.Vector2D;
 import aisoccer.Brain;
-import aisoccer.Vector2D;
 
 public class ShootToGoal extends ShootTo {
 

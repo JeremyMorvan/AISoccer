@@ -4,6 +4,9 @@ import java.lang.Math;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 
+import math.MathFunction;
+import math.MathTools;
+import math.Vector2D;
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
 import aisoccer.fullStateInfo.Ball;
@@ -269,7 +272,7 @@ public class Brain implements Runnable
 	public Vector2D ballPositionPrediction(double steps){
 		Ball b = fullstateInfo.getBall();
 		double k = SoccerParams.BALL_DECAY;
-		double coeff = (1-Math.pow(k, (double) steps))/(1-k);   
+		double coeff = (1-Math.pow(k, (Double) steps))/(1-k);   
 		return b.getPosition().add(b.getVelocity().multiply(coeff));
 	}
 
@@ -279,8 +282,8 @@ public class Brain implements Runnable
 		double time = -1.0;
 
 		MathFunction f = new  MathFunction() {
-			public double value(double steps) {	                
-				return p.distanceTo(ballPositionPrediction(steps))/playerSpeed - steps;
+			public Double value(Number steps) {	                
+				return p.distanceTo(ballPositionPrediction((Double)steps))/playerSpeed - (Double)steps;
 			}
 		};
 		

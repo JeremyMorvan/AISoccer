@@ -1,8 +1,9 @@
-package aisoccer;
+package math;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
+import aisoccer.InvalidArgumentException;
 import aisoccer.ballcapture.State;
 
 
@@ -256,15 +257,15 @@ public class MathTools
     public static double zeroCrossing(MathFunction f, double a0, double b0, double accuracy) throws InvalidArgumentException{
     	double a = a0;
     	double b = b0;
-		double va = f.value(a);
-		double vb = f.value(b);
+		double va = (Double) f.value(a);
+		double vb = (Double) f.value(b);
 		if(va*vb>0){
 			throw new InvalidArgumentException("va and vb have same sign");
 		}
     	double c, vc;
     	while(Math.abs(a-b)>accuracy){
     		c = (a+b)/2.0;
-    		vc = f.value(c);
+    		vc = (Double) f.value(c);
     		if(va*vc>=0){
     			a = c;
     			va = vc;
@@ -275,6 +276,17 @@ public class MathTools
     		}
     	}		
     	return a;
+    }
+    
+    public static float sp(float[] u1, float[] u2) throws InvalidArgumentException{
+    	if (u1.length == u2.length){
+    		float val=0;
+    		for(int i=0; i<u1.length; i++){
+    			val += u1[i]*u2[i];
+    		}
+    		return val;
+    	}
+    	throw new InvalidArgumentException();
     }
 
 }

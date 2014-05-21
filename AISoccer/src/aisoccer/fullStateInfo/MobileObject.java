@@ -2,9 +2,9 @@ package aisoccer.fullStateInfo;
 
 import java.util.ArrayList;
 
-import aisoccer.MathTools;
+import math.MathTools;
+import math.Vector2D;
 import aisoccer.SoccerParams;
-import aisoccer.Vector2D;
 
 /**
  * @author Sebastien Lentz

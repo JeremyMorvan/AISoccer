@@ -18,7 +18,6 @@ import aisoccer.strategy.myStrategy2;
  */
 public class Sebbot
 {
-	ArrayList<Thread> players = new ArrayList<Thread>();
 
     /**
      * This is the entry point of the application.

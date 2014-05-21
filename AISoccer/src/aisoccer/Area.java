@@ -2,6 +2,8 @@ package aisoccer;
 
 import java.util.HashSet;
 
+import math.Vector2D;
+
 public class Area {
 	private double xmin;
 	private double xmax;

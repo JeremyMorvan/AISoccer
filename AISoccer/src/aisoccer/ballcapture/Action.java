@@ -1,6 +1,6 @@
 package aisoccer.ballcapture;
 
-import aisoccer.MathTools;
+import math.MathTools;
 
 /**
  * @author Sebastien Lentz

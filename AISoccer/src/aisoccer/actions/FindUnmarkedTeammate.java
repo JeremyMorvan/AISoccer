@@ -3,8 +3,8 @@ package aisoccer.actions;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import math.Vector2D;
 import aisoccer.Brain;
-import aisoccer.Vector2D;
 import aisoccer.behaviorTree.ActionTask;
 import aisoccer.fullStateInfo.Player;
 

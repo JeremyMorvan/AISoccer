@@ -2,9 +2,9 @@ package aisoccer.strategy;
 
 import java.util.HashSet;
 
+import math.Vector2D;
 import aisoccer.Area;
 import aisoccer.Brain;
-import aisoccer.Vector2D;
 
 public abstract class Formation442{
 

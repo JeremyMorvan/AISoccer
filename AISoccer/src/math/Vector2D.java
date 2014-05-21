@@ -1,4 +1,4 @@
-package aisoccer;
+package math;
 
 import aisoccer.fullStateInfo.MobileObject;
 

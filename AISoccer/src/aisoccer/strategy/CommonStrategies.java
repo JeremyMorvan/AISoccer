@@ -1,10 +1,10 @@
 package aisoccer.strategy;
 
+import math.Vector2D;
 import aisoccer.PlayerAction;
 import aisoccer.PlayerActionType;
 import aisoccer.RobocupClient;
 import aisoccer.SoccerParams;
-import aisoccer.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.MobileObject;
 import aisoccer.fullStateInfo.Player;
