@@ -20,7 +20,7 @@ public class Shoot extends ActionTask {
 	public boolean CheckConditions() {
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
-		System.err.println(ballV.polarRadius());
+//		System.err.println(ballV.polarRadius());
 		Vector2D dir = brain.getInterestPos().subtract(ballP).normalize();
 		Vector2D dirComponent = dir.multiply(dir.multiply(ballV));
 		Vector2D orthogonalComponent = ballV.subtract( dirComponent );

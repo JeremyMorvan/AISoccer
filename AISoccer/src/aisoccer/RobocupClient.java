@@ -171,6 +171,8 @@ public class RobocupClient implements Runnable
     {
         send("(kick " + Double.toString(power) + " "
                 + Double.toString(direction) + ")");
+        System.out.println("heho !!");
+        TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
     }
 
     /*
@@ -253,6 +255,7 @@ public class RobocupClient implements Runnable
         while (true)
         {
             parseServerMsg(receive());
+            TrainingLogs.takeFSI(brain.getFullstateInfo());
         }
     }
 

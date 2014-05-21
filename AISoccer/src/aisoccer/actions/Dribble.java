@@ -59,7 +59,7 @@ public class Dribble extends ActionTask {
 
 	@Override
 	public void DoAction() {
-		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
+//		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
         brain.doAction(new PlayerAction(PlayerActionType.KICK,power, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 

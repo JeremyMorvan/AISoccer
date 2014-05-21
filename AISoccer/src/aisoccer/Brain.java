@@ -223,7 +223,7 @@ public class Brain implements Runnable
 		{
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
-			if (currentTimeStep == lastTimeStep + 1||currentTimeStep == 0)
+			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0)
 			{
 				if (actionsQueue.isEmpty())
 				{ // The queue is empty, check if we need to add an action.
