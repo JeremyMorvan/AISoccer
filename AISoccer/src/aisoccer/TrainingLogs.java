@@ -2,6 +2,7 @@ package aisoccer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import math.Vector2D;
 import aisoccer.fullStateInfo.*;
@@ -47,7 +48,7 @@ public class TrainingLogs {
 	
 	
 	public static void takeFSI(FullstateInfo f){
-		if(currentKickSnapshot!=null && f.getTimeStep() == currentKickSnapshot.fsi.getTimeStep()+1 && currentKickSnapshot.ballVelocityAfterKick == null){
+		if(currentKickSnapshot!=null && f.getTimeStep() == currentKickSnapshot.timeStep+1 && currentKickSnapshot.ballVelocityAfterKick == null){
 			currentKickSnapshot.ballVelocityAfterKick = f.getBall().getVelocity().multiply(1.0/SoccerParams.BALL_DECAY);
 		}
 	}
@@ -57,15 +58,20 @@ public class TrainingLogs {
 	
 	
 	public static class KickSnapshot{
-		FullstateInfo fsi;
+		int timeStep;
+		Vector2D ballPosition;
+		HashMap<Player,Vector2D> playersPositions = new HashMap<Player,Vector2D>();
 		Vector2D ballVelocityAfterKick;
 		
 		public KickSnapshot(FullstateInfo fsi){
-//			double pow = (Math.abs(power)>SoccerParams.POWERMAX) ? Math.signum(power)*SoccerParams.POWERMAX : power;
-//			Vector2D vAcc = new Vector2D(Math.cos(direction), Math.sin(direction));
-//			vAcc = vAcc.multiply(pow*SoccerParams.KICK_POWER_RATE).normalize(SoccerParams.BALL_ACCEL_MAX);
-//			Vector2D newVel = fsi.getBall().getVelocity().add(vAcc).normalize(SoccerParams.BALL_SPEED_MAX);
-			
+			timeStep = fsi.getTimeStep();
+			ballPosition = (Vector2D) fsi.getBall().getPosition().clone();
+			for(Player p : fsi.getLeftTeam()){
+				playersPositions.put(p, (Vector2D)p.getPosition().clone());
+			}
+			for(Player p : fsi.getRightTeam()){
+				playersPositions.put(p, (Vector2D)p.getPosition().clone());
+			}			
 			
 			this.ballVelocityAfterKick = null;
 		}
@@ -88,24 +94,14 @@ public class TrainingLogs {
 			String res = kickSnapshot.ballVelocityAfterKick.getX()+" "+kickSnapshot.ballVelocityAfterKick.getY();
 			String others = "";
 			Vector2D relPos;
-			for(Player p : kickSnapshot.fsi.getLeftTeam()){
-				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				boolean equals = intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
+			for(Player p : kickSnapshot.playersPositions.keySet()){
+				relPos = kickSnapshot.playersPositions.get(p).subtract(kickSnapshot.ballPosition);
+				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){
 					System.out.println("je suis l'intercepteur");
 					res +=" "+relPos.getX()+" "+relPos.getY();
 				}else{
 					others +=" "+relPos.getX()+" "+relPos.getY();
-				}
-			}
-			for(Player p : kickSnapshot.fsi.getRightTeam()){
-				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				boolean equals = !intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
-				if(equals){
-					System.out.println("je suis l'intercepteur");
-					res +=" "+relPos.getX()+" "+relPos.getY();
-				}else{
-					others +=" "+relPos.getX()+" "+relPos.getY();					
 				}
 			}
 			return res+others;
