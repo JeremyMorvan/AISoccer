@@ -14,7 +14,6 @@ public class Layer {
 				e.printStackTrace();
 			}
 		}
-		
 		return out;
 	}
 	
