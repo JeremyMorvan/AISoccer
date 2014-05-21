@@ -8,7 +8,6 @@ import aisoccer.fullStateInfo.*;
 
 public class TrainingLogs {
 	static final String LOGSPATH = "trainingLogs.txt";
-//	static ArrayList<Pass> passes;
 	static KickSnapshot currentKickSnapshot;
 	static boolean ready = false;
 	
@@ -16,13 +15,7 @@ public class TrainingLogs {
 	
 	
 	public static void init(){
-//		passes = new ArrayList<TrainingLogs.Pass>();
 		currentKickSnapshot = null;
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-		    public void run() {
-		    	exportLogs();
-		    }
-		}));
 
 		try { 
 			out = new BufferedWriter(new FileWriter(LOGSPATH, true));
@@ -40,8 +33,6 @@ public class TrainingLogs {
 		if(fsi.getPlayMode().equals("play_on") && currentKickSnapshot.ballVelocityAfterKick!=null){
 			// this is a successful pass
 			Pass p = new Pass(currentKickSnapshot, intercepter);
-//			passes.add(p);
-//			System.out.println("nb of passes : "+passes.size());
 			
 			String string = p.toString();
 			try {
@@ -62,17 +53,7 @@ public class TrainingLogs {
 	}
 	
 	
-	public static void exportLogs(){
-		System.out.println("La méthode est bien appelée");
-//		System.out.println("nb of passes : "+passes.size());	
-		try {
-			out.close();
-		} catch (IOException e) {e.printStackTrace();}
-	}
-	
-	
-	
-	
+		
 	
 	
 	public static class KickSnapshot{
@@ -103,12 +84,15 @@ public class TrainingLogs {
 		}
 		
 		public String toString(){
+			System.out.println("intercepteur : "+intercepter);
 			String res = kickSnapshot.ballVelocityAfterKick.getX()+" "+kickSnapshot.ballVelocityAfterKick.getY();
 			String others = "";
 			Vector2D relPos;
 			for(Player p : kickSnapshot.fsi.getLeftTeam()){
 				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				if(p == intercepter){
+				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
+				if(equals){
+					System.out.println("je suis l'intercepteur");
 					res +=" "+relPos.getX()+" "+relPos.getY();
 				}else{
 					others +=" "+relPos.getX()+" "+relPos.getY();
@@ -116,7 +100,9 @@ public class TrainingLogs {
 			}
 			for(Player p : kickSnapshot.fsi.getRightTeam()){
 				relPos = p.getPosition().subtract(kickSnapshot.fsi.getBall().getPosition());
-				if(p == intercepter){
+				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
+				if(equals){
+					System.out.println("je suis l'intercepteur");
 					res +=" "+relPos.getX()+" "+relPos.getY();
 				}else{
 					others +=" "+relPos.getX()+" "+relPos.getY();					
