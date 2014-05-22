@@ -5,15 +5,15 @@ import math.MathTools;
 import aisoccer.InvalidArgumentException;
 
 public class Neuron {
-	float[] w;
+	double[] w;
 	MathFunction activFunction;
 	
-	public Neuron(float[] weights, MathFunction f){
+	public Neuron(double[] weights, MathFunction f){
 		w = weights;
 		activFunction = f;
 	}
 	
-	public float eval(float[] input) throws InvalidArgumentException{
-		return (Float) activFunction.value(MathTools.sp(w, input));		
+	public double eval(double[] input) throws InvalidArgumentException{
+		return activFunction.value(MathTools.sp(w, input));		
 	}
 }

@@ -282,8 +282,8 @@ public class Brain implements Runnable
 		double time = -1.0;
 
 		MathFunction f = new  MathFunction() {
-			public Double value(Number steps) {	                
-				return p.distanceTo(ballPositionPrediction((Double)steps))/playerSpeed - (Double)steps;
+			public double value(double steps) {	                
+				return p.distanceTo(ballPositionPrediction(steps))/playerSpeed - steps;
 			}
 		};
 		
