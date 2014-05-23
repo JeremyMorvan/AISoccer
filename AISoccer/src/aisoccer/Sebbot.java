@@ -9,6 +9,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import aisoccer.ballcapture.DirectPolicySearch;
+import aisoccer.strategy.TrainingStrategy;
 import aisoccer.strategy.myStrategy2;
 
 
@@ -108,7 +109,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
 
             new Thread(client).start();
             new Thread(brain).start();
@@ -122,7 +123,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
 
             new Thread(client).start();
             new Thread(brain).start();
