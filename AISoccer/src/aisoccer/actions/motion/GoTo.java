@@ -14,6 +14,7 @@ public abstract class GoTo extends Selector {
 		children = new LinkedList<Task>();
 		children.add(new TurnTo(b));
 		children.add(new GoStraightAhead(b));
+		children.add(new Stay(b));
 	}
 	
 	

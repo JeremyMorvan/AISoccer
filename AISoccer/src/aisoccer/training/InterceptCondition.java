@@ -29,7 +29,7 @@ public class InterceptCondition extends Sequencer {
 		Player me = brain.getPlayer();
 		double myDist = brain.timeToIntercept(me);
 		int count = 0;
-		int lim = 6;
+		int lim = 3;
 		for(Player tm : brain.getFullstateInfo().getTeammates(me) ){
 			double t = brain.timeToIntercept(tm);
 			if(t>0 && t<myDist){

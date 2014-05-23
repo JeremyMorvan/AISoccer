@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import aisoccer.Brain;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
+import aisoccer.strategy.Formation442;
 import aisoccer.strategy.Strategy;
 
 public class TrainingStrategy extends Selector implements Strategy {
@@ -14,6 +15,7 @@ public class TrainingStrategy extends Selector implements Strategy {
 		children = new LinkedList<Task>();
 		children.add(new TrainingSelector(brain));
 		children.add(new PassRandom(brain));
+		Formation442.setMyAreas(6, b);
 	}
 
 	@Override

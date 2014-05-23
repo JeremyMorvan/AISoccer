@@ -6,10 +6,8 @@ package aisoccer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.ArrayList;
 
 import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.strategy.myStrategy2;
 import aisoccer.training.TrainingStrategy;
 
 
