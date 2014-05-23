@@ -9,8 +9,8 @@ hidden = 50;
 Win = randn(hidden,7);
 Vin = randn(1,hidden+1);
 
-[W,V,errors] = delta2(X,T,Win,Vin,0.1,1000,0.6);
+[W,V,errors] = delta2(X,T,Win,Vin,0.001,10000,0.6);
 
 save('ANNParams','W','V');
 
-WriteInFile('ANN-Intercepted.txt',W,V);
+WriteInFile('ANN-Intercepted1.txt',W,V);
