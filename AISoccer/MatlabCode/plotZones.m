@@ -26,6 +26,8 @@ for i=1:size(X,2)
 end
 
 contourf(X,Y,Z);
+figure;
+contourf(X,Y,Z>0);
 
 end
 

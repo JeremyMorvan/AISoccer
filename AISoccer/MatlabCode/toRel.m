@@ -5,9 +5,9 @@ yr1 = y-yb;
 
 ang = angle(vxb+1i*vyb);
 
-xcomp = (xr1+1i*yr1).*(cos(ang)+1i*sin(ang));
+xcomp = (xr1+1i*yr1).*(cos(-ang)+1i*sin(-ang));
 xr = real(xcomp);
-yr = abs(im(xcomp));
+yr = abs(imag(xcomp));
 
 end
 
