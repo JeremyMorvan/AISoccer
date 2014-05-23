@@ -13,10 +13,9 @@ public class SetRandomPos extends ActionTask {
 
 	@Override
 	public void Start() {
-		Vector2D intPos = (new Vector2D(Math.random()-0.5f,Math.random()-0.5f));
-		Vector2D relPos = intPos.subtract(brain.getPlayer().getPosition());
-		
-		brain.setInterestPos((new Vector2D(Math.random()-0.5f,Math.random()-0.5f)).multiply(2*SoccerParams.BALL_SPEED_MAX/(1-SoccerParams.BALL_DECAY)));
+		Vector2D intPos = (new Vector2D(2*SoccerParams.FIELD_LENGTH*(Math.random()-0.5f),2*SoccerParams.FIELD_WIDTH*(Math.random()-0.5f)));
+		Vector2D relPos = intPos.subtract(brain.getPlayer().getPosition()).normalize(SoccerParams.BALL_SPEED_MAX/(1-SoccerParams.BALL_DECAY));
+		brain.setInterestPos(brain.getPlayer().getPosition().add(relPos));
 	}
 
 	@Override
