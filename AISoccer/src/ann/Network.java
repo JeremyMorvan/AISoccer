@@ -17,9 +17,9 @@ public class Network {
 	
 	public Network(ArrayList<double[][]> layersW, MathFunction f) throws InvalidArgumentException {
 		layers = new Layer[layersW.size()]; 
-		System.out.println("Creation d'un reseau à "+layersW.size()+" layers");
+//		System.out.println("Creation d'un reseau à "+layersW.size()+" layers");
 		for(int i=0; i<layersW.size(); i++){
-			System.out.println("Layer n°"+i+" : dim entrée : "+layersW.get(i)[0].length+" / dim sortie : "+layersW.get(i).length);
+//			System.out.println("Layer n°"+i+" : dim entrée : "+layersW.get(i)[0].length+" / dim sortie : "+layersW.get(i).length);
 			if(i>0 && layersW.get(i-1).length+1 != layersW.get(i)[0].length){
 				throw new InvalidArgumentException();				
 			}
@@ -32,7 +32,7 @@ public class Network {
 		double[] in = expand(input);		
 		for(int i=0; i<layers.length; i++){
 			out = layers[i].eval(in);
-//			System.out.println(Arrays.toString(out));
+			System.out.println(Arrays.toString(out));
 			in = expand(out);
 		}
 		return out;

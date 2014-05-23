@@ -253,6 +253,7 @@ public class RobocupClient implements Runnable
     {
         while (true)
         {
+        	System.out.println("thread de "+teamName+ " "+port+" est encore en vie");
             parseServerMsg(receive());
             TrainingLogs.takeFSI(brain.getFullstateInfo());
         }

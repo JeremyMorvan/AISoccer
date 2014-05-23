@@ -91,21 +91,31 @@ public class TrainingLogs {
 		
 		public String toString(){
 			System.out.println("intercepteur : "+intercepter);
-			String res = kickSnapshot.ballVelocityAfterKick.getX()+" "+kickSnapshot.ballVelocityAfterKick.getY();
+			String res = ""+kickSnapshot.ballVelocityAfterKick.polarRadius();
 			String others = "";
-			Vector2D relPos;
+			Vector2D standPos;
 			for(Player p : kickSnapshot.playersPositions.keySet()){
-				relPos = kickSnapshot.playersPositions.get(p).subtract(kickSnapshot.ballPosition);
+				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocityAfterKick, kickSnapshot.playersPositions.get(p));
 				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){
 					System.out.println("je suis l'intercepteur");
-					res +=" "+relPos.getX()+" "+relPos.getY();
+					res +=" "+standPos.getX()+" "+standPos.getY();
 				}else{
-					others +=" "+relPos.getX()+" "+relPos.getY();
+					others +=" "+standPos.getX()+" "+standPos.getY();
 				}
 			}
 			return res+others;
 		}
+		
+		
+		
+		public static Vector2D toStandard(Vector2D pBall, Vector2D vBall, Vector2D p){
+			Vector2D res = p.subtract(pBall);
+			res = res.rotate(-vBall.polarAngle());
+			res.setY(Math.abs(res.getY()));
+			return res;
+		}
+		
 	}
 
 }
