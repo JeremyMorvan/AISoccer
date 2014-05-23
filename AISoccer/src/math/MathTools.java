@@ -257,8 +257,8 @@ public class MathTools
     public static double zeroCrossing(MathFunction f, double a0, double b0, double accuracy) throws InvalidArgumentException{
     	double a = a0;
     	double b = b0;
-		double va = (Double) f.value(a);
-		double vb = (Double) f.value(b);
+		double va = f.value(a);
+		double vb = f.value(b);
 		if(va*vb>0){
 			throw new InvalidArgumentException("va and vb have same sign");
 		}
@@ -278,11 +278,11 @@ public class MathTools
     	return a;
     }
     
-    public static float sp(float[] u1, float[] u2) throws InvalidArgumentException{
-    	if (u1.length == u2.length){
-    		float val=0;
-    		for(int i=0; i<u1.length; i++){
-    			val += u1[i]*u2[i];
+    public static double sp(double[] w, double[] input) throws InvalidArgumentException{
+    	if (w.length == input.length){
+    		double val=0;
+    		for(int i=0; i<w.length; i++){
+    			val += w[i]*input[i];
     		}
     		return val;
     	}

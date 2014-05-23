@@ -1,6 +1,12 @@
 package ann;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import math.MathFunction;
 import aisoccer.InvalidArgumentException;
@@ -9,33 +15,83 @@ import aisoccer.InvalidArgumentException;
 public class Network {
 	Layer[] layers;
 	
-	public Network(ArrayList<float[][]> weights, MathFunction f) throws InvalidArgumentException{
-		for(int i=0; i<weights.size(); i++){
-			if(i>0){
-				if (weights.get(i-1).length+1 != weights.get(i)[1].length){
-					throw new InvalidArgumentException();
-				}
-				layers[i] = new Layer(weights.get(i), f);
+	public Network(ArrayList<double[][]> layersW, MathFunction f) throws InvalidArgumentException {
+		layers = new Layer[layersW.size()]; 
+		for(int i=0; i<layersW.size(); i++){
+			if(i>0 && layersW.get(i-1).length+1 != layersW.get(i)[0].length){
+				throw new InvalidArgumentException();				
 			}
+			layers[i] = new Layer(layersW.get(i), f);
 		}
 	}
 	
-	public float[] eval(float[] input) {
-		float[] out = null;
-		float[] in = expand(input);		
+	public double[] eval(double[] input) {
+		double[] out = null;
+		double[] in = expand(input);		
 		for(int i=0; i<layers.length; i++){
 			out = layers[i].eval(in);
+//			System.out.println(Arrays.toString(out));
 			in = expand(out);
 		}
 		return out;
 	}
 	
-	public float[] expand(float[] v){
-		float[] r = new float[v.length+1];
+	public double[] expand(double[] v){
+		double[] r = new double[v.length+1];
 		for(int i=0; i<v.length; i++){
 			r[i] = v[i];
 		}
-		r[r.length] = 1;
+		r[r.length-1] = 1;
 		return r;
+	}
+	
+	
+	public static Network load(String path, MathFunction f){
+		ArrayList<double[][]> weights = parseWeights(path);
+		try {
+			return new Network(weights,f);
+		} catch (InvalidArgumentException e) {e.printStackTrace();}
+		return null;		
+	}
+	
+	public static ArrayList<double[][]> parseWeights(String path) {
+		ArrayList<double[][]> res = new ArrayList<double[][]>();
+		
+		double[][] matrix;
+		double[] n;
+		ArrayList<double[]> buffer = new ArrayList<double[]>();
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(path));
+			String line;
+			String[] neuron;
+			while(in.ready()){
+				line = in.readLine();
+				if (line.isEmpty()){
+//					System.out.println("Oh une ligne vide !");
+					if(!buffer.isEmpty()){
+						matrix = new double[buffer.size()][buffer.get(0).length];
+						for(int i=0; i<buffer.size();i++){
+							matrix[i] = buffer.get(i);
+						}
+//						System.out.println("nb de neurones dans ce layer : "+matrix.length);
+						buffer = new ArrayList<double[]>();
+						res.add(matrix);
+					}
+				}else{
+//					System.out.println("ligne = "+line);
+					neuron = line.split(" ");
+					n = new double[neuron.length];
+					for(int i=0; i<neuron.length; i++){
+						n[i] = Double.valueOf(neuron[i]);
+					}
+					buffer.add(n);
+				}
+			}			
+			in.close();
+		} 
+		catch (FileNotFoundException e1) {e1.printStackTrace();}
+		catch (Exception e1) {e1.printStackTrace();}
+//		System.out.println("nb de layers : "+res.size());
+		return res;
 	}
 }

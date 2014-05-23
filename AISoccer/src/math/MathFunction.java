@@ -2,6 +2,6 @@ package math;
 
 public abstract class MathFunction {
 
-	public abstract Number value(Number input);
+	public abstract double value(double input);
 	
 }

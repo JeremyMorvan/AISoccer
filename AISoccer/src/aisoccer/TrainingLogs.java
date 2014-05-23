@@ -12,7 +12,7 @@ public class TrainingLogs {
 	static KickSnapshot currentKickSnapshot;
 	static boolean ready = false;
 	
-	static Writer out;
+	static BufferedWriter out;
 	
 	
 	public static void init(){
@@ -38,7 +38,7 @@ public class TrainingLogs {
 			String string = p.toString();
 			try {
 				out.write(string, 0, string.length());
-				((BufferedWriter) out).newLine();
+				out.newLine();
 				System.out.println("la passe : a été écrite dans le fichier");
 				out.flush();
 			} catch (IOException e) {e.printStackTrace();}
