@@ -8,10 +8,7 @@ dV = 0;
 errors = zeros(epochs,1);
 
 for i=1:epochs
-    Hin = phiFct(W*patterns);
-    Hout = [Hin;ones(1,size(patterns,2))];
-    Oin = V*Hout;
-    Oout = phiFct(Oin);
+    Oout = evalNetwork(patterns,W,V);
     errors(i) = sum(sum(abs(sign(Oout) - targets)./2));
     if errors(i)==0
         break;
