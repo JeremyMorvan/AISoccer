@@ -17,7 +17,9 @@ public class Network {
 	
 	public Network(ArrayList<double[][]> layersW, MathFunction f) throws InvalidArgumentException {
 		layers = new Layer[layersW.size()]; 
+		System.out.println("Creation d'un reseau à "+layersW.size()+" layers");
 		for(int i=0; i<layersW.size(); i++){
+			System.out.println("Layer n°"+i+" : dim entrée : "+layersW.get(i)[0].length+" / dim sortie : "+layersW.get(i).length);
 			if(i>0 && layersW.get(i-1).length+1 != layersW.get(i)[0].length){
 				throw new InvalidArgumentException();				
 			}
@@ -62,23 +64,23 @@ public class Network {
 		ArrayList<double[]> buffer = new ArrayList<double[]>();
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(path));
-			String line;
+			String line="";
 			String[] neuron;
-			while(in.ready()){
+			while(line != null){
 				line = in.readLine();
-				if (line.isEmpty()){
-//					System.out.println("Oh une ligne vide !");
+				if (line == null  || line.isEmpty()){
+					System.out.println("Oh une ligne vide !");
 					if(!buffer.isEmpty()){
 						matrix = new double[buffer.size()][buffer.get(0).length];
 						for(int i=0; i<buffer.size();i++){
 							matrix[i] = buffer.get(i);
 						}
-//						System.out.println("nb de neurones dans ce layer : "+matrix.length);
+						System.out.println("nb de neurones dans ce layer : "+matrix.length);
 						buffer = new ArrayList<double[]>();
 						res.add(matrix);
 					}
 				}else{
-//					System.out.println("ligne = "+line);
+					System.out.println("ligne = "+line);
 					neuron = line.split(" ");
 					n = new double[neuron.length];
 					for(int i=0; i<neuron.length; i++){
