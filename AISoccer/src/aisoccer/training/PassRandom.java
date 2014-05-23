@@ -1,8 +1,9 @@
-package aisoccer.actions;
+package aisoccer.training;
 
 import java.util.LinkedList;
 
 import aisoccer.Brain;
+import aisoccer.actions.Pass;
 import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
 

@@ -1,4 +1,4 @@
-package aisoccer.actions;
+package aisoccer.training;
 
 import math.Vector2D;
 import aisoccer.Brain;
@@ -13,6 +13,9 @@ public class SetRandomPos extends ActionTask {
 
 	@Override
 	public void Start() {
+		Vector2D intPos = (new Vector2D(Math.random()-0.5f,Math.random()-0.5f));
+		Vector2D relPos = intPos.subtract(brain.getPlayer().getPosition());
+		
 		brain.setInterestPos((new Vector2D(Math.random()-0.5f,Math.random()-0.5f)).multiply(2*SoccerParams.BALL_SPEED_MAX/(1-SoccerParams.BALL_DECAY)));
 	}
 

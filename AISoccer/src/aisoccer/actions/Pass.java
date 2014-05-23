@@ -16,7 +16,7 @@ public class Pass extends ShootTo {
 
 	@Override
 	public boolean CheckConditions() {
-		return brain.getInterestPos() !=null;
+		return brain.getInterestPos() != null;
 	}
 
 }

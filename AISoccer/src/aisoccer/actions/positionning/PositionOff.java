@@ -17,7 +17,8 @@ public class PositionOff extends GoTo {
 
 	@Override
 	public boolean CheckConditions() {
-		return brain.getPlayer().isLeftSide() == brain.getFullstateInfo().LeftGotBall();
+//		return brain.getPlayer().isLeftSide() == brain.getFullstateInfo().LeftGotBall();
+		return true;
 	}
 
 	@Override
