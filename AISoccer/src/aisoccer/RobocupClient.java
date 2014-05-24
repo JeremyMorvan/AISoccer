@@ -41,9 +41,7 @@ public class RobocupClient implements Runnable
      * @param teamName
      * @throws SocketException
      */
-    public RobocupClient(InetAddress host, int port, String teamName)
-                                                                     throws SocketException
-    {
+    public RobocupClient(InetAddress host, int port, String teamName) throws SocketException  {
         this.socket = new DatagramSocket();
         this.host = host;
         this.port = port;

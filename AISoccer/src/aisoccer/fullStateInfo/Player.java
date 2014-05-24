@@ -19,6 +19,7 @@ public class Player extends MobileObject
     private int     playerType;
     private int     uniformNumber;
     private double  bodyDirection;
+    private boolean connected;
 
     /*
      * =========================================================================
@@ -38,13 +39,13 @@ public class Player extends MobileObject
      * @param playerType
      * @param bodyDirection
      */
-    public Player(double posX, double posY, double velX, double velY,
-            boolean team, int playerType, double bodyDirection)
+    public Player(double posX, double posY, double velX, double velY, boolean team, int playerType, double bodyDirection)
     {
         super(posX, posY, velX, velY);
         this.leftSide = team;
         this.playerType = playerType;
         this.bodyDirection = bodyDirection;
+        this.connected = false;
     }
 
     /*
@@ -116,6 +117,14 @@ public class Player extends MobileObject
     public void setUniformNumber(int uniformNumber)
     {
         this.uniformNumber = uniformNumber;
+    }
+    
+    public boolean isConnected(){
+    	return connected;
+    }
+    
+    public void setConnected(boolean b){
+        this.connected = b;
     }
 
     /*

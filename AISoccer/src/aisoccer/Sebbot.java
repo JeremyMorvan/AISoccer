@@ -154,6 +154,11 @@ public class Sebbot
 //        }  
         
     }
+
+    
+    public static void notifyConnection(RobocupClient client){
+    	connected.put(client, new Date().getTime());
+    }
     
     public static boolean isConnected(RobocupClient c){
     	return connected.get(c)>(new Date().getTime()-200);
@@ -175,10 +180,6 @@ public class Sebbot
     		}
     	}
     	return false;
-    }
-    
-    public static void notifyConnection(RobocupClient client){
-    	connected.put(client, new Date().getTime());
     }
 
     
