@@ -41,9 +41,7 @@ public class RobocupClient implements Runnable
      * @param teamName
      * @throws SocketException
      */
-    public RobocupClient(InetAddress host, int port, String teamName)
-                                                                     throws SocketException
-    {
+    public RobocupClient(InetAddress host, int port, String teamName) throws SocketException  {
         this.socket = new DatagramSocket();
         this.host = host;
         this.port = port;
@@ -243,6 +241,34 @@ public class RobocupClient implements Runnable
         }
 
     }
+    
+    protected void reconnect(int nbPlayers) throws IOException
+    {
+    	byte[] buffer = new byte[MSG_SIZE];
+        DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
+
+        //First we need to initialize the connection to the server
+        send("(reconnect " + teamName + " " + brain.getPlayer().getUniformNumber());
+    	System.out.println("Demande de reconnection envoyée");
+        socket.receive(packet);
+        port = packet.getPort();
+
+        String initMsg = new String(buffer, Charset.defaultCharset());
+        final String reconnectPattern = "\\(reconnect ([lr]) ([a-zA-Z_]+)\\)";
+
+        Pattern pattern = Pattern.compile(reconnectPattern);
+        Matcher matcher = pattern.matcher(initMsg);
+
+        if (matcher.find())
+        {
+            brain.getFullstateInfo().setPlayMode(matcher.group(2));            
+        }
+        else
+        {
+           System.err.println("Client not disconnected yet ! " +initMsg);
+        }
+
+    }
 
     
     /** 
@@ -251,12 +277,19 @@ public class RobocupClient implements Runnable
      */
     public void run()
     {
-        while (true)
-        {
-        	//System.out.println("thread de "+teamName+ " "+port+" est encore en vie");
+    	int cont = 0;
+        while (true){
+        	cont++;
+        	
             parseServerMsg(receive());
             TrainingLogs.takeFSI(brain.getFullstateInfo());
-        }
+            Sebbot.notifyConnection(this);
+            
+        	if(cont>200 && brain.getPlayer().getUniformNumber()==1){
+//        		System.out.println("thread de "+teamName+ " "+brain.getPlayer().getUniformNumber()+" est vivant");
+        		cont = 0;
+        	}
+       	}    	
     }
 
 }

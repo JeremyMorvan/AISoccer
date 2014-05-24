@@ -49,7 +49,7 @@ public class FullstateInfo
 	private Ball        ball;         // The ball of the game
 	private Player[]    leftTeam;     // Players of left and right team,
 	private Player[]    rightTeam;    //  indexed by their uniform number - 1
-	private int nbPlayers;
+	private int 		nbPlayers;
 
 	private boolean 	leftGotBall;
 	private Vector2D	ballPrediction;
@@ -172,75 +172,64 @@ public class FullstateInfo
 	 * This method parses the fullstateMsg string and updates the variables
 	 * consequently.
 	 */
-	public void parse()
-	{
+	public void parse(){
 		// Gather playMode information.
 		Pattern pattern = Pattern.compile(PLAYMODE_PATTERN);
 		Matcher matcher = pattern.matcher(fullstateMsg);
-		if (matcher.find())
-		{			
+		if (matcher.find()){			
 			this.playMode = matcher.group(1);
 		}
-		else
-		{
-			System.err.println("Could not parse play mode info: "
-					+ fullstateMsg);
+		else{
+			System.err.println("Could not parse play mode info: "+ fullstateMsg);
 		}
 
 		// Gather ball information.
 		pattern = Pattern.compile(BALL_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
-		if (matcher.find())
-		{
+		if (matcher.find()){
 			ball.getPosition().setX(Double.valueOf(matcher.group(1)));
 			ball.getPosition().setY(Double.valueOf(matcher.group(2)));
 			ball.getVelocity().setX(Double.valueOf(matcher.group(3)));
 			ball.getVelocity().setY(Double.valueOf(matcher.group(4)));
 
 		}
-		else
-		{
+		else{
 			System.err.println("Could not parse ball info: " + fullstateMsg);
 		}
 
 		// Get time step.
 		pattern = Pattern.compile(TIME_STEP_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
-		if (matcher.find())
-		{
+		if (matcher.find()){
 			timeStep = Integer.valueOf(matcher.group(1));            
 		}
-		else
-		{
+		else{
 			System.err.println("Could not parse time step: " + fullstateMsg);
 		}
 
 		// Gather players information.
+		ResetConnectedPlayers();
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
 		Player[] team; // Team of the player currently being parsed.
 		int playerNumber; // Number of the player currently being parsed.
-		while (matcher.find())
-		{
-			if (matcher.group(1).compareToIgnoreCase("l") == 0)
-			{
+		while (matcher.find()){
+			if (matcher.group(1).compareToIgnoreCase("l") == 0){
 				team = this.leftTeam;
 			}
-			else
-			{
+			else{
 				team = this.rightTeam;
 			}
 
 			playerNumber = Integer.valueOf(matcher.group(2));
-			if (playerNumber > nbPlayers)
-				continue;
-
-			if (matcher.group(3).compareToIgnoreCase("g") == 0)
-			{
+			if (playerNumber > nbPlayers){continue;}
+			
+			team[playerNumber - 1].setConnected(true);
+			
+			if (matcher.group(3).compareToIgnoreCase("g") == 0){
 				team[playerNumber - 1].setPlayerType(-1);
 			}
-			else
-			{
+			else{
 				team[playerNumber - 1].setPlayerType(Integer.valueOf(matcher.group(3)));
 			}
 
@@ -315,6 +304,15 @@ public class FullstateInfo
 		
 //		if(before != leftGotBall)
 //			System.err.println((leftGotBall ? "Left" : "Right")+ " has now the ball");
+	}
+	
+	private void ResetConnectedPlayers(){
+		for(Player p : leftTeam){
+			p.setConnected(true);			
+		}
+		for(Player p : rightTeam){
+			p.setConnected(false);
+		}
 	}
 
 	public String toString()

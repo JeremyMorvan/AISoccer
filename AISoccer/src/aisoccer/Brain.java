@@ -280,6 +280,7 @@ public class Brain implements Runnable
 	/////	 INTERCEPTION METHODS
 	public double timeToIntercept(final Player p, final double playerSpeed){
 		double time = -1.0;
+		Vector2D ballP = fullstateInfo.getBall().getPosition();
 
 		MathFunction f = new  MathFunction() {
 			public double value(double steps) {	                
@@ -287,11 +288,37 @@ public class Brain implements Runnable
 			}
 		};
 		
-		double finalDist = p.distanceTo(ballPositionPrediction(Double.POSITIVE_INFINITY));
-		double distanceMax = Math.max( finalDist, p.distanceTo(fullstateInfo.getBall()) );		
+		Vector2D ballFinalPos = ballPositionPrediction(Double.POSITIVE_INFINITY);
+		double finalDist = p.distanceTo(ballFinalPos);
+		double stepsMax = Math.max( finalDist, p.distanceTo(ballP) )/playerSpeed;
+		
+		
+		Vector2D trajectory = ballFinalPos.subtract(ballP);
+		if(trajectory.polarRadius()>0){
+			Vector2D relPos = p.getPosition().subtract(ballP);
+			double ps = relPos.multiply(trajectory.normalize());
+			if(0<ps && ps<trajectory.polarRadius()){
+				Vector2D projection = trajectory.normalize().multiply(ps);
+				double stepsToProjection = projection.distanceTo(p)/playerSpeed;
+				if(f.value(stepsToProjection)<0){
+					stepsMax = stepsToProjection;
+				}
+			}			
+		}
+		
+		double f0 = f.value(0);
+		int counter = 0;
+		while(counter<4 && f0*f.value(stepsMax)>0){
+			stepsMax *= 2;
+			counter++;
+		}
+		if(f0*f.value(stepsMax)>0){
+			System.err.println("Pb in finding interception point");
+			return -1.0;
+		}
+		
 		try {
-			time = MathTools.zeroCrossing(f, 0.0, distanceMax/playerSpeed, 0.1);
-			//    	  System.out.println("time = "+ time);
+			time = MathTools.zeroCrossing(f, 0.0, stepsMax, 0.1);
 		} catch (InvalidArgumentException e) {
 			e.printStackTrace();
 		}

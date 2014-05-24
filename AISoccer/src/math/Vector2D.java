@@ -1,5 +1,6 @@
 package math;
 
+import aisoccer.InvalidArgumentException;
 import aisoccer.fullStateInfo.MobileObject;
 
 /**
@@ -165,7 +166,17 @@ public class Vector2D implements Cloneable
         }
 
         return angle;
-
+    }
+    
+    public double polarAngle(char unit) 
+    {
+       if(unit=='r'){
+        	return polarAngle()*Math.PI/360;
+       }
+       if(unit!='d'){
+    	   System.out.println("Attention, polarAngle est appelé avec une unité differente de 'd' et 'r' !");
+       }
+       return polarAngle();
     }
 
     public Vector2D normalize(double modulusMax)
