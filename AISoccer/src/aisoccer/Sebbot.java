@@ -6,6 +6,11 @@ package aisoccer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Timer;
 
 import aisoccer.ballcapture.DirectPolicySearch;
 import aisoccer.training.TrainingStrategy;
@@ -17,6 +22,8 @@ import aisoccer.training.TrainingStrategy;
  */
 public class Sebbot
 {
+	static HashMap<RobocupClient,Thread> threads;
+	static HashMap<RobocupClient,Long> connected;
 
     /**
      * This is the entry point of the application.
@@ -99,6 +106,8 @@ public class Sebbot
         RobocupClient client;
         Brain brain;
         int nbOfPlayers = 6;
+        connected = new HashMap<RobocupClient, Long>();
+        threads = new HashMap<RobocupClient, Thread>();
 
         for (int i = 0; i < nbOfPlayers; i++)
         {
@@ -108,26 +117,72 @@ public class Sebbot
             brain = client.getBrain();
             brain.computeAreas();
             brain.setStrategy(new TrainingStrategy(brain));
-
-            new Thread(client).start();
+            
+            connected.put(client, new Date().getTime());
+            Thread thread = new Thread(client);
+            threads.put(client,thread);
+            thread.start();
             new Thread(brain).start();
         }
         
         for (int i = 0; i < nbOfPlayers; i++)
         {
-            client = new RobocupClient(InetAddress.getByName(hostname), port,
-                "team2");
+            client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
             client.init(nbOfPlayers);
 
             brain = client.getBrain();
             brain.computeAreas();
             brain.setStrategy(new TrainingStrategy(brain));
 
-            new Thread(client).start();
+            connected.put(client, new Date().getTime());
+            Thread thread = new Thread(client);
+            threads.put(client,thread);
+            thread.start();
             new Thread(brain).start();
         }
+        
+            
+//        while(isGameOn()){        	    	
+//            System.out.println(" threads sont encore en vie");            
+//            if(!isPlayOn()){
+//            	for(RobocupClient c : connected.keySet()){
+//            		if(!isConnected(c)){
+//            			c.reconnect(nbOfPlayers);
+//            		}
+//            	}            	
+//            }            
+//        }  
+        
+    }
+    
+    public static boolean isConnected(RobocupClient c){
+    	return connected.get(c)>(new Date().getTime()-200);
+    }
+    
+    public static boolean isGameOn(){
+    	for(RobocupClient client : connected.keySet()){
+    		if(isConnected(client) && client.getBrain().getFullstateInfo().getTimeStep()<6000){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public static boolean isPlayOn(){
+    	for(RobocupClient client : connected.keySet()){
+    		if(isConnected(client) && client.getBrain().getFullstateInfo().equals("play_on")){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public static void notifyConnection(RobocupClient client){
+    	connected.put(client, new Date().getTime());
     }
 
+    
+    
     public static void dpsComputation()
     {
         DirectPolicySearch dps;
