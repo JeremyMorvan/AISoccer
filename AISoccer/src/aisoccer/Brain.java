@@ -306,6 +306,17 @@ public class Brain implements Runnable
 			}			
 		}
 		
+		double f0 = f.value(0);
+		int counter = 0;
+		while(counter<4 && f0*f.value(stepsMax)>0){
+			stepsMax *= 2;
+			counter++;
+		}
+		if(f0*f.value(stepsMax)>0){
+			System.err.println("Pb in finding interception point");
+			return -1.0;
+		}
+		
 		try {
 			time = MathTools.zeroCrossing(f, 0.0, stepsMax, 0.1);
 		} catch (InvalidArgumentException e) {

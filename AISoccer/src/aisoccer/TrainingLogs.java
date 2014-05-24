@@ -40,6 +40,7 @@ public class TrainingLogs {
 				out.write(string, 0, string.length());
 				out.newLine();
 				System.out.println("la passe : a été écrite dans le fichier");
+				System.out.println("");
 				out.flush();
 			} catch (IOException e) {e.printStackTrace();}
 		}
@@ -90,7 +91,6 @@ public class TrainingLogs {
 		}
 		
 		public String toString(){
-			System.out.println("intercepteur : "+intercepter);
 			String res = ""+kickSnapshot.ballVelocityAfterKick.polarRadius();
 			String others = "";
 			Vector2D standPos;
@@ -98,7 +98,7 @@ public class TrainingLogs {
 				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocityAfterKick, kickSnapshot.playersPositions.get(p));
 				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){
-					System.out.println("je suis l'intercepteur");
+					System.out.println("je suis l'intercepteur : "+p);
 					res +=" "+standPos.getX()+" "+standPos.getY();
 				}else{
 					others +=" "+standPos.getX()+" "+standPos.getY();

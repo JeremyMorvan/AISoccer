@@ -288,7 +288,7 @@ public class RobocupClient implements Runnable
             Sebbot.notifyConnection(this);
             
         	if(cont>200 && brain.getPlayer().getUniformNumber()==1){
-        		System.out.println("thread de "+teamName+ " "+brain.getPlayer().getUniformNumber()+" est vivant");
+//        		System.out.println("thread de "+teamName+ " "+brain.getPlayer().getUniformNumber()+" est vivant");
         		cont = 0;
         	}
        	}    	
