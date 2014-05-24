@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import aisoccer.ballcapture.DirectPolicySearch;
+import aisoccer.strategy.myStrategy2;
 import aisoccer.training.TrainingStrategy;
 
 
@@ -107,7 +108,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
+            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
 
             new Thread(client).start();
             new Thread(brain).start();
@@ -121,7 +122,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
+            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
 
             new Thread(client).start();
             new Thread(brain).start();
@@ -142,9 +143,5 @@ public class Sebbot
             dps.run();
             nbOfBFs += 4;
         }
-    }
-    
-    public static void loadANNIntercepted(){
-    	
     }
 }

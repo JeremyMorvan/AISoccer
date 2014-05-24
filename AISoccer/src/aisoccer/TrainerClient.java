@@ -9,6 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
+import aisoccer.fullStateInfo.Ball;
+import aisoccer.fullStateInfo.MobileObject;
+import aisoccer.fullStateInfo.Player;
+
+import math.Vector2D;
+
 
 /**
  * This class implements the commands of the Robocup Soccer Simulation 2D
@@ -17,16 +23,18 @@ import java.nio.charset.Charset;
  * @author Sebastien Lentz
  * 
  */
-public class RobocupClient implements Runnable
+public class TrainerClient implements Runnable
 {
 
     private final int      MSG_SIZE = 4096; // Size of the socket buffer
+    final static String TEAMNAMES_PATTERN  = "\\(ok team_names (team l [a-zA-Z_]*) (team r [a-zA-Z_]*)\\)";
 
     private DatagramSocket socket;         // Socket to communicate with the server
     private InetAddress    host;           // Server address
     private int            port;           // Server port
-    private String         teamName;       // Team name
-    private Brain          brain;          // Actions deciding module
+    private TrainerBrain   brain;          // Actions deciding module
+    private String 		   nameLeft;
+    private String 	 	   nameRight;
 
     /*
      * =========================================================================
@@ -41,13 +49,12 @@ public class RobocupClient implements Runnable
      * @param teamName
      * @throws SocketException
      */
-    public RobocupClient(InetAddress host, int port, String teamName)
+    public TrainerClient(InetAddress host, int port)
                                                                      throws SocketException
     {
         this.socket = new DatagramSocket();
         this.host = host;
         this.port = port;
-        this.teamName = teamName;
     }
 
     /**
@@ -69,7 +76,7 @@ public class RobocupClient implements Runnable
     /**
      * @return the brain
      */
-    public Brain getBrain()
+    public TrainerBrain getBrain()
     {
         return brain;
     }
@@ -77,7 +84,7 @@ public class RobocupClient implements Runnable
     /**
      * @param brain the brain to set
      */
-    public void setBrain(Brain brain)
+    public void setBrain(TrainerBrain brain)
     {
         this.brain = brain;
     }
@@ -138,40 +145,48 @@ public class RobocupClient implements Runnable
      * 
      * =========================================================================
      */
+    
     /**
-     * @param x
-     * @param y
+     * @param play_mode
      */
-    public void move(double x, double y)
-    {
-        send("(move " + Double.toString(x) + " " + Double.toString(y) + ")");
+    public void changeMode(String play_mode){
+    	send("(change_mode " + play_mode + ")");
     }
-
+    
     /**
-     * @param moment
+     * @param object
+     * @param position
+     * @param facingDirection
+     * @param velocity
      */
-    public void turn(double moment)
-    {
-        send("(turn " + Double.toString(moment) + ")");
+    
+    public void move(String objName, Vector2D position, double facingDirection, Vector2D velocity){
+    	send("(move objName "+
+    position.getX()+" "+position.getY()+" "+
+    			facingDirection+" "+
+    velocity.getX()+" "+velocity.getY()+")");
     }
-
-    /**
-     * @param power
-     */
-    public void dash(double power)
-    {
-        send("(dash " + Double.toString(power) + ")");
+    
+    public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
+    	String objName = "(p " + (player.isLeftSide() ? nameLeft : nameRight) + player.getUniformNumber() + ")";
+    	move(objName,position,facingDirection,velocity);
     }
-
+    
+    public void move(Ball ball, Vector2D position, double facingDirection, Vector2D velocity){
+    	String objName = "(b)";
+    	move(objName,position,facingDirection,velocity);
+    }
+    
+    public void getTeamNames(){
+    	send("(team_names)");
+    }
+    
     /**
-     * @param power
-     * @param direction
+     * 
      */
-    public void kick(double power, double direction)
-    {
-        send("(kick " + Double.toString(power) + " "
-                + Double.toString(direction) + ")");
-        //TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
+    
+    public void checkBall(){
+    	send("(check_ball)");
     }
 
     /*
@@ -191,6 +206,15 @@ public class RobocupClient implements Runnable
         { // Fullstate information
             brain.getFullstateInfo().setFullstateMsg(message);
             brain.getFullstateInfo().parse();
+        }
+        
+        else if (message.charAt(1) == 'o'){
+        	Pattern pattern = Pattern.compile(TEAMNAMES_PATTERN);
+    		Matcher matcher = pattern.matcher(message);
+        	if(matcher.find()){
+        		nameLeft = matcher.group(1);
+        		nameRight = matcher.group(2);
+        	}
         }
 
         else if (message.charAt(1) == 'e')
@@ -219,23 +243,20 @@ public class RobocupClient implements Runnable
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
         // First we need to initialize the connection to the server
-        send("(init " + teamName + " (version 14))");
+        send("(init (version 14))");
         socket.receive(packet);
         port = packet.getPort();
 
         String initMsg = new String(buffer, Charset.defaultCharset());
-        final String initPattern = "\\(init ([lr]) ([1-9]{1,2}) ([a-zA-Z_]+)\\)";
+        final String initPattern = "\\(init ok\\)";
 
         Pattern pattern = Pattern.compile(initPattern);
         Matcher matcher = pattern.matcher(initMsg);
 
         if (matcher.find())
         {
-            boolean leftTeam = matcher.group(1).charAt(0) == 'l' ? true : false;
-            int playerNumber = Integer.valueOf(matcher.group(2));
 
-            brain = new Brain(this, leftTeam, playerNumber, nbPlayers);
-            brain.getFullstateInfo().setPlayMode(matcher.group(3));
+            brain = new TrainerBrain(this,nbPlayers);
         }
         else
         {
