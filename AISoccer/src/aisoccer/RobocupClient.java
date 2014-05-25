@@ -169,7 +169,7 @@ public class RobocupClient implements Runnable
     {
         send("(kick " + Double.toString(power) + " "
                 + Double.toString(direction) + ")");
-        TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
+//        TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
     }
 
     /*

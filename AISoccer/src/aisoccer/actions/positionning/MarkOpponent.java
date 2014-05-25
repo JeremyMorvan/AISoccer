@@ -44,9 +44,9 @@ public class MarkOpponent extends GoTo {
 			availableTM.remove(closestTM);
 			
 			if(closestTM == me){
-				if(me.isLeftSide() && me.getUniformNumber()==4){
-					System.out.println(me.getUniformNumber()+" va marquer "+opponent.getUniformNumber());
-				}
+//				if(me.isLeftSide() && me.getUniformNumber()==4){
+//					System.out.println(me.getUniformNumber()+" va marquer "+opponent.getUniformNumber());
+//				}
 				target = oppMarkingPosition;
 				return true;
 			}
@@ -60,9 +60,9 @@ public class MarkOpponent extends GoTo {
 		brain.setInterestPos(target);
 		Player me = brain.getPlayer();	
 
-		if(me.isLeftSide() && me.getUniformNumber()==4){
-			System.out.println("Je me dirige vers "+ target.toString());
-		}
+//		if(me.isLeftSide() && me.getUniformNumber()==4){
+//			System.out.println("Je me dirige vers "+ target.toString());
+//		}
 	}
 
 }
