@@ -2,7 +2,12 @@ package aisoccer;
 
 import java.lang.Math;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 
 import math.MathFunction;
 import math.MathTools;
@@ -346,7 +351,7 @@ public class Brain implements Runnable
 	
 	/////////////////////////////////////////////
 	////	MARK METHODS
-	public boolean checkMarked(Vector2D teammateRP, Vector2D opponentRP){
+	public boolean isFree(Vector2D teammateRP, Vector2D opponentRP){
 		if(teammateRP.multiply(opponentRP)<0){
 			return true;
 		}
@@ -361,18 +366,38 @@ public class Brain implements Runnable
 		return false;		
 	}
 
-	public boolean checkMarked(Vector2D teammateRP, Iterable<Vector2D> opponentsRP){
+	public boolean isFree(Vector2D teammateRP, Iterable<Vector2D> opponentsRP){
 		for(Vector2D oRP : opponentsRP){
-			if(!checkMarked(teammateRP,oRP)){
+			if(!isFree(teammateRP,oRP)){
 				return false;
 			}
 		}
 		return true;
 	}
+	
+	public double evalDangerosity(Player op){
+		// The smaller the returned valued, the more dangerous the player is.
+		Vector2D myGoal = new Vector2D(player.isLeftSide() ? -52.5d : 52.5d,0);
+		return 2*op.distanceTo(myGoal)+op.distanceTo(fullstateInfo.getBall());
+	}
+	
+	public ArrayList<Player> rankDangerousOp(){
+		ArrayList<Player> opp = new ArrayList<Player>(fullstateInfo.getOpponents(player));
+		Collections.sort(opp, new OpponentComparator());
+		Collections.reverse(opp);
+		return opp;
+	}
+
+	public class OpponentComparator implements Comparator<Player>{
+		public int compare(Player o1, Player o2) {
+			return (int) Math.signum(evalDangerosity(o2)-evalDangerosity(o1));
+		}		
+	}
+	
 
 	public double getXLimOffSide(){
 		int p = this.player.isLeftSide() ? 1:-1;		
-		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
+		Iterable<Player> opponents = this.fullstateInfo.getOpponents(this.player);
 		double xmin1 = 0;
 		double xmin2 = 0;
 		if(this.player.isLeftSide()){

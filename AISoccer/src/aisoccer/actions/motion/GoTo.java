@@ -26,7 +26,7 @@ public abstract class GoTo extends Selector {
 
 	@Override
 	public void End() {
-		brain.setInterestPos(new Vector2D(0,0));
+		brain.setInterestPos(null);
 	}
 
 }

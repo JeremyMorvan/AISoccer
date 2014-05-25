@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import math.Vector2D;
 import aisoccer.Brain;
 import aisoccer.actions.motion.GoTo;
-import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.Player;
 
 public class MarkOpponent extends GoTo {
@@ -13,41 +12,57 @@ public class MarkOpponent extends GoTo {
 	public MarkOpponent(Brain b) {
 		super(b);
 	}
-
-	Player toMark;
+	
+	Vector2D target;
 
 	@Override
 	public boolean CheckConditions() {
+		target = null;
 		Player me = brain.getPlayer();	
-		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
-		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
-		Ball b = brain.getFullstateInfo().getBall();	
+		ArrayList<Player> opponents = brain.rankDangerousOp();
+		ArrayList<Player> teamMates = brain.getFullstateInfo().getTeammates(me);
+		ArrayList<Player> availableTM = new ArrayList<Player>(teamMates);
+		availableTM.add(me);
 		
-		ArrayList<Vector2D> teammatesRP = new ArrayList<Vector2D>();
-		for(Player tm : teammates){
-			teammatesRP.add( tm.getPosition().subtract(b.getPosition()) );
+		Vector2D oppMarkingPosition;
+		double alpha = 0.9;
+		Player opponent;
+		Player closestTM;
+		double dist=Double.POSITIVE_INFINITY;
+		for(int i=0; i<opponents.size();i++){
+			opponent = opponents.get(i);
+			oppMarkingPosition = opponent.getPosition().multiply(alpha);
+			oppMarkingPosition = oppMarkingPosition.add(brain.getFullstateInfo().getBall().getPosition().multiply(1.0-alpha));
+			
+			closestTM = null;
+			for(Player tm : availableTM){
+				if(closestTM == null || tm.distanceTo(oppMarkingPosition)<dist){
+					closestTM = tm;
+					dist = tm.distanceTo(oppMarkingPosition);
+				}
+			}
+			availableTM.remove(closestTM);
+			
+			if(closestTM == me){
+				if(me.isLeftSide() && me.getUniformNumber()==4){
+					System.out.println(me.getUniformNumber()+" va marquer "+opponent.getUniformNumber());
+				}
+				target = oppMarkingPosition;
+				return true;
+			}
 		}
 		
-		Vector2D opRP;
-		toMark = null;
-		double dist = Double.POSITIVE_INFINITY;
-		for(Player op : opponents){
-			opRP = op.getPosition().subtract(b.getPosition());
-			if (opRP.polarRadius()>50){
-				continue;
-			}
-			if(op.distanceTo(me.getPosition())<dist && brain.checkMarked(opRP, teammatesRP) ){
-				toMark = op;
-				dist = op.distanceTo(me.getPosition());
-			}
-		}
-		return toMark!=null;
+		return target != null;
 	}
 
 	@Override
-	public void Start() {	
-		Vector2D b = brain.getFullstateInfo().getBall().getPosition();	
-		brain.setInterestPos( b.multiply(0.2).add(toMark.getPosition().multiply(0.8)) );
+	public void Start() {			
+		brain.setInterestPos(target);
+		Player me = brain.getPlayer();	
+
+		if(me.isLeftSide() && me.getUniformNumber()==4){
+			System.out.println("Je me dirige vers "+ target.toString());
+		}
 	}
 
 }

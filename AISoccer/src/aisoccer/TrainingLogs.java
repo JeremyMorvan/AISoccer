@@ -95,6 +95,9 @@ public class TrainingLogs {
 		
 		public boolean isValid(){
 			boolean equals;
+			if(kickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
+				return false;
+			}
 			for(Player p : kickSnapshot.playersPositions.keySet()){				
 				equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
 				if(equals){

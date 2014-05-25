@@ -17,8 +17,8 @@ public class FindUnmarkedTeammate extends ActionTask {
 	@Override
 	public void Start() {
 		Player me = brain.getPlayer();
-		ArrayList<Player> teammates = brain.getFullstateInfo().getTeammates(me);
-		Player[] opponents = brain.getFullstateInfo().getOpponents(me);
+		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
+		Iterable<Player> opponents = brain.getFullstateInfo().getOpponents(me);
 		LinkedList<Vector2D> opponentsRP = new LinkedList<Vector2D>();
 		for(Player op : opponents){
 			opponentsRP.add(op.getPosition().subtract(me.getPosition()));
@@ -31,7 +31,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 		Vector2D bestTeammateP = null;
 		for(Player tm : teammates){
 			Vector2D tmRP = tm.getPosition().subtract(me.getPosition());
-			if(tmRP.polarRadius()<=40 && brain.checkMarked(tmRP, opponentsRP) && tm.distanceTo(goal)<dmin){
+			if(tmRP.polarRadius()<=40 && brain.isFree(tmRP, opponentsRP) && tm.distanceTo(goal)<dmin){
 				bestTeammateP = tm.getPosition();				
 			}
 		}
