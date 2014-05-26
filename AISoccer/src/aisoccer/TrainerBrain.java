@@ -112,7 +112,9 @@ public class TrainerBrain implements Runnable
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
 			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0){
-
+				if(currentTimeStep == 500){
+					
+				}
 			}
 			else if (currentTimeStep != lastTimeStep){
 				System.out.println("A time step has been skipped:");

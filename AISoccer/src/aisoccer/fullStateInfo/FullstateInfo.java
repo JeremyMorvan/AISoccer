@@ -3,7 +3,6 @@ package aisoccer.fullStateInfo;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +40,9 @@ public class FullstateInfo
 			+ " "
 			+ REAL_NB_PATTERN;
 	final static String TIME_STEP_PATTERN = "\\(fullstate ([0-9]+) \\(";
+	
+	final static String LOOK_TIME_STEP_PATTERN = "\\(ok look ([0-9]+) \\(";
+	
 
 	/*
 	 * Members of the class.
@@ -357,5 +359,79 @@ public class FullstateInfo
     	reunion.addAll(new ArrayList<Player>(Arrays.asList(rightTeam)));
     	return reunion;
     }
+    
+    public void parseTrainer(){
+
+		// Gather ball information.
+		Pattern pattern = Pattern.compile(BALL_PATTERN);
+		Matcher matcher = pattern.matcher(fullstateMsg);
+		if (matcher.find()){
+			ball.getPosition().setX(Double.valueOf(matcher.group(1)));
+			ball.getPosition().setY(Double.valueOf(matcher.group(2)));
+			ball.getVelocity().setX(Double.valueOf(matcher.group(3)));
+			ball.getVelocity().setY(Double.valueOf(matcher.group(4)));
+
+		}
+		else{
+			System.err.println("Could not parse ball info: " + fullstateMsg);
+		}
+
+		// Get time step.
+		pattern = Pattern.compile(LOOK_TIME_STEP_PATTERN);
+		matcher = pattern.matcher(fullstateMsg);
+		if (matcher.find()){
+			timeStep = Integer.valueOf(matcher.group(1));            
+		}
+		else{
+			System.err.println("Could not parse time step: " + fullstateMsg);
+		}
+
+		// Gather players information.
+		
+		ArrayList<Player> connectedPlayers = new ArrayList<Player>();
+		
+		pattern = Pattern.compile(PLAYER_PATTERN);
+		matcher = pattern.matcher(fullstateMsg);
+		Player[] team; // Team of the player currently being parsed.
+		int playerNumber; // Number of the player currently being parsed.
+		while (matcher.find()){
+			if (matcher.group(1).compareToIgnoreCase("l") == 0){
+				team = this.leftTeam;
+			}
+			else{
+				team = this.rightTeam;
+			}
+
+			playerNumber = Integer.valueOf(matcher.group(2));
+			if (playerNumber > nbPlayers){continue;}
+			
+			team[playerNumber - 1].setConnected(true);
+			
+			if (matcher.group(3).compareToIgnoreCase("g") == 0){
+				team[playerNumber - 1].setPlayerType(-1);
+			}
+			else{
+				team[playerNumber - 1].setPlayerType(Integer.valueOf(matcher.group(3)));
+			}
+
+			team[playerNumber - 1].setUniformNumber(playerNumber);
+			team[playerNumber - 1].getPosition().setX(Double.valueOf(matcher.group(4)));
+			team[playerNumber - 1].getPosition().setY(Double.valueOf(matcher.group(5)));
+			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(6)));
+			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(7)));
+			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(8)));
+			
+			connectedPlayers.add(team[playerNumber - 1]);
+		}
+		
+		if(!connectedPlayers.isEmpty()){
+			for(Player p : leftTeam){
+				p.setConnected(connectedPlayers.contains(p));			
+			}
+			for(Player p : rightTeam){
+				p.setConnected(connectedPlayers.contains(p));
+			}			
+		}
+	}
 
 }
