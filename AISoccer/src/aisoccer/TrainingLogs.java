@@ -43,7 +43,6 @@ public class TrainingLogs {
 					out.flush();
 				} catch (IOException e) {e.printStackTrace();}				
 			}else{
-				System.err.println("Invalid pass !");
 			}
 		}
 		currentKickSnapshot = new KickSnapshot(fsi);
@@ -78,6 +77,7 @@ public class TrainingLogs {
 				}			
 			}
 			this.ballVelocityAfterKick = null;
+			System.out.println("nb of players in kickSnapShoot : "+playersPositions.size());
 		}
 	}
 		
@@ -96,6 +96,8 @@ public class TrainingLogs {
 		public boolean isValid(){
 			boolean equals;
 			if(kickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
+				System.err.println("Pass too low !");
+				System.out.println("");
 				return false;
 			}
 			for(Player p : kickSnapshot.playersPositions.keySet()){				
@@ -104,6 +106,8 @@ public class TrainingLogs {
 					return true;
 				}
 			}
+			System.err.println("Invalid pass !");
+			System.out.println("");
 			return false;
 		}
 		
