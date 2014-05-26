@@ -211,13 +211,14 @@ public class RobocupClient implements Runnable
      * 
      * @throws IOException if the init message could not be parsed.
      */
-    protected void init(int nbPlayers) throws IOException
+    protected void init(int nbPlayers, boolean goalie) throws IOException
     {
         byte[] buffer = new byte[MSG_SIZE];
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
         // First we need to initialize the connection to the server
-        send("(init " + teamName + " (version 14))");
+        String message = "(init " + teamName + " (version 14))"+ (goalie ? " (goalie)" : "");
+        send(message);
         socket.receive(packet);
         port = packet.getPort();
 
