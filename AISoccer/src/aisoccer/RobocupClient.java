@@ -268,7 +268,6 @@ public class RobocupClient implements Runnable
         {
            System.err.println("Client not disconnected yet ! " +initMsg);
         }
-
     }
 
     

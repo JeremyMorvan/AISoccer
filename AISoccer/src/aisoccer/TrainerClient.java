@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
 import aisoccer.fullStateInfo.Ball;
-import aisoccer.fullStateInfo.MobileObject;
 import aisoccer.fullStateInfo.Player;
 
 import math.Vector2D;

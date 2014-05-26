@@ -42,6 +42,7 @@ for i=1:nb
                 y2 = values(5+(j-1)*2);
                 if ploter
                     plot(x2,y2,'go');
+                    axis equal;
                 end
                 xp = [pb;x1;y1;x2;y2;1];  
                 xn = [pb;x2;y2;x1;y1;1];
