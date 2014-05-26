@@ -228,7 +228,7 @@ public class FullstateInfo
 			}
 
 			playerNumber = Integer.valueOf(matcher.group(2));
-//			if (playerNumber > nbPlayers){continue;}
+			if (playerNumber > nbPlayers){continue;}
 			
 			if (matcher.group(3).compareToIgnoreCase("g") == 0){
 				team[playerNumber - 1].setPlayerType(-1);

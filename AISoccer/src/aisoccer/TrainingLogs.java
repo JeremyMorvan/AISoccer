@@ -30,7 +30,7 @@ public class TrainingLogs {
 		if(!ready){
 			init();
 		}
-		if(fsi.getPlayMode().equals("play_on") && currentKickSnapshot.ballVelocityAfterKick!=null){
+		if(fsi.getPlayMode().equals("play_on") && currentKickSnapshot!=null && currentKickSnapshot.ballVelocityAfterKick!=null){
 			// this is a successful pass
 			Pass p = new Pass(currentKickSnapshot, intercepter);
 			if(p.isValid()){
@@ -38,8 +38,7 @@ public class TrainingLogs {
 				try {
 					out.write(string, 0, string.length());
 					out.newLine();
-					System.out.println("la passe : a été écrite dans le fichier");
-					System.out.println("");
+					System.out.println("la passe : a ete ecrite dans le fichier");
 					out.flush();
 				} catch (IOException e) {e.printStackTrace();}				
 			}else{
@@ -50,8 +49,18 @@ public class TrainingLogs {
 	
 	
 	public static void takeFSI(FullstateInfo f){
+		if(!f.getPlayMode().equals("play_on")){
+			currentKickSnapshot = null;
+			return;
+		}
 		if(currentKickSnapshot!=null && f.getTimeStep() == currentKickSnapshot.timeStep+1 && currentKickSnapshot.ballVelocityAfterKick == null){
 			currentKickSnapshot.ballVelocityAfterKick = f.getBall().getVelocity().multiply(1.0/SoccerParams.BALL_DECAY);
+			if(currentKickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
+				System.err.println("Pass too low !");
+				currentKickSnapshot = null;
+				return;
+			}
+//			System.out.println("ballVAfterKick loaded");
 		}
 	}
 	
@@ -66,18 +75,14 @@ public class TrainingLogs {
 		public KickSnapshot(FullstateInfo fsi){
 			timeStep = fsi.getTimeStep();
 			ballPosition = (Vector2D) fsi.getBall().getPosition().clone();
-			for(Player p : fsi.getLeftTeam()){
+			for(Player p : fsi.getEveryBody()){
 				if (p.isConnected()){
 					playersPositions.put(p, (Vector2D)p.getPosition().clone());					
 				}
 			}
-			for(Player p : fsi.getRightTeam()){
-				if (p.isConnected()){
-					playersPositions.put(p, (Vector2D)p.getPosition().clone());			
-				}			
-			}
 			this.ballVelocityAfterKick = null;
-			System.out.println("nb of players in kickSnapShoot : "+playersPositions.size());
+//			System.out.println("");
+//			System.out.println("new kickSnapShot");
 		}
 	}
 		
@@ -94,20 +99,13 @@ public class TrainingLogs {
 		}
 		
 		public boolean isValid(){
-			boolean equals;
-			if(kickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
-				System.err.println("Pass too low !");
-				System.out.println("");
-				return false;
-			}
 			for(Player p : kickSnapshot.playersPositions.keySet()){				
-				equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
-				if(equals){
+				if(p.equals(intercepter)){
 					return true;
 				}
 			}
-			System.err.println("Invalid pass !");
 			System.out.println("");
+			System.err.println("Invalid pass !");
 			return false;
 		}
 		
@@ -117,9 +115,13 @@ public class TrainingLogs {
 			Vector2D standPos;
 			for(Player p : kickSnapshot.playersPositions.keySet()){
 				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocityAfterKick, kickSnapshot.playersPositions.get(p));
-				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
-				if(equals){
-					System.out.println("je suis l'intercepteur : "+p);
+				if(p.equals(intercepter)){
+//					System.out.println("");
+//					System.out.println("je suis l'intercepteur : "+p);
+//					System.out.println("balle : "+kickSnapshot.ballPosition.toString());
+//					System.out.println("balleV : "+kickSnapshot.ballVelocityAfterKick.toString());
+//					System.out.println("intercepteur : "+kickSnapshot.playersPositions.get(p).toString());
+//					System.out.println("intercepteur : "+standPos.toString());
 					res +=" "+standPos.getX()+" "+standPos.getY();
 				}else{
 					others +=" "+standPos.getX()+" "+standPos.getY();

@@ -59,15 +59,10 @@ public class PassTraining {
 		public KickSnapshot(FullstateInfo fsi, Vector2D ballP, Vector2D ballV){
 			ballPosition = ballP;
 			ballVelocity = ballV;
-			for(Player p : fsi.getLeftTeam()){
+			for(Player p : fsi.getEveryBody()){
 				if (p.isConnected()){
 					playersPositions.put(p, (Vector2D)p.getPosition().clone());					
 				}
-			}
-			for(Player p : fsi.getRightTeam()){
-				if (p.isConnected()){
-					playersPositions.put(p, (Vector2D)p.getPosition().clone());			
-				}			
 			}
 			System.out.println("nb of players in kickSnapShoot : "+playersPositions.size());
 		}
@@ -86,15 +81,13 @@ public class PassTraining {
 		}
 		
 		public boolean isValid(){
-			boolean equals;
 			if(kickSnapshot.ballVelocity.polarRadius()<0.5){
 				System.err.println("Pass too low !");
 				System.out.println("");
 				return false;
 			}
 			for(Player p : kickSnapshot.playersPositions.keySet()){				
-				equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
-				if(equals){
+				if(p.equals(intercepter)){
 					return true;
 				}
 			}
@@ -109,8 +102,7 @@ public class PassTraining {
 			Vector2D standPos;
 			for(Player p : kickSnapshot.playersPositions.keySet()){
 				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocity, kickSnapshot.playersPositions.get(p));
-				boolean equals = p.isLeftSide() == intercepter.isLeftSide() && p.getUniformNumber() == intercepter.getUniformNumber();
-				if(equals){
+				if(p.equals(intercepter)){
 					System.out.println("je suis l'intercepteur : "+p);
 					res +=" "+standPos.getX()+" "+standPos.getY();
 				}else{

@@ -171,7 +171,7 @@ public class Vector2D implements Cloneable
     public double polarAngle(char unit) 
     {
        if(unit=='r'){
-        	return polarAngle()*Math.PI/360;
+        	return polarAngle()*2*Math.PI/360;
        }
        if(unit!='d'){
     	   System.out.println("Attention, polarAngle est appelé avec une unité differente de 'd' et 'r' !");
