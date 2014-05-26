@@ -169,7 +169,7 @@ public class RobocupClient implements Runnable
     {
         send("(kick " + Double.toString(power) + " "
                 + Double.toString(direction) + ")");
-//        TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
+        TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
     }
 
     /*
@@ -211,15 +211,13 @@ public class RobocupClient implements Runnable
      * 
      * @throws IOException if the init message could not be parsed.
      */
-    protected void init(int nbPlayers, boolean goalie) throws IOException
+    protected void init(int nbPlayers) throws IOException
     {
         byte[] buffer = new byte[MSG_SIZE];
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
         // First we need to initialize the connection to the server
-        String message = "(init " + teamName + " (version 14))"+ (goalie ? " (goalie)" : "");
-        System.out.println(message);
-        send(message);
+        send("(init " + teamName + " (version 14))");
         socket.receive(packet);
         port = packet.getPort();
 
