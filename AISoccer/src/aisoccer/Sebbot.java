@@ -22,6 +22,9 @@ public class Sebbot
 {
 	static HashMap<RobocupClient,Thread> threads;
 	static HashMap<RobocupClient,Long> connected;
+	static TrainerClient trainerClient;
+	static Thread trainerThread;
+	static Long tcConnected;
 
     /**
      * This is the entry point of the application.
@@ -55,6 +58,7 @@ public class Sebbot
     {
         String hostname = "127.0.0.1";
         int port = 6000;
+        int portTrainer = 6001;
         String team = "team1";
         @SuppressWarnings("unused")
 		String strategy = "Default";
@@ -114,7 +118,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
+            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
             
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
@@ -130,7 +134,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
+            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
 
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
@@ -138,6 +142,19 @@ public class Sebbot
             thread.start();
             new Thread(brain).start();
         }
+        
+        TrainerBrain trainerBrain;
+        
+        trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
+        trainerClient.init(nbOfPlayers);
+        
+        trainerBrain = trainerClient.getBrain();
+        tcConnected = new Date().getTime();
+        
+        trainerThread = new Thread(trainerClient);
+        trainerThread.start();
+        
+        new Thread(trainerBrain).start();
         
             
 //        while(isGameOn()){        	    	

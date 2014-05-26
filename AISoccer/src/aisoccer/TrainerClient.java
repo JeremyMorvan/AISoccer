@@ -26,7 +26,7 @@ public class TrainerClient implements Runnable
 {
 
     private final int      MSG_SIZE = 4096; // Size of the socket buffer
-    final static String TEAMNAMES_PATTERN  = "\\(ok team_names (team l [a-zA-Z_]*) (team r [a-zA-Z_]*)\\)";
+    final static String TEAMNAMES_PATTERN  = "\\(team ([lr]) ([1-9a-zA-Z]*)\\)";
 
     private DatagramSocket socket;         // Socket to communicate with the server
     private InetAddress    host;           // Server address
@@ -159,14 +159,16 @@ public class TrainerClient implements Runnable
      */
     
     public void move(String objName, Vector2D position, double facingDirection, Vector2D velocity){
-    	send("(move objName "+
+    	String toSend = "(move "  + objName +" "+
     position.getX()+" "+position.getY()+" "+
     			facingDirection+" "+
-    velocity.getX()+" "+velocity.getY()+")");
+    			velocity.getX()+" "+velocity.getY()+")";
+    	System.out.println(toSend);
+    	send(toSend);
     }
     
     public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
-    	String objName = "(p " + (player.isLeftSide() ? nameLeft : nameRight) + player.getUniformNumber() + ")";
+    	String objName = "(p \"" + (player.isLeftSide() ? nameLeft : nameRight) + "\" " + player.getUniformNumber() + ")";
     	move(objName,position,facingDirection,velocity);
     }
     
@@ -191,6 +193,14 @@ public class TrainerClient implements Runnable
     	send("(eye off)");
     }
     
+    public void earOn(){
+    	send("(ear on)");
+    }
+    
+    public void earOff(){
+    	send("(ear off)");
+    }
+    
     /**
      * 
      */
@@ -212,7 +222,7 @@ public class TrainerClient implements Runnable
     private void parseServerMsg(String message)
     {
         // Check the kind of information first
-        if (message.charAt(1) == 'o' && message.charAt(4) == 'l')
+        if (message.charAt(1) == 's' && message.charAt(5)=='g')
         { // Fullstate information
             brain.getFullstateInfo().setFullstateMsg(message);
             brain.getFullstateInfo().parseTrainer();
@@ -221,14 +231,27 @@ public class TrainerClient implements Runnable
         else if (message.charAt(1) == 'o'){
         	Pattern pattern = Pattern.compile(TEAMNAMES_PATTERN);
     		Matcher matcher = pattern.matcher(message);
-        	if(matcher.find()){
-        		nameLeft = matcher.group(1);
-        		nameRight = matcher.group(2);
+        	while(matcher.find()){
+        		if(matcher.group(1).charAt(0) == 'l'){
+        			nameLeft = matcher.group(2);
+        			brain.getFullstateInfo().setNameLeft(nameLeft);
+        		}else{
+        			nameRight = matcher.group(2);        		
+            		brain.getFullstateInfo().setNameRight(nameRight);
+        		}      		
+        		
         	}
         }
+        
+        else if (message.charAt(1) == 'h' && message.charAt(6)=='r'){
+        	System.out.println(message);
+        	brain.getFullstateInfo().parseEar(message);
+        }
+        
 
         else if (message.charAt(1) == 'e')
             System.out.println(message);
+        
 
     }
 
@@ -284,7 +307,6 @@ public class TrainerClient implements Runnable
     {
         while (true)
         {
-        	//System.out.println("thread de "+teamName+ " "+port+" est encore en vie");
             parseServerMsg(receive());
             TrainingLogs.takeFSI(brain.getFullstateInfo());
         }

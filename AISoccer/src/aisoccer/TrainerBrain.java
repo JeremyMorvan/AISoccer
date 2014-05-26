@@ -1,4 +1,5 @@
 package aisoccer;
+import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 
 /**
@@ -59,14 +60,18 @@ public class TrainerBrain implements Runnable
 	{
 		this.trainerClient = trainerClient;
 	}
-
-	/**
-	 * @return the actionsQueue
-	 */
-
-	/**
-	 * @param actionsQueue the actionsQueue to set
-	 */
+	
+	public void setTimeOver(){
+		trainerClient.changeMode("time_over");
+	}
+	
+	public void setKickOff(char side){
+		trainerClient.changeMode("kick_off_"+side);
+	}
+	
+	public void setPlayOn(){
+		trainerClient.changeMode("play_on");
+	}
 
 	/**
 	 * @return the fullstateInfo
@@ -100,14 +105,30 @@ public class TrainerBrain implements Runnable
 
 		int lastTimeStep = 0;
 		int currentTimeStep = 0;
+		trainerClient.getTeamNames();
+		trainerClient.eyeOn();
+		trainerClient.earOn();
+		int count = 0;
+		
 		while (true) // TODO: change according to the play mode.
 		{
+			if(fullstateInfo.getPlayMode() != null && fullstateInfo.getPlayMode().equals("time_over")){
+				count++;
+				System.out.println(count);
+				if(count == 20){
+					trainerClient.move(fullstateInfo.getLeftTeam()[0], new Vector2D(0,0), 0, new Vector2D(0,0));
+					setPlayOn();
+					count = 0;
+				}
+			}
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
 			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0)
 			{
-				if(currentTimeStep == 500){
-					
+				//System.out.println(currentTimeStep);
+				if(currentTimeStep > 0 && currentTimeStep % 100 == 0){
+					System.out.println("hehe, c'est l'heure  : " + currentTimeStep);
+					setTimeOver();
 				}
 				//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
 				//                System.out.println("Next position: " + player.nextPosition(100.0d));
