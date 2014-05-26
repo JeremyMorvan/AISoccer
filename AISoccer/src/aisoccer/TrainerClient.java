@@ -179,6 +179,18 @@ public class TrainerClient implements Runnable
     	send("(team_names)");
     }
     
+    public void look(){
+    	send("(look)");
+    }
+    
+    public void eyeOn(){
+    	send("(eye on)");
+    }
+    
+    public void eyeOff(){
+    	send("(eye off)");
+    }
+    
     /**
      * 
      */
@@ -200,10 +212,10 @@ public class TrainerClient implements Runnable
     private void parseServerMsg(String message)
     {
         // Check the kind of information first
-        if (message.charAt(1) == 'f')
+        if (message.charAt(1) == 'o' && message.charAt(4) == 'l')
         { // Fullstate information
             brain.getFullstateInfo().setFullstateMsg(message);
-            brain.getFullstateInfo().parse();
+            brain.getFullstateInfo().parseTrainer();
         }
         
         else if (message.charAt(1) == 'o'){

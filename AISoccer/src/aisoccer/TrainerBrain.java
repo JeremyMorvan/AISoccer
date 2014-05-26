@@ -106,7 +106,9 @@ public class TrainerBrain implements Runnable
 			currentTimeStep = fullstateInfo.getTimeStep();
 			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0)
 			{
-
+				if(currentTimeStep == 500){
+					
+				}
 				//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
 				//                System.out.println("Next position: " + player.nextPosition(100.0d));
 				//                System.out.println("Next velocity: " + player.nextVelocity(100.0d));
