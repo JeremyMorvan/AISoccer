@@ -4,9 +4,7 @@ W = Win;
 V = Vin;
 dW = 0;
 dV = 0;
-
 errors = zeros(epochs,1);
-
 for i=1:epochs
     Hin = phiFct(W*patterns);
     Hout = [Hin;ones(1,size(patterns,2))];

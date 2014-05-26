@@ -6,14 +6,10 @@ package aisoccer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
 
 import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.strategy.myStrategy2;
 import aisoccer.training.TrainingStrategy;
 
 
@@ -117,7 +113,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
             
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
@@ -133,7 +129,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
 
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
