@@ -172,9 +172,9 @@ public class TrainerClient implements Runnable
     	move(objName,position,facingDirection,velocity);
     }
     
-    public void move(Ball ball, Vector2D position, double facingDirection, Vector2D velocity){
+    public void moveBall(Vector2D position, Vector2D velocity){
     	String objName = "(b)";
-    	move(objName,position,facingDirection,velocity);
+    	move(objName,position, 0,velocity);
     }
     
     public void getTeamNames(){

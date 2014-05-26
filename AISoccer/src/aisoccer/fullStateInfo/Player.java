@@ -257,5 +257,24 @@ public class Player extends MobileObject
     {
         return "Player " + (isLeftSide() ? "left " : "right ") + uniformNumber;//+ ": " + super.toString() + " - BodyDir: " + bodyDirection;
     }
+    
+
+    public int hashCode() {
+        return getUniformNumber() + (isLeftSide()? 100 : 0);
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Player))
+            return false;
+        return equals((Player)obj);
+    }
+    
+    public boolean equals(Player p) {
+    	return isLeftSide() == p.isLeftSide() && getUniformNumber() == p.getUniformNumber();
+    }
 
 }

@@ -1,5 +1,6 @@
 package aisoccer.fullStateInfo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -248,7 +249,8 @@ public class FullstateInfo
 		}
 
 		// Gather players information.
-		ResetConnectedPlayers();
+		
+		ArrayList<Player> connectedPlayers = new ArrayList<Player>();
 		
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
@@ -265,8 +267,6 @@ public class FullstateInfo
 			playerNumber = Integer.valueOf(matcher.group(2));
 			if (playerNumber > nbPlayers){continue;}
 			
-			team[playerNumber - 1].setConnected(true);
-			
 			if (matcher.group(3).compareToIgnoreCase("g") == 0){
 				team[playerNumber - 1].setPlayerType(-1);
 			}
@@ -280,6 +280,17 @@ public class FullstateInfo
 			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(6)));
 			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(7)));
 			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(8)));
+			
+			connectedPlayers.add(team[playerNumber - 1]);
+		}
+		
+		if(!connectedPlayers.isEmpty()){
+			for(Player p : leftTeam){
+				p.setConnected(connectedPlayers.contains(p));			
+			}
+			for(Player p : rightTeam){
+				p.setConnected(connectedPlayers.contains(p));
+			}			
 		}
 
 		detectKick();
@@ -347,14 +358,7 @@ public class FullstateInfo
 //			System.err.println((leftGotBall ? "Left" : "Right")+ " has now the ball");
 	}
 	
-	private void ResetConnectedPlayers(){
-		for(Player p : leftTeam){
-			p.setConnected(true);			
-		}
-		for(Player p : rightTeam){
-			p.setConnected(false);
-		}
-	}
+	
 
 	public String toString()
 	{
@@ -387,6 +391,12 @@ public class FullstateInfo
     	return new ArrayList<Player>(Arrays.asList(t));
     }
     
+    public ArrayList<Player> getEveryBody(){
+    	ArrayList<Player> reunion = new ArrayList<Player>(Arrays.asList(leftTeam));
+    	reunion.addAll(new ArrayList<Player>(Arrays.asList(rightTeam)));
+    	return reunion;
+    }
+    
     public void parseTrainer(){
 
 		// Gather ball information.
@@ -414,7 +424,8 @@ public class FullstateInfo
 		}
 
 		// Gather players information.
-		ResetConnectedPlayers();
+		
+		ArrayList<Player> connectedPlayers = new ArrayList<Player>();
 		
 		pattern = Pattern.compile(LOOK_PLAYER_PATTERN1+nameLeft+LOOK_PLAYER_PATTERN2);
 		//System.out.println(LOOK_PLAYER_PATTERN1+nameLeft+LOOK_PLAYER_PATTERN2);
@@ -436,6 +447,7 @@ public class FullstateInfo
 			if(playerNumber==1&&this.timeStep==99){
 				System.out.println(matcher.group());
 			}
+			connectedPlayers.add(team[playerNumber - 1]);
 		}
 		
 		pattern = Pattern.compile(LOOK_PLAYER_PATTERN1+nameRight+LOOK_PLAYER_PATTERN2);
@@ -454,6 +466,16 @@ public class FullstateInfo
 			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(3)));
 			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(5)));
 			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(6)));
+			connectedPlayers.add(team[playerNumber - 1]);
+		}
+		
+		if(!connectedPlayers.isEmpty()){
+			for(Player p : leftTeam){
+				p.setConnected(connectedPlayers.contains(p));			
+			}
+			for(Player p : rightTeam){
+				p.setConnected(connectedPlayers.contains(p));
+			}			
 		}
 	}
     
@@ -466,6 +488,7 @@ public class FullstateInfo
 		}
 		else{
 			System.err.println("Could not parse ear info: "+ message);
+			
 		}
 	}
 

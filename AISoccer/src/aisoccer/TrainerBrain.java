@@ -1,6 +1,7 @@
 package aisoccer;
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
+import aisoccer.fullStateInfo.Player;
 
 /**
  * 
@@ -13,8 +14,10 @@ public class TrainerBrain implements Runnable
 	/*
 	 * Private members.
 	 */
-	private TrainerClient            trainerClient; // For communicating with the server 
-	private FullstateInfo            fullstateInfo; // Contains all info about the
+	private TrainerClient 	trainerClient; // For communicating with the server 
+	private FullstateInfo	fullstateInfo; // Contains all info about the
+	
+	private PassTraining	passTrainer;
 	//   current state of the game
 
 	/*
@@ -36,6 +39,8 @@ public class TrainerBrain implements Runnable
 	{
 		this.trainerClient = client;
 		this.fullstateInfo = new FullstateInfo(nbPlayers);
+		
+		this.passTrainer = new PassTraining("../TrainingLogs.txt");
 	}
 
 	/*
@@ -121,6 +126,8 @@ public class TrainerBrain implements Runnable
 					count = 0;
 				}
 			}
+			passTraining();
+			
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
 			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0)
@@ -146,12 +153,58 @@ public class TrainerBrain implements Runnable
 			try
 			{
 				Thread.sleep(SoccerParams.SIMULATOR_STEP / 5);
+
 			}
-			catch (Exception e)
-			{
-				System.err.println(e);
+			catch (Exception e){System.err.println(e);}
+		}	
+	}
+	
+	
+	
+	public void passTraining(){
+		if(!fullstateInfo.getPlayMode().equals("play_on")){
+			movePlayers();
+			trainerClient.changeMode("play_on");
+			randomShoot();
+			return;			
+		}
+		
+		Player intercepter = null;
+		for(Player p : fullstateInfo.getEveryBody()){
+			if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
+				if(intercepter == null){
+					intercepter = p;
+				}else{
+					// There are at least two players who intercept the ball
+					// So we discard this pass
+					passTrainer.clearMemory();
+					movePlayers();
+					randomShoot();
+					return;
+				}
 			}
 		}
-
+		
+		if(intercepter != null){
+			// THERE IS AN INTERCEPTER
+			passTrainer.notifyInterception(intercepter);
+			movePlayers();
+			randomShoot();
+		}		
+	}
+	
+	public void movePlayers(){
+		// MOVE THE PLAYERS FOR THE NEXT PASS SIMULATION
+		
+	}
+	
+	public void randomShoot(){
+		Vector2D newBallP = null;
+		Vector2D newBallV = null;
+		
+		// HERE : COMPUTE newBalP AND newBallV
+		
+		trainerClient.moveBall(newBallP, newBallV);
+		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);		
 	}
 }

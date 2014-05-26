@@ -244,10 +244,6 @@ public class Brain implements Runnable
 					actionsQueue.removeFirst().execute();
 				}
 
-				//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
-				//                System.out.println("Next position: " + player.nextPosition(100.0d));
-				//                System.out.println("Next velocity: " + player.nextVelocity(100.0d));
-
 			}
 			else if (currentTimeStep != lastTimeStep)
 			{
