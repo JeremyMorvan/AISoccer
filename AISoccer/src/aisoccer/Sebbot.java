@@ -6,15 +6,11 @@ package aisoccer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
 
 import aisoccer.ballcapture.DirectPolicySearch;
 import aisoccer.strategy.myStrategy2;
-import aisoccer.training.TrainingStrategy;
 
 
 /**
@@ -113,7 +109,7 @@ public class Sebbot
         for (int i = 0; i < nbOfPlayers; i++)
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port, team);
-            client.init(nbOfPlayers);
+            client.init(nbOfPlayers, i==0);
 
             brain = client.getBrain();
             brain.computeAreas();
@@ -129,7 +125,7 @@ public class Sebbot
         for (int i = 0; i < nbOfPlayers; i++)
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
-            client.init(nbOfPlayers);
+            client.init(nbOfPlayers, i==0);
 
             brain = client.getBrain();
             brain.computeAreas();

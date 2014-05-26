@@ -210,6 +210,7 @@ public class FullstateInfo
 
 		// Gather players information.
 		ResetConnectedPlayers();
+		
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
 		Player[] team; // Team of the player currently being parsed.

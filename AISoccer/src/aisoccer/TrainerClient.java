@@ -49,8 +49,7 @@ public class TrainerClient implements Runnable
      * @param teamName
      * @throws SocketException
      */
-    public TrainerClient(InetAddress host, int port)
-                                                                     throws SocketException
+    public TrainerClient(InetAddress host, int port) throws SocketException
     {
         this.socket = new DatagramSocket();
         this.host = host;

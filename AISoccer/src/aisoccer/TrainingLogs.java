@@ -7,7 +7,7 @@ import math.Vector2D;
 import aisoccer.fullStateInfo.*;
 
 public class TrainingLogs {
-	static final String LOGSPATH = "trainingLogs.txt";
+	static final String LOGSPATH = "../trainingLogs.txt";
 	static KickSnapshot currentKickSnapshot;
 	static boolean ready = false;
 	
