@@ -1,6 +1,7 @@
 package aisoccer.actions.motion;
 
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 import aisoccer.ballcapture.Action;
 import aisoccer.behaviorTree.ActionTask;
 
@@ -12,7 +13,7 @@ public class GoStraightAhead extends ActionTask {
 
 	@Override
 	public boolean CheckConditions() {
-		return brain.getPlayer().getPosition().distanceTo(brain.getInterestPos())!=0;
+		return brain.getInterestPos().distanceTo(brain.getPlayer())>SoccerParams.KICKABLE_MARGIN/2;
 	}
 
 	@Override

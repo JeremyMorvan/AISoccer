@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import aisoccer.ballcapture.DirectPolicySearch;
 import aisoccer.training.TrainingStrategy;
+import aisoccer.strategy.myStrategy2;
 
 
 /**
@@ -109,7 +110,7 @@ public class Sebbot
         for (int i = 0; i < nbOfPlayers; i++)
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port, team);
-            client.init(nbOfPlayers);
+            client.init(nbOfPlayers, i==0);
 
             brain = client.getBrain();
             brain.computeAreas();
@@ -125,7 +126,7 @@ public class Sebbot
         for (int i = 0; i < nbOfPlayers; i++)
         {
             client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
-            client.init(nbOfPlayers);
+            client.init(nbOfPlayers, i==0);
 
             brain = client.getBrain();
             brain.computeAreas();

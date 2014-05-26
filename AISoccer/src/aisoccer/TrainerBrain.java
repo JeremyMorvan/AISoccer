@@ -263,7 +263,7 @@ public class TrainerBrain implements Runnable
 
 	public double getXLimOffSide(){
 		int p = this.player.isLeftSide() ? 1:-1;		
-		Player[] opponents = this.fullstateInfo.getOpponents(this.player);
+		Iterable<Player> opponents = this.fullstateInfo.getOpponents(this.player);
 		double xmin1 = 0;
 		double xmin2 = 0;
 		if(this.player.isLeftSide()){

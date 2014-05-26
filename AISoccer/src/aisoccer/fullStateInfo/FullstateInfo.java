@@ -2,6 +2,7 @@ package aisoccer.fullStateInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -209,6 +210,7 @@ public class FullstateInfo
 
 		// Gather players information.
 		ResetConnectedPlayers();
+		
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
 		Player[] team; // Team of the player currently being parsed.
@@ -341,8 +343,9 @@ public class FullstateInfo
     	return answer;
     }
     
-    public Player[] getOpponents(Player player){
-    	return (! player.isLeftSide()) ? leftTeam : rightTeam;
+    public ArrayList<Player> getOpponents(Player player){
+    	Player[] t = (! player.isLeftSide()) ? leftTeam : rightTeam;
+    	return new ArrayList<Player>(Arrays.asList(t));
     }
 
 }

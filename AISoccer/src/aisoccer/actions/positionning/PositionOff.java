@@ -25,7 +25,7 @@ public class PositionOff extends GoTo {
 	public void Start() {
 		Player me = brain.getPlayer();
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
-		Player[] ops = brain.getFullstateInfo().getOpponents(me);
+		Iterable<Player> ops = brain.getFullstateInfo().getOpponents(me);
 		LinkedList<Vector2D> opRP = new LinkedList<Vector2D>();
 		for(Player op : ops){
 			opRP.add(op.getPosition().subtract(ballP));
@@ -67,7 +67,7 @@ public class PositionOff extends GoTo {
 			return;			
 		}
 		for(Vector2D v2 : interestingPoints){	
-			if(brain.checkMarked(v2.subtract(ballP), opRP)){
+			if(brain.isFree(v2.subtract(ballP), opRP)){
 				goodPoints.add(v2);
 			}
 		}
