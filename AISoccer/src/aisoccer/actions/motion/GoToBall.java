@@ -9,10 +9,10 @@ public class GoToBall extends GoTo {
 		super(b);
 	}
 
-	@Override
-	public boolean CheckConditions() {
-		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
-	}
+//	@Override
+//	public boolean CheckConditions() {
+//		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
+//	}
 
 	@Override
 	public void Start() {
