@@ -1,5 +1,6 @@
 package aisoccer.fullStateInfo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -209,7 +210,8 @@ public class FullstateInfo
 		}
 
 		// Gather players information.
-		ResetConnectedPlayers();
+		
+		ArrayList<Player> connectedPlayers = new ArrayList<Player>();
 		
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
@@ -224,9 +226,7 @@ public class FullstateInfo
 			}
 
 			playerNumber = Integer.valueOf(matcher.group(2));
-			if (playerNumber > nbPlayers){continue;}
-			
-			team[playerNumber - 1].setConnected(true);
+//			if (playerNumber > nbPlayers){continue;}
 			
 			if (matcher.group(3).compareToIgnoreCase("g") == 0){
 				team[playerNumber - 1].setPlayerType(-1);
@@ -241,6 +241,17 @@ public class FullstateInfo
 			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(6)));
 			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(7)));
 			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(8)));
+			
+			connectedPlayers.add(team[playerNumber - 1]);
+		}
+		
+		if(!connectedPlayers.isEmpty()){
+			for(Player p : leftTeam){
+				p.setConnected(connectedPlayers.contains(p));			
+			}
+			for(Player p : rightTeam){
+				p.setConnected(connectedPlayers.contains(p));
+			}			
 		}
 
 		detectKick();
@@ -308,14 +319,7 @@ public class FullstateInfo
 //			System.err.println((leftGotBall ? "Left" : "Right")+ " has now the ball");
 	}
 	
-	private void ResetConnectedPlayers(){
-		for(Player p : leftTeam){
-			p.setConnected(true);			
-		}
-		for(Player p : rightTeam){
-			p.setConnected(false);
-		}
-	}
+	
 
 	public String toString()
 	{
@@ -346,6 +350,12 @@ public class FullstateInfo
     public ArrayList<Player> getOpponents(Player player){
     	Player[] t = (! player.isLeftSide()) ? leftTeam : rightTeam;
     	return new ArrayList<Player>(Arrays.asList(t));
+    }
+    
+    public ArrayList<Player> getEveryBody(){
+    	ArrayList<Player> reunion = new ArrayList<Player>(Arrays.asList(leftTeam));
+    	reunion.addAll(new ArrayList<Player>(Arrays.asList(rightTeam)));
+    	return reunion;
     }
 
 }

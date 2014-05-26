@@ -159,10 +159,8 @@ public class TrainerClient implements Runnable
      */
     
     public void move(String objName, Vector2D position, double facingDirection, Vector2D velocity){
-    	send("(move objName "+
-    position.getX()+" "+position.getY()+" "+
-    			facingDirection+" "+
-    velocity.getX()+" "+velocity.getY()+")");
+    	send("(move objName "+ position.getX()+" "+position.getY()+" "+	facingDirection+" "+
+    												velocity.getX()+" "+velocity.getY()+")");
     }
     
     public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
@@ -170,9 +168,9 @@ public class TrainerClient implements Runnable
     	move(objName,position,facingDirection,velocity);
     }
     
-    public void move(Ball ball, Vector2D position, double facingDirection, Vector2D velocity){
+    public void moveBall(Vector2D position, Vector2D velocity){
     	String objName = "(b)";
-    	move(objName,position,facingDirection,velocity);
+    	move(objName,position, 0,velocity);
     }
     
     public void getTeamNames(){
