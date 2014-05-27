@@ -1,4 +1,6 @@
 package aisoccer;
+import java.util.ArrayList;
+
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
@@ -113,37 +115,19 @@ public class TrainerBrain implements Runnable
 		trainerClient.getTeamNames();
 		trainerClient.eyeOn();
 		trainerClient.earOn();
-		int count = 0;
 		
 		while (true) // TODO: change according to the play mode.
 		{
-			if(fullstateInfo.getPlayMode() != null && fullstateInfo.getPlayMode().equals("time_over")){
-				count++;
-				System.out.println(count);
-				if(count == 40){
-					trainerClient.move(fullstateInfo.getLeftTeam()[0], new Vector2D(40,0));
-					trainerClient.moveBall(new Vector2D(-40,0), new Vector2D(2,0));
-				}
-				if(count == 100){
-					setPlayOn();
-					count = 0;
-				}
-			}
-			//passTraining();
+			passTraining();
 			
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
 			if (currentTimeStep == lastTimeStep + 1 || currentTimeStep == 0)
 			{
 				//System.out.println(currentTimeStep);
-				if(currentTimeStep > 0 && currentTimeStep % 100 == 0){
-					System.out.println("hehe, c'est l'heure  : " + currentTimeStep);
-					setTimeOver();
-				}
 				//                System.out.println(fullstateInfo.getTimeStep() + ": " + player + " " + fullstateInfo.getBall());
 				//                System.out.println("Next position: " + player.nextPosition(100.0d));
 				//                System.out.println("Next velocity: " + player.nextVelocity(100.0d));
-
 			}
 			else if (currentTimeStep != lastTimeStep)
 			{
@@ -165,40 +149,52 @@ public class TrainerBrain implements Runnable
 	
 	
 	public void passTraining(){
-		if(!fullstateInfo.getPlayMode().equals("play_on")){
-			movePlayers();
-			trainerClient.changeMode("play_on");
-			randomShoot();
-			return;			
-		}
-		
-		Player intercepter = null;
-		for(Player p : fullstateInfo.getEveryBody()){
-			if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
-				if(intercepter == null){
-					intercepter = p;
-				}else{
-					// There are at least two players who intercept the ball
-					// So we discard this pass
-					passTrainer.clearMemory();
-					movePlayers();
-					randomShoot();
-					return;
+		if(fullstateInfo.getPlayMode() != null){
+			if(!fullstateInfo.getPlayMode().equals("play_on")){
+				System.out.println("here1");
+				movePlayers();				
+				randomShoot();
+				setPlayOn();
+				return;			
+			}
+			
+			Player intercepter = null;
+			for(Player p : fullstateInfo.getEveryBody()){
+				if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
+					if(intercepter == null){
+						intercepter = p;
+					}else{
+						// There are at least two players who intercept the ball
+						// So we discard this pass
+						setTimeOver();
+//						passTrainer.clearMemory();
+//						movePlayers();
+//						randomShoot();
+						return;
+					}
 				}
 			}
-		}
-		
-		if(intercepter != null){
-			// THERE IS AN INTERCEPTER
-			passTrainer.notifyInterception(intercepter);
-			movePlayers();
-			randomShoot();
-		}		
+			if(intercepter != null){
+				System.out.println("here2");
+				// THERE IS AN INTERCEPTER
+				passTrainer.notifyInterception(intercepter);
+				setTimeOver();
+//				movePlayers();
+//				randomShoot();
+			}	
+		}			
 	}
 	
 	public void movePlayers(){
 		// MOVE THE PLAYERS FOR THE NEXT PASS SIMULATION
-		
+		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
+		double x;
+		double y;
+		for(Player p : everybody){
+			x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
+			y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
+			trainerClient.move(p,x,y);
+		}
 	}
 	
 	public void randomShoot(){
@@ -206,7 +202,59 @@ public class TrainerBrain implements Runnable
 		Vector2D newBallV = null;
 		
 		// HERE : COMPUTE newBalP AND newBallV
+		double x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
+		double y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
+		newBallP = new Vector2D(x,y);
 		
+		double direction;
+		double min;
+		double max;
+		
+		while(newBallV == null){
+			direction = 2*Math.random()*Math.PI;
+			
+			min = 0.5;
+			max = 0;
+			if(direction<=Math.PI/4||direction>7*Math.PI/4){
+				max = ((SoccerParams.FIELD_LENGTH/2)-x)/Math.cos(direction);
+//				System.out.println("case 1");
+//				System.out.println((SoccerParams.FIELD_LENGTH/2)-x);
+//				System.out.println(Math.cos(direction));
+			}
+			else if(direction>Math.PI/4&&direction<=3*Math.PI/4){
+				max = ((SoccerParams.FIELD_WIDTH/2)-y)/Math.sin(direction);
+//				System.out.println("case 2");
+//				System.out.println((SoccerParams.FIELD_WIDTH/2)-y);
+//				System.out.println(Math.sin(direction));
+			}
+			else if(direction>3*Math.PI/4&&direction<=5*Math.PI/4){
+				max = -((SoccerParams.FIELD_LENGTH/2)+x)/Math.cos(direction);
+//				System.out.println("case 3");
+//				System.out.println((SoccerParams.FIELD_LENGTH/2)+x);
+//				System.out.println(Math.cos(direction));
+			}
+			else if(direction>5*Math.PI/4&&direction<=7*Math.PI/4){
+				max = -((SoccerParams.FIELD_WIDTH/2)+y)/Math.sin(direction);
+//				System.out.println("case 4");
+//				System.out.println((SoccerParams.FIELD_WIDTH/2)+y);
+//				System.out.println(Math.sin(direction));
+			}
+			else{
+				System.out.println("the direction couldn't be classified : " + direction);
+			}
+//			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+//			if(max>3){
+//				System.out.println("////////////////////////////////////////////////////");
+//				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+//				System.out.println(Math.cos(direction));
+//				System.out.println(Math.sin(direction));
+//				System.out.println("////////////////////////////////////////////////////");
+//			}
+			if(max>min){
+				newBallV = new Vector2D(Math.random()*(max-min)+min,direction,true);
+			}
+		}
 		trainerClient.moveBall(newBallP, newBallV);
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);		
 	}

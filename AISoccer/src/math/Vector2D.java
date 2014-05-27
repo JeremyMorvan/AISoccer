@@ -17,8 +17,8 @@ public class Vector2D implements Cloneable
     {
         if (arePolarCoordinates)
         { // component1 = radius, component2 = angle.
-            this.x = component1 * Math.cos(Math.toRadians(component2));
-            this.y = component1 * Math.sin(Math.toRadians(component2));
+            this.x = component1 * Math.cos(component2);
+            this.y = component1 * Math.sin(component2);
         }
         else
         { // component1 = x, component2 = y.

@@ -151,6 +151,8 @@ public class TrainerClient implements Runnable
     	send("(change_mode " + play_mode + ")");
     }
     
+    
+    /////////////////////////////////////MOVE COMMANDS
     /**
      * @param object
      * @param position
@@ -163,23 +165,37 @@ public class TrainerClient implements Runnable
     position.getX()+" "+position.getY()+" "+
     			facingDirection+" "+
     			velocity.getX()+" "+velocity.getY()+")";
-    	System.out.println(toSend);
     	send(toSend);
     }
     
     public void move(String objName, Vector2D position){
     	String toSend = "(move "  + objName +" "+
-    position.getX()+" "+position.getY()+")";
-    	System.out.println(toSend);
+    			position.getX()+" "+
+    			position.getY()+")";
+    	send(toSend);
+    }
+    
+    public void move(String objName, double x, double y, double facingDirection, double vx, double vy){
+    	String toSend = "(move "  + objName +" "+
+    			x+" "+
+    			y+" "+
+    			facingDirection+" "+
+    			vx+" "+
+    			vy+")";
+    	send(toSend);
+    }
+    
+    public void move(String objName, double x, double y){
+    	String toSend = "(move "  + objName +" "+
+    			x+" "+
+    			y+")";
     	send(toSend);
     }
     
     public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
     	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
     	move(objName,position,facingDirection,velocity);
-    }
-    
-    
+    }  
     
     public void move(Player player, Vector2D position){
     	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
@@ -190,6 +206,23 @@ public class TrainerClient implements Runnable
     	String objName = "(ball)";
     	move(objName,position, 0,velocity);
     }
+    
+    public void move(Player player, double x, double y, double facingDirection, double vx, double vy){
+    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
+    	move(objName,x,y,facingDirection,vx,vy);
+    }  
+    
+    public void move(Player player, double x, double y){
+    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
+    	move(objName,x,y);
+    }
+    
+    public void moveBall(double x, double y, double vx, double vy){
+    	String objName = "(ball)";
+    	move(objName,x,y, 0,vx,vy);
+    }
+    
+    /////////////////////////////////////
     
     public void getTeamNames(){
     	send("(team_names)");
@@ -264,7 +297,7 @@ public class TrainerClient implements Runnable
             		
             	}
     		}else{
-    			System.out.println(message);
+    			//System.out.println(message);
     		}
         	
         }
@@ -277,8 +310,10 @@ public class TrainerClient implements Runnable
         else if (message.charAt(1) == 'e')
             System.out.println(message);
         
-        else
-        	System.out.println(message);
+        else{
+        	//System.out.println(message);
+        }
+        	
         
 
     }

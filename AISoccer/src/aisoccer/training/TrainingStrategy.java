@@ -3,9 +3,10 @@ package aisoccer.training;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
+import aisoccer.actions.motion.InterceptBall;
 import aisoccer.behaviorTree.Selector;
+import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
-import aisoccer.strategy.Formation442;
 import aisoccer.strategy.Strategy;
 
 public class TrainingStrategy extends Selector implements Strategy {
@@ -13,14 +14,15 @@ public class TrainingStrategy extends Selector implements Strategy {
 	public TrainingStrategy(Brain b) {
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new TrainingSelector(brain));
-		children.add(new PassRandom(brain));
-		Formation442.setMyAreas(6, b);
+		children.add(new InterceptBall(brain));
+//		children.add(new TrainingSelector(brain));
+//		children.add(new PassRandom(brain));
+//		Formation442.setMyAreas(6, b);
 	}
 
 	@Override
 	public boolean CheckConditions() {
-		return true;
+		return brain.getFullstateInfo().getPlayMode()!= null && brain.getFullstateInfo().getPlayMode().equals("play_on");
 	}
 
 	@Override

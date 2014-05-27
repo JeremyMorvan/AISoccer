@@ -118,7 +118,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
             
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
@@ -134,7 +134,7 @@ public class Sebbot
 
             brain = client.getBrain();
             brain.computeAreas();
-            brain.setStrategy(new myStrategy2(nbOfPlayers,brain));
+            brain.setStrategy(new TrainingStrategy(brain));
 
             connected.put(client, new Date().getTime());
             Thread thread = new Thread(client);
