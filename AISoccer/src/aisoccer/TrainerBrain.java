@@ -120,13 +120,16 @@ public class TrainerBrain implements Runnable
 			if(fullstateInfo.getPlayMode() != null && fullstateInfo.getPlayMode().equals("time_over")){
 				count++;
 				System.out.println(count);
-				if(count == 20){
-					trainerClient.move(fullstateInfo.getLeftTeam()[0], new Vector2D(0,0), 0, new Vector2D(0,0));
+				if(count == 40){
+					trainerClient.move(fullstateInfo.getLeftTeam()[0], new Vector2D(40,0));
+					trainerClient.moveBall(new Vector2D(-40,0), new Vector2D(2,0));
+				}
+				if(count == 100){
 					setPlayOn();
 					count = 0;
 				}
 			}
-			passTraining();
+			//passTraining();
 			
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();

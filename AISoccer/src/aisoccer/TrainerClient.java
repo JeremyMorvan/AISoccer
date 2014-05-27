@@ -167,13 +167,27 @@ public class TrainerClient implements Runnable
     	send(toSend);
     }
     
+    public void move(String objName, Vector2D position){
+    	String toSend = "(move "  + objName +" "+
+    position.getX()+" "+position.getY()+")";
+    	System.out.println(toSend);
+    	send(toSend);
+    }
+    
     public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
-    	String objName = "(p \"" + (player.isLeftSide() ? nameLeft : nameRight) + "\" " + player.getUniformNumber() + ")";
+    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
     	move(objName,position,facingDirection,velocity);
     }
     
+    
+    
+    public void move(Player player, Vector2D position){
+    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
+    	move(objName,position);
+    }
+    
     public void moveBall(Vector2D position, Vector2D velocity){
-    	String objName = "(b)";
+    	String objName = "(ball)";
     	move(objName,position, 0,velocity);
     }
     
@@ -231,26 +245,40 @@ public class TrainerClient implements Runnable
         else if (message.charAt(1) == 'o'){
         	Pattern pattern = Pattern.compile(TEAMNAMES_PATTERN);
     		Matcher matcher = pattern.matcher(message);
-        	while(matcher.find()){
-        		if(matcher.group(1).charAt(0) == 'l'){
+    		if(matcher.find()){
+    			if(matcher.group(1).charAt(0) == 'l'){
         			nameLeft = matcher.group(2);
         			brain.getFullstateInfo().setNameLeft(nameLeft);
         		}else{
         			nameRight = matcher.group(2);        		
             		brain.getFullstateInfo().setNameRight(nameRight);
-        		}      		
-        		
-        	}
+        		}  
+    			while(matcher.find()){
+            		if(matcher.group(1).charAt(0) == 'l'){
+            			nameLeft = matcher.group(2);
+            			brain.getFullstateInfo().setNameLeft(nameLeft);
+            		}else{
+            			nameRight = matcher.group(2);        		
+                		brain.getFullstateInfo().setNameRight(nameRight);
+            		}      		
+            		
+            	}
+    		}else{
+    			System.out.println(message);
+    		}
+        	
         }
         
         else if (message.charAt(1) == 'h' && message.charAt(6)=='r'){
-        	System.out.println(message);
         	brain.getFullstateInfo().parseEar(message);
         }
         
 
         else if (message.charAt(1) == 'e')
             System.out.println(message);
+        
+        else
+        	System.out.println(message);
         
 
     }

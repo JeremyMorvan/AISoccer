@@ -49,19 +49,21 @@ public class TrainingLogs {
 	
 	
 	public static void takeFSI(FullstateInfo f){
-		if(!f.getPlayMode().equals("play_on")){
-			currentKickSnapshot = null;
-			return;
-		}
-		if(currentKickSnapshot!=null && f.getTimeStep() == currentKickSnapshot.timeStep+1 && currentKickSnapshot.ballVelocityAfterKick == null){
-			currentKickSnapshot.ballVelocityAfterKick = f.getBall().getVelocity().multiply(1.0/SoccerParams.BALL_DECAY);
-			if(currentKickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
-				System.err.println("Pass too low !");
+		if(f.getPlayMode() != null){
+			if(!f.getPlayMode().equals("play_on")){
 				currentKickSnapshot = null;
 				return;
 			}
-//			System.out.println("ballVAfterKick loaded");;
-		}
+			if(currentKickSnapshot!=null && f.getTimeStep() == currentKickSnapshot.timeStep+1 && currentKickSnapshot.ballVelocityAfterKick == null){
+				currentKickSnapshot.ballVelocityAfterKick = f.getBall().getVelocity().multiply(1.0/SoccerParams.BALL_DECAY);
+				if(currentKickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
+					System.err.println("Pass too low !");
+					currentKickSnapshot = null;
+					return;
+				}
+//				System.out.println("ballVAfterKick loaded");;
+			}
+		}		
 	}
 	
 	
