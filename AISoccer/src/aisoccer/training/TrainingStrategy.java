@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import aisoccer.Brain;
 import aisoccer.actions.motion.InterceptBall;
 import aisoccer.behaviorTree.Selector;
-import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
 import aisoccer.strategy.Strategy;
 

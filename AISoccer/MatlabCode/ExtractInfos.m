@@ -1,6 +1,6 @@
 function [X1,X2,T1,T2] = ExtractInfos(FileName)
 
-ploter = 1;
+ploter = 0;
 fid = fopen(FileName,'r');
 flines = {};
 while 1

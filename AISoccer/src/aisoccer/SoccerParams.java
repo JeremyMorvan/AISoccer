@@ -24,4 +24,7 @@ public class SoccerParams
     public final static float BALL_ACCEL_MAX   = 2.7f;
     public final static float PLAYER_SPEED_MAX = 1.05f;
     public final static float PLAYER_ACCEL_MAX = 1.0f;
+    
+    public final static float CATCHABLE_AREA_L   = 2.0f;
+    public final static float CATCHABLE_AREA_W   = 1.0f;
 }

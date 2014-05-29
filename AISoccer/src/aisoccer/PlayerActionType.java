@@ -9,5 +9,5 @@ package aisoccer;
  */
 public enum PlayerActionType
 {
-        DASH, KICK, TURN
+        DASH, KICK, TURN, CATCH
 }

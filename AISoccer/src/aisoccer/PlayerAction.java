@@ -17,6 +17,7 @@ public class PlayerAction
     private static int       turnCount = 0;
     private static int       dashCount = 0;
     private static int       kickCount = 0;
+    private static int 		 catchCount = 0;
 
     /*
      * =========================================================================
@@ -82,6 +83,11 @@ public class PlayerAction
     public static int getKickCount()
     {
         return kickCount;
+    }
+    
+    public static int getCatchCount()
+    {
+        return catchCount;
     }
     
     /**
@@ -157,6 +163,10 @@ public class PlayerAction
         case TURN:
             client.turn(direction);
             turnCount++;
+            break;
+        case CATCH:
+        	client.Catch(direction);
+            catchCount++;
             break;
         default:
             break;

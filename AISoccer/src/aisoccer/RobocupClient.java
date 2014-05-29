@@ -171,6 +171,14 @@ public class RobocupClient implements Runnable
                 + Double.toString(direction) + ")");
         //TrainingLogs.notifyKick(brain.getPlayer(), brain.getFullstateInfo());
     }
+    
+    /**
+     * @param direction
+     */
+    
+    public void Catch(double direction){
+    	send("(catch " + Double.toString(direction) + ")");
+    }
 
     /*
      * =========================================================================
