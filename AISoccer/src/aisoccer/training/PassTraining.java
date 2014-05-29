@@ -67,7 +67,7 @@ public class PassTraining {
 					playersPositions.put(p, (Vector2D)p.getPosition().clone());					
 				}
 			}
-			System.out.println("nb of players in kickSnapShoot : "+playersPositions.size());
+//			System.out.println("nb of players in kickSnapShoot : "+playersPositions.size());
 		}
 	}
 		
@@ -106,7 +106,7 @@ public class PassTraining {
 			for(Player p : kickSnapshot.playersPositions.keySet()){
 				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocity, kickSnapshot.playersPositions.get(p));
 				if(p.equals(intercepter)){
-					System.out.println("je suis l'intercepteur : "+p);
+//					System.out.println("je suis l'intercepteur : "+p);
 					res +=" "+standPos.getX()+" "+standPos.getY();
 				}else{
 					others +=" "+standPos.getX()+" "+standPos.getY();

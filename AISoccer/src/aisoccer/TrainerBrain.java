@@ -192,7 +192,7 @@ public class TrainerBrain implements Runnable
 	public void passTraining(){		
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
-				System.out.println("here1");
+//				System.out.println("here1");
 				movePlayers();				
 				randomPass();				
 				setPlayOn();
@@ -213,7 +213,7 @@ public class TrainerBrain implements Runnable
 				}
 			}
 			if(intercepter != null){
-				System.out.println("here2");
+//				System.out.println("here2");
 				// THERE IS AN INTERCEPTER
 				passTrainer.notifyInterception(intercepter);
 				setTimeOver();			
@@ -258,7 +258,7 @@ public class TrainerBrain implements Runnable
 		for(Player p : everybody){
 			x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
 			y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
-			trainerClient.move(p,x,y);
+			trainerClient.movePlayer(p,x,y);
 			p.setPosition(new Vector2D(x,y));
 		}
 	}
