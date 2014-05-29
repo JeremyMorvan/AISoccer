@@ -8,9 +8,9 @@ import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 import aisoccer.strategy.Strategy;
 
-public class TrainingStrategy extends Selector implements Strategy {
+public class TrainingPassStrategy extends Selector implements Strategy {
 
-	public TrainingStrategy(Brain b) {
+	public TrainingPassStrategy(Brain b) {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new InterceptBall(brain));

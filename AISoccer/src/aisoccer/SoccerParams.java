@@ -13,6 +13,7 @@ public class SoccerParams
     public final static double PLAYER_SIZE     = 0.3;
     public final static float KICKABLE_MARGIN  = 0.7f;
     public final static double POWERMAX        = 100;
+    public final static double GOAL_WIDTH 	   = 14.02f;
     
     public final static float BALL_DECAY       = 0.94f;
     public final static float PLAYER_DECAY     = 0.4f;

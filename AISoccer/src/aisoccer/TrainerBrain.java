@@ -1,10 +1,12 @@
 package aisoccer;
 import java.util.ArrayList;
+import java.util.Random;
 
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
 import aisoccer.training.PassTraining;
+import aisoccer.training.ShootTraining;
 
 /**
  * 
@@ -21,6 +23,12 @@ public class TrainerBrain implements Runnable
 	private FullstateInfo	fullstateInfo; // Contains all info about the
 	
 	private PassTraining	passTrainer;
+	private ShootTraining 	shootTrainer;
+	private TrainingType 	trainingType;
+	private double 	  	  	currentGoalieDir;
+	private Vector2D 	  	currentBallPos;
+	private int 		 	count;
+	
 	//   current state of the game
 
 	/*
@@ -38,12 +46,25 @@ public class TrainerBrain implements Runnable
 	 * @param playerNumber
 	 * @param strategy
 	 */
-	public TrainerBrain(TrainerClient client, int nbPlayers)
+	public TrainerBrain(TrainerClient client, int nbPlayers,TrainingType trainingType)
 	{
 		this.trainerClient = client;
 		this.fullstateInfo = new FullstateInfo(nbPlayers);
+		this.trainingType = trainingType;
+		this.count = 0;
+		this.currentBallPos = null;
+		this.currentGoalieDir = 0;
+		switch(trainingType){
+		case PASS :
+			this.passTrainer = new PassTraining("../TrainingPassLogs.txt");
+			break;
+		case SHOOT :
+			this.shootTrainer = new ShootTraining("../TrainingShootLogs.txt");
+			break;
+		default :
+			break;
+		}
 		
-		this.passTrainer = new PassTraining("../TrainingLogs.txt");
 	}
 
 	/*
@@ -119,7 +140,17 @@ public class TrainerBrain implements Runnable
 		
 		while (true) // TODO: change according to the play mode.
 		{
-			passTraining();
+			switch(trainingType){
+			case PASS :
+				passTraining();
+				break;
+			case SHOOT : 
+				shootTraining();
+				break;
+			default :
+				break;					
+			}
+			
 			
 			lastTimeStep = currentTimeStep;
 			currentTimeStep = fullstateInfo.getTimeStep();
@@ -145,17 +176,25 @@ public class TrainerBrain implements Runnable
 			}
 			catch (Exception e){System.err.println(e);}
 		}	
+	}	
+	
+	private void shootTraining() {
+		if(fullstateInfo.getPlayMode() != null){
+			if(fullstateInfo.getPlayMode().equals("time_over") ){
+				System.out.println("here1");			
+				randomShoot();				
+				setPlayOn();
+				return;			
+			}
+		}
 	}
-	
-	
-	
-	public void passTraining(){
-		
+
+	public void passTraining(){		
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
 				System.out.println("here1");
 				movePlayers();				
-				randomShoot();				
+				randomPass();				
 				setPlayOn();
 				return;			
 			}
@@ -182,6 +221,35 @@ public class TrainerBrain implements Runnable
 		}			
 	}
 	
+	private void randomShoot() {
+		switch(count){
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		default :
+			break;
+		}
+	}
+	
+	public double randomGoalieDir(Vector2D ballPos){
+		Random r = new Random();
+		double dir = 100;
+		double ballDir = ballPos.polarAngle();
+		while(dir>Math.PI||dir<0){
+			dir = r.nextGaussian()*Math.PI/3 + ballDir;
+		}
+		return dir;
+	}
+	
+	public void sendRandomShoot(double gDir,Vector2D bPos, double bPow, double bDir){
+	}
+	
 	public void movePlayers(){
 		// MOVE THE PLAYERS FOR THE NEXT PASS SIMULATION
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
@@ -195,7 +263,7 @@ public class TrainerBrain implements Runnable
 		}
 	}
 	
-	public void randomShoot(){
+	public void randomPass(){
 		Vector2D newBallP = null;
 		Vector2D newBallV = null;
 		
@@ -255,5 +323,17 @@ public class TrainerBrain implements Runnable
 		}
 		trainerClient.moveBall(newBallP, newBallV);
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);		
+	}
+	
+	private Vector2D genPos2relPos(Vector2D genPos){
+		return new Vector2D(-genPos.getY(),genPos.getX()+SoccerParams.FIELD_LENGTH/2);
+	}
+	
+	private Vector2D relPos2genPos(Vector2D relPos){
+		return new Vector2D(relPos.getY()-SoccerParams.FIELD_LENGTH/2,-relPos.getX());
+	}
+	
+	private Vector2D gDir2genPos(double gDirection){
+		return (new Vector2D(SoccerParams.GOAL_WIDTH/2,gDirection-Math.PI/2,true)).add(new Vector2D(-SoccerParams.FIELD_LENGTH/2,0));
 	}
 }

@@ -9,8 +9,9 @@ import java.net.SocketException;
 import java.util.Date;
 import java.util.HashMap;
 
-import aisoccer.ballcapture.DirectPolicySearch;
-import aisoccer.training.TrainingStrategy;
+import aisoccer.training.TrainingGoalie;
+import aisoccer.training.TrainingPassStrategy;
+import aisoccer.strategy.myGoalieStrategy;
 import aisoccer.strategy.myStrategy2;
 
 
@@ -89,6 +90,9 @@ public class Sebbot
                     throw new InvalidArgumentException(args[i]);
                 }
             }
+            //initTrainingPass(hostname,port,portTrainer,team);
+            initTrainingShoot(hostname,port,portTrainer,team);
+            //initGame(hostname,port,portTrainer,team,7);
         }
         catch (InvalidArgumentException e)
         {
@@ -104,57 +108,6 @@ public class Sebbot
             System.err.println("");
             return;
         }
-
-        RobocupClient client;
-        Brain brain;
-        int nbOfPlayers = 6;
-        connected = new HashMap<RobocupClient, Long>();
-        threads = new HashMap<RobocupClient, Thread>();
-
-        for (int i = 0; i < nbOfPlayers; i++)
-        {
-            client = new RobocupClient(InetAddress.getByName(hostname), port, team);
-            client.init(nbOfPlayers, i==0);
-
-            brain = client.getBrain();
-            brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
-            
-            connected.put(client, new Date().getTime());
-            Thread thread = new Thread(client);
-            threads.put(client,thread);
-            thread.start();
-            new Thread(brain).start();
-        }
-        
-        for (int i = 0; i < nbOfPlayers; i++)
-        {
-            client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
-            client.init(nbOfPlayers, i==0);
-
-            brain = client.getBrain();
-            brain.computeAreas();
-            brain.setStrategy(new TrainingStrategy(brain));
-
-            connected.put(client, new Date().getTime());
-            Thread thread = new Thread(client);
-            threads.put(client,thread);
-            thread.start();
-            new Thread(brain).start();
-        }
-        
-        TrainerBrain trainerBrain;
-        
-        trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
-        trainerClient.init(nbOfPlayers);
-        
-        trainerBrain = trainerClient.getBrain();
-        tcConnected = new Date().getTime();
-        
-        trainerThread = new Thread(trainerClient);
-        trainerThread.start();
-        
-        new Thread(trainerBrain).start();
         
             
 //        while(isGameOn()){        	    	
@@ -196,22 +149,133 @@ public class Sebbot
     	}
     	return false;
     }
+    
+    public static void initTrainingPass(String hostname,int port,int portTrainer,String team) throws IOException
+    {   		
+        RobocupClient client;
+        Brain brain;
+        int nbOfPlayers = 6;
+        connected = new HashMap<RobocupClient, Long>();
+        threads = new HashMap<RobocupClient, Thread>();
+        for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, team);
+		    client.init(nbOfPlayers, i==0);
 
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    brain.setStrategy(new TrainingPassStrategy(brain));
+		    
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
+		
+		for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
+		    client.init(nbOfPlayers, i==0);
+
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    brain.setStrategy(new TrainingPassStrategy(brain));
+
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
+		
+		TrainerBrain trainerBrain;
+		
+		trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
+		trainerClient.init(nbOfPlayers,TrainingType.PASS);
+		
+		trainerBrain = trainerClient.getBrain();
+		tcConnected = new Date().getTime();
+		
+		trainerThread = new Thread(trainerClient);
+		trainerThread.start();
+		
+		new Thread(trainerBrain).start();
+    }
     
+    public static void initTrainingShoot(String hostname,int port,int portTrainer,String team) throws IOException
+    {   		
+        RobocupClient client;
+        Brain brain;
+        connected = new HashMap<RobocupClient, Long>();
+        threads = new HashMap<RobocupClient, Thread>();
+	    client = new RobocupClient(InetAddress.getByName(hostname), port, team);
+	    client.init(1, true);
+	    brain = client.getBrain();
+	    brain.computeAreas();
+	    brain.setStrategy(new TrainingGoalie(brain));	    
+	    connected.put(client, new Date().getTime());
+	    Thread thread = new Thread(client);
+	    threads.put(client,thread);
+	    thread.start();
+	    new Thread(brain).start();
+		
+		TrainerBrain trainerBrain;
+		
+		trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
+		trainerClient.init(1,TrainingType.SHOOT);
+		
+		trainerBrain = trainerClient.getBrain();
+		tcConnected = new Date().getTime();
+		
+		trainerThread = new Thread(trainerClient);
+		trainerThread.start();
+		
+		new Thread(trainerBrain).start();
+    }
     
-    public static void dpsComputation()
-    {
-        DirectPolicySearch dps;
-        int nbOfBFs = 12;
-        for (int i = 0; i < 5; i++)
-        {
-            dps = new DirectPolicySearch(nbOfBFs, 1, 100);
-            dps.run();
-            dps = new DirectPolicySearch(nbOfBFs, 2, 100);
-            dps.run();
-            dps = new DirectPolicySearch(nbOfBFs, 3, 100);
-            dps.run();
-            nbOfBFs += 4;
-        }
+    public static void initGame(String hostname,int port,int portTrainer,String team,int nbOfPlayers) throws IOException
+    {   		
+    	RobocupClient client;
+        Brain brain;
+        connected = new HashMap<RobocupClient, Long>();
+        threads = new HashMap<RobocupClient, Thread>();
+        for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, team);
+		    client.init(nbOfPlayers, i==0);
+
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    if(i==0){
+		    	brain.setStrategy(new myGoalieStrategy(brain));
+		    }else{
+		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
+		    }		    
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
+		
+		for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
+		    client.init(nbOfPlayers, i==0);
+
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    if(i==0){
+		    	brain.setStrategy(new myGoalieStrategy(brain));
+		    }else{
+		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
+		    }
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
     }
 }

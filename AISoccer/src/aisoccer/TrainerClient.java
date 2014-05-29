@@ -333,7 +333,7 @@ public class TrainerClient implements Runnable
      * 
      * @throws IOException if the init message could not be parsed.
      */
-    protected void init(int nbPlayers) throws IOException
+    protected void init(int nbPlayers,TrainingType trainingType) throws IOException
     {
         byte[] buffer = new byte[MSG_SIZE];
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
@@ -351,8 +351,7 @@ public class TrainerClient implements Runnable
 
         if (matcher.find())
         {
-
-            brain = new TrainerBrain(this,nbPlayers);
+            brain = new TrainerBrain(this,nbPlayers,trainingType);
         }
         else
         {
