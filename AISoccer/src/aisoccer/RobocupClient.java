@@ -227,7 +227,11 @@ public class RobocupClient implements Runnable
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
         // First we need to initialize the connection to the server
-        String message = "(init " + teamName + " (version 14)"+ (goalie ? " (goalie))" : ")");
+        String message = "(init " + teamName + " (version 14)";
+        if(goalie){
+        	message +=" (goalie)";
+        }
+        message += ")";
         send(message);
         System.out.println(message);
         socket.receive(packet);
@@ -293,7 +297,7 @@ public class RobocupClient implements Runnable
         	cont++;
         	
             parseServerMsg(receive());
-            TrainingLogs.takeFSI(brain.getFullstateInfo());
+//            TrainingLogs.takeFSI(brain.getFullstateInfo());
             Sebbot.notifyConnection(this);
             
         	if(cont>200 && brain.getPlayer().getUniformNumber()==1){

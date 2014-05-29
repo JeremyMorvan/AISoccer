@@ -165,11 +165,13 @@ public class TrainerClient implements Runnable
     						position.getX()+" "+position.getY()+" "+
     						facingDirection+" "+
     						velocity.getX()+" "+velocity.getY()+")";
+//    	System.out.println(objName);
     	send(toSend);
     }
     
     public void move(String objName, Vector2D position){
     	String toSend = "(move "  + objName +" "+position.getX()+" "+position.getY()+")";
+//    	System.out.println(objName);
     	send(toSend);
     }
     
@@ -190,6 +192,7 @@ public class TrainerClient implements Runnable
 			base +=" goalie";
 		}
 		base+= ")";
+//		System.out.println(base);
     	return base;
     }
     
@@ -370,7 +373,6 @@ public class TrainerClient implements Runnable
         while (true)
         {
             parseServerMsg(receive());
-            TrainingLogs.takeFSI(brain.getFullstateInfo());
         }
     }
 

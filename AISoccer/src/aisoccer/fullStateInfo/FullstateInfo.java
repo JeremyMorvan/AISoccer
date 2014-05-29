@@ -24,21 +24,21 @@ public class FullstateInfo
 	final static String PLAYMODE_PATTERN  = "\\(pmode ([a-zA-Z_]*)\\)";
 	final static String REAL_NB_PATTERN   = "((?:\\-)?[0-9]+(?:\\.[0-9]+(?:e(?:\\-)?[0-9]+)?)?)";
 	final static String BALL_PATTERN      = "\\(\\(b\\) " + REAL_NB_PATTERN
-			+ " " + REAL_NB_PATTERN + " "
-			+ REAL_NB_PATTERN + " "
-			+ REAL_NB_PATTERN + "\\)";
-	final static String PLAYER_PATTERN    = "\\(\\(p ([lr]) ([1-9]{1,2}) ([g[0-9]+])\\) "
-			+ REAL_NB_PATTERN
-			+ " "
-			+ REAL_NB_PATTERN
-			+ " "
-			+ REAL_NB_PATTERN
-			+ " "
-			+ REAL_NB_PATTERN
-			+ " "
-			+ REAL_NB_PATTERN
-			+ " "
-			+ REAL_NB_PATTERN;
+												+ " " + REAL_NB_PATTERN + " "
+												+ REAL_NB_PATTERN + " "
+												+ REAL_NB_PATTERN + "\\)";
+	final static String PLAYER_PATTERN    = "\\(\\(p ([lr]) ([1-9]{1,2}) (g )?([0-9]+)\\) "
+												+ REAL_NB_PATTERN // x
+												+ " "
+												+ REAL_NB_PATTERN // y
+												+ " "
+												+ REAL_NB_PATTERN // vx
+												+ " "
+												+ REAL_NB_PATTERN // vy
+												+ " "
+												+ REAL_NB_PATTERN // body direction
+												+ " "
+												+ REAL_NB_PATTERN; //neck direction
 	final static String TIME_STEP_PATTERN = "\\(fullstate ([0-9]+) \\(";
 	
 	final static String LOOK_TIME_STEP_PATTERN = "\\(see_global ([0-9]+) \\(";
@@ -90,8 +90,8 @@ public class FullstateInfo
 		rightTeam = new Player[nbPlayers];
 		for (int i = 0; i < nbPlayers; i++)
 		{
-			leftTeam[i] = new Player(0, 0, 0, 0, true, '0', 0);
-			rightTeam[i] = new Player(0, 0, 0, 0, false, '0', 0);
+			leftTeam[i] = new Player(0, 0, 0, 0, true, '0', false, 0);
+			rightTeam[i] = new Player(0, 0, 0, 0, false, '0', false, 0);
 		}
 		this.nbPlayers = nbPlayers;
 	}
@@ -214,6 +214,7 @@ public class FullstateInfo
 	 * consequently.
 	 */
 	public void parse(){
+//		System.out.println(fullstateMsg);
 		// Gather playMode information.
 		Pattern pattern = Pattern.compile(PLAYMODE_PATTERN);
 		Matcher matcher = pattern.matcher(fullstateMsg);
@@ -254,34 +255,33 @@ public class FullstateInfo
 		
 		pattern = Pattern.compile(PLAYER_PATTERN);
 		matcher = pattern.matcher(fullstateMsg);
-		Player[] team; // Team of the player currently being parsed.
+		Player player; // Team of the player currently being parsed.
 		int playerNumber; // Number of the player currently being parsed.
 		while (matcher.find()){
-			if (matcher.group(1).compareToIgnoreCase("l") == 0){
-				team = this.leftTeam;
-			}
-			else{
-				team = this.rightTeam;
-			}
-
 			playerNumber = Integer.valueOf(matcher.group(2));
 			if (playerNumber > nbPlayers){continue;}
 			
-			if (matcher.group(3).compareToIgnoreCase("g") == 0){
-				team[playerNumber - 1].setPlayerType(-1);
+			if (matcher.group(1).compareToIgnoreCase("l") == 0){
+				player = this.leftTeam[playerNumber-1];
 			}
 			else{
-				team[playerNumber - 1].setPlayerType(Integer.valueOf(matcher.group(3)));
+				player = this.rightTeam[playerNumber-1];
 			}
 
-			team[playerNumber - 1].setUniformNumber(playerNumber);
-			team[playerNumber - 1].getPosition().setX(Double.valueOf(matcher.group(4)));
-			team[playerNumber - 1].getPosition().setY(Double.valueOf(matcher.group(5)));
-			team[playerNumber - 1].getVelocity().setX(Double.valueOf(matcher.group(6)));
-			team[playerNumber - 1].getVelocity().setY(Double.valueOf(matcher.group(7)));
-			team[playerNumber - 1].setBodyDirection(Double.valueOf(matcher.group(8)));
+//			player.setGoalie( matcher.group(3)!=null );
+//			System.out.println("is goalie = "+matcher.group(4)!=null );
 			
-			connectedPlayers.add(team[playerNumber - 1]);
+			player.setPlayerType(Integer.valueOf(matcher.group(4)));
+			System.out.println(playerNumber+" / "+player.getPlayerType());
+
+			player.setUniformNumber(playerNumber);
+			player.getPosition().setX(Double.valueOf(matcher.group(5)));
+			player.getPosition().setY(Double.valueOf(matcher.group(6)));
+			player.getVelocity().setX(Double.valueOf(matcher.group(7)));
+			player.getVelocity().setY(Double.valueOf(matcher.group(8)));
+			player.setBodyDirection(Double.valueOf(matcher.group(9)));
+			
+			connectedPlayers.add(player);
 		}
 		
 		if(!connectedPlayers.isEmpty()){
@@ -435,8 +435,9 @@ public class FullstateInfo
 		while (matcher.find()){
 			playerNumber = Integer.valueOf(matcher.group(1));
 			if (playerNumber > nbPlayers){continue;}
-			
+					
 			team[playerNumber - 1].setConnected(true);
+//			System.out.println("player Number : "+playerNumber);
 
 			team[playerNumber - 1].setUniformNumber(playerNumber);
 			team[playerNumber - 1].getPosition().setX(Double.valueOf(matcher.group(2)));

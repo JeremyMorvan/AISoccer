@@ -16,9 +16,11 @@ public class Player extends MobileObject
      * Private members.
      */
     private boolean leftSide;
+    private boolean goalie;
     private int     playerType;
     private int     uniformNumber;
     private double  bodyDirection;
+    
     private boolean connected;
 
     /*
@@ -39,13 +41,14 @@ public class Player extends MobileObject
      * @param playerType
      * @param bodyDirection
      */
-    public Player(double posX, double posY, double velX, double velY, boolean team, int playerType, double bodyDirection)
+    public Player(double posX, double posY, double velX, double velY, boolean team, int playerType, boolean goalie, double bodyDirection)
     {
         super(posX, posY, velX, velY);
         this.leftSide = team;
         this.playerType = playerType;
         this.bodyDirection = bodyDirection;
         this.connected = false;
+        this.goalie = goalie;
     }
 
     /*
@@ -117,6 +120,14 @@ public class Player extends MobileObject
     public void setUniformNumber(int uniformNumber)
     {
         this.uniformNumber = uniformNumber;
+    }
+    
+    public void setGoalie(boolean b){
+    	this.goalie = b;
+    }
+    
+    public boolean isGoalie(){
+    	return this.goalie;
     }
     
     public boolean isConnected(){

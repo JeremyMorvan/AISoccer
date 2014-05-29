@@ -153,7 +153,7 @@ public class TrainerBrain implements Runnable
 		
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
-				System.out.println("here1");
+//				System.out.println("here1");
 				movePlayers();				
 				randomShoot();				
 				setPlayOn();
@@ -174,7 +174,7 @@ public class TrainerBrain implements Runnable
 				}
 			}
 			if(intercepter != null){
-				System.out.println("here2");
+//				System.out.println("here2");
 				// THERE IS AN INTERCEPTER
 				passTrainer.notifyInterception(intercepter);
 				setTimeOver();			
