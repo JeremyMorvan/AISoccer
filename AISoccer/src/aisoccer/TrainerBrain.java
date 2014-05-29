@@ -186,6 +186,24 @@ public class TrainerBrain implements Runnable
 				setPlayOn();
 				return;			
 			}
+			if(fullstateInfo.getPlayMode().equals("goalie_catch_ball_l")||fullstateInfo.getPlayMode().equals("free_kick_l")){
+				shootTrainer.notify(false);
+				setTimeOver();
+				return;
+			}
+			if(fullstateInfo.getBall().getPosition().getX()<-SoccerParams.FIELD_LENGTH/2){
+				if(Math.abs(fullstateInfo.getBall().getPosition().getY())<SoccerParams.GOAL_WIDTH/2){
+					System.out.println("goal !!!!!!!!!");
+					shootTrainer.notify(true);
+					setTimeOver();
+					return;
+				}else{
+					System.out.println("dommage, essaye encore !");
+					setTimeOver();
+					return;
+				}
+				
+			}
 		}
 	}
 
@@ -222,18 +240,34 @@ public class TrainerBrain implements Runnable
 	}
 	
 	private void randomShoot() {
+		double ballPow = -1;
+		double ballDir = -1;
 		switch(count){
 		case 0:
-			
+			this.currentBallPos = randomBallPos();
+			this.currentGoalieDir = randomGoalieDir(currentBallPos);
+			ballPow = randomBallPow();
+			ballDir = this.randomBallDir(0, currentBallPos);
+			count ++;
 			break;
 		case 1:
-			
+			ballPow = randomBallPow();
+			ballDir = this.randomBallDir(1, currentBallPos);
+			count ++;
 			break;
 		case 2:
-			
+			ballPow = randomBallPow();
+			ballDir = this.randomBallDir(2, currentBallPos);
+			count = 0;
 			break;
 		default :
 			break;
+		}
+		if(ballDir>=0&&ballPow>=0){
+			this.sendShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
+			shootTrainer.rememberShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
+		}else{
+			System.out.println("error in new shoot");
 		}
 	}
 	
@@ -247,7 +281,43 @@ public class TrainerBrain implements Runnable
 		return dir;
 	}
 	
-	public void sendRandomShoot(double gDir,Vector2D bPos, double bPow, double bDir){
+	public double randomBallPow(){
+		Random r = new Random();
+		double pow = -1;
+		while(pow<0){
+			pow = SoccerParams.BALL_SPEED_MAX*((3+r.nextGaussian())/4);
+		}
+		return pow;
+	}
+	
+	public double randomBallDir(int section, Vector2D ballPos){
+		Random r = new Random();
+		double a = 100;
+		while(Math.abs(a)>SoccerParams.GOAL_WIDTH/6){
+			a = r.nextGaussian()*SoccerParams.GOAL_WIDTH/18;
+		}
+		a = a+(section-2)*SoccerParams.GOAL_WIDTH/3;
+		return ballPos.directionOf(new Vector2D(a,0));
+	}
+	
+	public Vector2D randomBallPos(){
+		Random r = new Random();
+		double dir = 100;
+		while(dir>Math.PI||dir<0){
+			dir = Math.PI*(r.nextGaussian()/4+1/2);
+		}
+		double dist = Math.random()*34;
+		return new Vector2D(dist,dir,true);		
+	}
+	
+	public void sendShoot(double gDir,Vector2D bPos, double bPow, double bDir){
+		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
+		if(everybody.size()>1){
+			System.out.println("More than 1 player in the field");
+		}else{
+			trainerClient.movePlayer(everybody.get(0), gDir2genPos(gDir));
+		}
+		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(bPow,bDir-Math.PI/2,true));		
 	}
 	
 	public void movePlayers(){
