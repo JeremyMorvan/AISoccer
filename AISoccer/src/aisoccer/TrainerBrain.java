@@ -203,11 +203,9 @@ public class TrainerBrain implements Runnable
 					return;
 				}				
 			}
-			if(!fullstateInfo.getPlayMode().equals("play_on") ){
-				System.out.println(fullstateInfo.getPlayMode());			
-				randomShoot();				
-				setPlayOn();
-				return;			
+			if(!fullstateInfo.getPlayMode().equals("play_on") ){				
+				setTimeOver();
+				return;	
 			}
 		}
 	}
@@ -268,7 +266,8 @@ public class TrainerBrain implements Runnable
 		default :
 			break;
 		}
-		if(ballDir>=0&&ballPow>=0){
+		if(ballPow>=0){
+			System.out.println("here2");
 			this.sendShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
 			shootTrainer.rememberShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
 		}else{
@@ -279,9 +278,10 @@ public class TrainerBrain implements Runnable
 	public double randomGoalieDir(Vector2D ballPos){
 		Random r = new Random();
 		double dir = 100;
-		double ballDir = ballPos.polarAngle();
+		double ballDir = ballPos.polarAngle()*Math.PI/180;
 		while(dir>Math.PI||dir<0){
 			dir = r.nextGaussian()*Math.PI/3 + ballDir;
+			System.out.println("GDir :" + dir);
 		}
 		return dir;
 	}
@@ -291,6 +291,7 @@ public class TrainerBrain implements Runnable
 		double pow = -1;
 		while(pow<0){
 			pow = SoccerParams.BALL_SPEED_MAX*((3+r.nextGaussian())/4);
+			System.out.println("pow :" + pow);
 		}
 		return pow;
 	}
@@ -300,24 +301,27 @@ public class TrainerBrain implements Runnable
 		double a = 100;
 		while(Math.abs(a)>SoccerParams.GOAL_WIDTH/6){
 			a = r.nextGaussian()*SoccerParams.GOAL_WIDTH/18;
+			System.out.println("dir :" + a);
 		}
 		a = a+(section-2)*SoccerParams.GOAL_WIDTH/3;
-		return ballPos.directionOf(new Vector2D(a,0));
+		return ballPos.directionOf(new Vector2D(a,0))*Math.PI/180;
 	}
 	
 	public Vector2D randomBallPos(){
 		Random r = new Random();
 		double dir = 100;
 		while(dir>Math.PI||dir<0){
-			dir = Math.PI*(r.nextGaussian()/4+1/2);
+			dir = Math.PI*(r.nextGaussian()/4+(1/2));
+			System.out.println("dirPos :" + dir);
 		}
 		double dist = Math.random()*34;
 		return new Vector2D(dist,dir,true);		
 	}
 	
 	public void sendShoot(double gDir,Vector2D bPos, double bPow, double bDir){
+		System.out.println("here3");
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
-		if(everybody.size()>1){
+		if(everybody.size()>2){
 			System.out.println("More than 1 player in the field");
 		}else{
 			trainerClient.movePlayer(everybody.get(0), gDir2genPos(gDir));
