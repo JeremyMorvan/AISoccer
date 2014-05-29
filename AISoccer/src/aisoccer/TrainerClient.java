@@ -188,11 +188,11 @@ public class TrainerClient implements Runnable
     //   MOVE PLAYER    
     public String getPlayerString(Player player){
     	String base = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber();
-		if(player.getPlayerType() == -1){
+		if(player.isGoalie()){
 			base +=" goalie";
 		}
 		base+= ")";
-//		System.out.println(base);
+		System.out.println(base);
     	return base;
     }
     
