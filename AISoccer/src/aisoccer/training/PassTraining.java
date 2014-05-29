@@ -1,4 +1,4 @@
-package aisoccer;
+package aisoccer.training;
 
 import java.io.*;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ public class PassTraining {
 	String logsPath;
 	KickSnapshot currentKickSnapshot;
 	static BufferedWriter out;
+	
+	// just to avoid 
 	
 	
 	public PassTraining(String path){	
@@ -46,6 +48,7 @@ public class PassTraining {
 		}else{
 			System.out.println("Warning : notifyInterception was called whereas there was no kick in memory");
 		}
+		currentKickSnapshot = null;
 	}
 	
 		

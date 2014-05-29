@@ -1,9 +1,10 @@
-package aisoccer;
+package aisoccer.training;
 
 import java.io.*;
 import java.util.HashMap;
 
 import math.Vector2D;
+import aisoccer.SoccerParams;
 import aisoccer.fullStateInfo.*;
 
 public class TrainingLogs {

@@ -9,6 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
+import aisoccer.training.TrainingLogs;
+
 
 /**
  * This class implements the commands of the Robocup Soccer Simulation 2D
@@ -217,8 +219,9 @@ public class RobocupClient implements Runnable
         DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
         // First we need to initialize the connection to the server
-        String message = "(init " + teamName + " (version 14))"+ (goalie ? " (goalie)" : "");
+        String message = "(init " + teamName + " (version 14)"+ (goalie ? " (goalie))" : ")");
         send(message);
+        System.out.println(message);
         socket.receive(packet);
         port = packet.getPort();
 
