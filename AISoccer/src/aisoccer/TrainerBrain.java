@@ -194,6 +194,7 @@ public class TrainerBrain implements Runnable
 			x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
 			y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
 			trainerClient.move(p,x,y);
+			p.setPosition(new Vector2D(x,y));
 		}
 	}
 	
