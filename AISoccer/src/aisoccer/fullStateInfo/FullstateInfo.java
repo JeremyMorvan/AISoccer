@@ -480,7 +480,6 @@ public class FullstateInfo
 	}
     
     public void parseEar(String message){
-
     	Pattern pattern = Pattern.compile(EAR_PATTERN);
 		Matcher matcher = pattern.matcher(message);
 		if (matcher.find()){

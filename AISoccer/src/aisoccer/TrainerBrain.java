@@ -149,6 +149,8 @@ public class TrainerBrain implements Runnable
 	
 	
 	public void passTraining(){
+		int time = 0;
+		
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on")){
 				System.out.println("here1");
@@ -158,30 +160,28 @@ public class TrainerBrain implements Runnable
 				return;			
 			}
 			
-			Player intercepter = null;
-			for(Player p : fullstateInfo.getEveryBody()){
-				if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
-					if(intercepter == null){
-						intercepter = p;
-					}else{
-						// There are at least two players who intercept the ball
-						// So we discard this pass
-						setTimeOver();
-//						passTrainer.clearMemory();
-//						movePlayers();
-//						randomShoot();
-						return;
+			if(fullstateInfo.getPlayMode().equals("play_on")) {//&& detectI){
+				Player intercepter = null;
+				for(Player p : fullstateInfo.getEveryBody()){
+					if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
+						if(intercepter == null){
+							intercepter = p;
+						}else{
+							// There are at least two players who intercept the ball
+							// So we discard this pass							
+							setTimeOver();	
+							return;
+						}
 					}
 				}
+				if(intercepter != null){
+					System.out.println("here2");
+					// THERE IS AN INTERCEPTER
+					passTrainer.notifyInterception(intercepter);
+					setTimeOver();			
+				}				
 			}
-			if(intercepter != null){
-				System.out.println("here2");
-				// THERE IS AN INTERCEPTER
-				passTrainer.notifyInterception(intercepter);
-				setTimeOver();
-//				movePlayers();
-//				randomShoot();
-			}	
+			
 		}			
 	}
 	
