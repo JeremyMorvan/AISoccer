@@ -90,8 +90,8 @@ public class Sebbot
                     throw new InvalidArgumentException(args[i]);
                 }
             }
-            initTrainingPass(hostname,port,portTrainer,team);
-//            initTrainingShoot(hostname,port,portTrainer,team);
+            //initTrainingPass(hostname,port,portTrainer,team);
+            initTrainingShoot(hostname,port,portTrainer,team);
             //initGame(hostname,port,portTrainer,team,7);
         }
         catch (InvalidArgumentException e)

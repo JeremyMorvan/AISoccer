@@ -201,8 +201,13 @@ public class TrainerBrain implements Runnable
 					System.out.println("dommage, essaye encore !");
 					setTimeOver();
 					return;
-				}
-				
+				}				
+			}
+			if(!fullstateInfo.getPlayMode().equals("play_on") ){
+				System.out.println(fullstateInfo.getPlayMode());			
+				randomShoot();				
+				setPlayOn();
+				return;			
 			}
 		}
 	}
