@@ -162,59 +162,58 @@ public class TrainerClient implements Runnable
     
     public void move(String objName, Vector2D position, double facingDirection, Vector2D velocity){
     	String toSend = "(move "  + objName +" "+
-    position.getX()+" "+position.getY()+" "+
-    			facingDirection+" "+
-    			velocity.getX()+" "+velocity.getY()+")";
+    						position.getX()+" "+position.getY()+" "+
+    						facingDirection+" "+
+    						velocity.getX()+" "+velocity.getY()+")";
     	send(toSend);
     }
     
     public void move(String objName, Vector2D position){
-    	String toSend = "(move "  + objName +" "+
-    			position.getX()+" "+
-    			position.getY()+")";
+    	String toSend = "(move "  + objName +" "+position.getX()+" "+position.getY()+")";
     	send(toSend);
     }
     
     public void move(String objName, double x, double y, double facingDirection, double vx, double vy){
-    	String toSend = "(move "  + objName +" "+
-    			x+" "+
-    			y+" "+
-    			facingDirection+" "+
-    			vx+" "+
-    			vy+")";
-    	send(toSend);
+    	move(objName, new Vector2D(x,y), facingDirection, new Vector2D(vx, vy));
     }
     
     public void move(String objName, double x, double y){
-    	String toSend = "(move "  + objName +" "+
-    			x+" "+
-    			y+")";
-    	send(toSend);
+    	move(objName, new Vector2D(x, y));
+    }    
+    
+    
+    /////////////////////////////
+    //   MOVE PLAYER    
+    public String getPlayerString(Player player){
+    	String base = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber();
+		if(player.getPlayerType() == -1){
+			base +=" goalie";
+		}
+		base+= ")";
+    	return base;
     }
     
-    public void move(Player player, Vector2D position, double facingDirection, Vector2D velocity){
-    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
-    	move(objName,position,facingDirection,velocity);
+    public void movePlayer(Player player, double x, double y, double facingDirection, double vx, double vy){
+    	move(getPlayerString(player),x,y,facingDirection,vx,vy);
+    } 
+    
+    public void movePlayer(Player player, Vector2D position, double facingDirection, Vector2D velocity){
+    	move(getPlayerString(player),position,facingDirection,velocity);
+    }
+    
+    public void movePlayer(Player player, double x, double y){
+    	move(getPlayerString(player),x,y);
     }  
     
-    public void move(Player player, Vector2D position){
-    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
-    	move(objName,position);
-    }
+    public void movePlayer(Player player, Vector2D position){
+    	move(getPlayerString(player),position);
+    } 
     
+    //////////////////////////////
+    //   MOVE BALL    
     public void moveBall(Vector2D position, Vector2D velocity){
     	String objName = "(ball)";
     	move(objName,position, 0,velocity);
-    }
-    
-    public void move(Player player, double x, double y, double facingDirection, double vx, double vy){
-    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
-    	move(objName,x,y,facingDirection,vx,vy);
-    }  
-    
-    public void move(Player player, double x, double y){
-    	String objName = "(player " + (player.isLeftSide() ? nameLeft : nameRight) + " " + player.getUniformNumber() + ")";
-    	move(objName,x,y);
     }
     
     public void moveBall(double x, double y, double vx, double vy){
