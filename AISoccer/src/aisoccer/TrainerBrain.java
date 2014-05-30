@@ -304,7 +304,7 @@ public class TrainerBrain implements Runnable
 			a = r.nextGaussian()*SoccerParams.GOAL_WIDTH/18;
 			//System.out.println("dir :" + a);
 		}
-		a = a+(section-2)*SoccerParams.GOAL_WIDTH/3;
+		a = a+(section-1)*SoccerParams.GOAL_WIDTH/3;
 		return ballPos.directionOf(new Vector2D(a,0))*Math.PI/180;
 	}
 	
