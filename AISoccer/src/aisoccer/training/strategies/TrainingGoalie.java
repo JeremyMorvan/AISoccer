@@ -1,4 +1,4 @@
-package aisoccer.training;
+package aisoccer.training.strategies;
 
 import java.util.LinkedList;
 

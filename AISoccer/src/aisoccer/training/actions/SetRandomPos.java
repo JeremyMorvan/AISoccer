@@ -1,4 +1,4 @@
-package aisoccer.training;
+package aisoccer.training.actions;
 
 import math.Vector2D;
 import aisoccer.Brain;

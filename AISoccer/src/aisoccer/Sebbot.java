@@ -9,8 +9,8 @@ import java.net.SocketException;
 import java.util.Date;
 import java.util.HashMap;
 
-import aisoccer.training.TrainingGoalie;
-import aisoccer.training.TrainingPassStrategy;
+import aisoccer.training.strategies.TrainingGoalie;
+import aisoccer.training.strategies.TrainingPassStrategy;
 import aisoccer.strategy.myGoalieStrategy;
 import aisoccer.strategy.myStrategy2;
 

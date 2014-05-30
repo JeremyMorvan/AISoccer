@@ -5,8 +5,8 @@ import java.util.Random;
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
-import aisoccer.training.PassTraining;
-import aisoccer.training.ShootTraining;
+import aisoccer.training.scripts.PassTraining;
+import aisoccer.training.scripts.ShootTraining;
 
 /**
  * 

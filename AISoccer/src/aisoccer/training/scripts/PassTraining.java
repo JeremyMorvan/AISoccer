@@ -1,4 +1,4 @@
-package aisoccer.training;
+package aisoccer.training.scripts;
 
 import java.io.*;
 import java.util.HashMap;

@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 
 import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.Player;
-import aisoccer.training.TrainingLogs;
+import aisoccer.training.scripts.TrainingLogs;
 import math.Vector2D;
 
 
