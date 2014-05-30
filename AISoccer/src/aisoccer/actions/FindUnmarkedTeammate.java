@@ -1,6 +1,5 @@
 package aisoccer.actions;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import math.Vector2D;

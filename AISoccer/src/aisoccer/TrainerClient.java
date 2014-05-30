@@ -9,9 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
-import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.Player;
-import aisoccer.training.scripts.TrainingLogs;
 import math.Vector2D;
 
 

@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
-import aisoccer.training.scripts.TrainingLogs;
 
 
 /**

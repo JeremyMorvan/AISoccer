@@ -1,7 +1,6 @@
 package aisoccer.actions.motion;
 
 import aisoccer.Brain;
-import aisoccer.SoccerParams;
 
 public class GoToBall extends GoTo {
 

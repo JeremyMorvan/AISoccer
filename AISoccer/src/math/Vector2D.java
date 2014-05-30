@@ -1,6 +1,5 @@
 package math;
 
-import aisoccer.InvalidArgumentException;
 import aisoccer.fullStateInfo.MobileObject;
 
 /**

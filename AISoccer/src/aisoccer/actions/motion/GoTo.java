@@ -2,7 +2,6 @@ package aisoccer.actions.motion;
 
 import java.util.LinkedList;
 
-import math.Vector2D;
 import aisoccer.Brain;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;

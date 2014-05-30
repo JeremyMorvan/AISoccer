@@ -58,8 +58,6 @@ public class MarkOpponent extends GoTo {
 	@Override
 	public void Start() {			
 		brain.setInterestPos(target);
-		Player me = brain.getPlayer();	
-
 //		if(me.isLeftSide() && me.getUniformNumber()==4){
 //			System.out.println("Je me dirige vers "+ target.toString());
 //		}

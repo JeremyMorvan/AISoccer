@@ -103,7 +103,6 @@ public class TrainingLogs {
 		}
 		
 		public boolean isValid(){
-			boolean equals;
 			if(kickSnapshot.ballVelocityAfterKick.polarRadius()<0.5){
 				//System.err.println("Pass too low !");
 				//System.out.println("");

@@ -405,9 +405,9 @@ public class TrainerBrain implements Runnable
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);		
 	}
 	
-	private Vector2D genPos2relPos(Vector2D genPos){
-		return new Vector2D(-genPos.getY(),genPos.getX()+SoccerParams.FIELD_LENGTH/2);
-	}
+//	private Vector2D genPos2relPos(Vector2D genPos){
+//		return new Vector2D(-genPos.getY(),genPos.getX()+SoccerParams.FIELD_LENGTH/2);
+//	}
 	
 	private Vector2D relPos2genPos(Vector2D relPos){
 		return new Vector2D(relPos.getY()-SoccerParams.FIELD_LENGTH/2,-relPos.getX());
