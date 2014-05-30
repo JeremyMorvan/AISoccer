@@ -20,8 +20,7 @@ public class TrainingGoalie extends Selector implements Strategy {
 
 	@Override
 	public void doAction(Brain brain) {
-		// TODO Auto-generated method stub
-
+		Call();
 	}
 
 	@Override
@@ -38,8 +37,7 @@ public class TrainingGoalie extends Selector implements Strategy {
 
 	@Override
 	public boolean CheckConditions() {
-		// TODO Auto-generated method stub
-		return false;
+		return brain.getFullstateInfo().getPlayMode()!= null && brain.getFullstateInfo().getPlayMode().equals("play_on");
 	}
 
 }

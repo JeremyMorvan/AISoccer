@@ -186,7 +186,7 @@ public class TrainerBrain implements Runnable
 				setPlayOn();
 				return;			
 			}
-			if(fullstateInfo.getPlayMode().equals("goalie_catch_ball_l")||fullstateInfo.getPlayMode().equals("free_kick_l")){
+			if(fullstateInfo.getPlayMode().equals("goalie_catch_ball_l")||fullstateInfo.getPlayMode().equals("free_kick_l")||fullstateInfo.getBall().getVelocity().polarRadius()<1e-6){
 				shootTrainer.notify(false);
 				setTimeOver();
 				return;
