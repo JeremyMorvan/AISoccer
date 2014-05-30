@@ -248,6 +248,7 @@ public class TrainerBrain implements Runnable
 		switch(count){
 		case 0:
 			this.currentBallPos = randomBallPos();
+			//System.out.println(this.currentBallPos);
 			this.currentGoalieDir = randomGoalieDir(currentBallPos);
 			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(0, currentBallPos);
@@ -281,7 +282,7 @@ public class TrainerBrain implements Runnable
 		double ballDir = ballPos.polarAngle()*Math.PI/180;
 		while(dir>Math.PI||dir<0){
 			dir = r.nextGaussian()*Math.PI/3 + ballDir;
-			System.out.println("GDir :" + dir);
+			//System.out.println("GDir :" + dir);
 		}
 		return dir;
 	}
@@ -291,7 +292,7 @@ public class TrainerBrain implements Runnable
 		double pow = -1;
 		while(pow<0){
 			pow = SoccerParams.BALL_SPEED_MAX*((3+r.nextGaussian())/4);
-			System.out.println("pow :" + pow);
+			//System.out.println("pow :" + pow);
 		}
 		return pow;
 	}
@@ -301,7 +302,7 @@ public class TrainerBrain implements Runnable
 		double a = 100;
 		while(Math.abs(a)>SoccerParams.GOAL_WIDTH/6){
 			a = r.nextGaussian()*SoccerParams.GOAL_WIDTH/18;
-			System.out.println("dir :" + a);
+			//System.out.println("dir :" + a);
 		}
 		a = a+(section-2)*SoccerParams.GOAL_WIDTH/3;
 		return ballPos.directionOf(new Vector2D(a,0))*Math.PI/180;
@@ -311,7 +312,7 @@ public class TrainerBrain implements Runnable
 		Random r = new Random();
 		double dir = 100;
 		while(dir>Math.PI||dir<0){
-			dir = Math.PI*(r.nextGaussian()/4+(1/2));
+			dir = Math.PI*r.nextGaussian()/4+Math.PI/2;
 			System.out.println("dirPos :" + dir);
 		}
 		double dist = Math.random()*34;
