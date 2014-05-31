@@ -235,8 +235,9 @@ public class RobocupClient implements Runnable
         System.out.println(message);
         socket.receive(packet);
         port = packet.getPort();
-
         String initMsg = new String(buffer, Charset.defaultCharset());
+        System.out.println(initMsg);
+        
         final String initPattern = "\\(init ([lr]) ([1-9]{1,2}) ([a-zA-Z_]+)\\)";
 
         Pattern pattern = Pattern.compile(initPattern);

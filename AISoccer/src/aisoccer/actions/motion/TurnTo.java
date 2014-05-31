@@ -1,6 +1,7 @@
 package aisoccer.actions.motion;
 
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 import aisoccer.ballcapture.Action;
 import aisoccer.behaviorTree.ActionTask;
 
@@ -14,7 +15,7 @@ public class TurnTo extends ActionTask {
 	
 	@Override
 	public boolean CheckConditions() {
-		return Math.abs(((float) brain.getPlayer().angleFromBody(brain.getInterestPos()))) > angleLimit;
+		return brain.getPlayer().distanceTo(brain.getInterestPos())>SoccerParams.KICKABLE_MARGIN && Math.abs(((float) brain.getPlayer().angleFromBody(brain.getInterestPos()))) > angleLimit;
 	}	
 	
 	@Override

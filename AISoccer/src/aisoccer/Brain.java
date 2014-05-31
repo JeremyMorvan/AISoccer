@@ -9,6 +9,7 @@ import java.util.HashSet;
 
 import math.MathFunction;
 import math.MathTools;
+import math.NullVectorException;
 import math.Vector2D;
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
@@ -274,6 +275,17 @@ public class Brain implements Runnable
 		double coeff = (1-Math.pow(k, (Double) steps))/(1-k);   
 		return b.getPosition().add(b.getVelocity().multiply(coeff));
 	}
+	
+	public double timeDistanceBall(double distance, double speed) throws InvalidArgumentException{
+		if(speed<=0 || distance<=0){
+			throw new InvalidArgumentException();
+		}
+		return Math.log(1-(1-SoccerParams.BALL_DECAY)*distance/speed)/Math.log(SoccerParams.BALL_DECAY);
+	}
+	
+	public double timeDistanceBall(double distance) throws InvalidArgumentException{
+		return timeDistanceBall(distance,fullstateInfo.getBall().getVelocity().polarRadius());
+	}
 
 	///////////////////////////////////////////////////
 	/////	 INTERCEPTION METHODS
@@ -297,10 +309,19 @@ public class Brain implements Runnable
 			Vector2D relPos = p.getPosition().subtract(ballP);
 			double ps = relPos.multiply(trajectory.normalize());
 			if(0<ps && ps<trajectory.polarRadius()){
-				Vector2D projection = trajectory.normalize().multiply(ps);
-				double stepsToProjection = projection.distanceTo(p)/playerSpeed;
-				if(f.value(stepsToProjection)<0){
-					stepsMax = stepsToProjection;
+				Vector2D projection = ballP.add(trajectory.normalize().multiply(ps));
+				
+				double tProj = projection.distanceTo(p)/playerSpeed;
+				double distBallTProj = ballPositionPrediction(tProj).distanceTo(ballP);
+				if(distBallTProj<projection.distanceTo(ballP)){
+					try {
+						stepsMax = timeDistanceBall(projection.distanceTo(ballP));
+//						System.out.println("projection = "+projection.toString());
+//						System.out.println("distBallProj = "+projection.distanceTo(ballP));
+//						System.out.println("vitesse Balle = "+fullstateInfo.getBall().getVelocity().polarRadius());
+//						System.out.println("stepsMax = "+stepsMax);
+//						System.out.println("ballPrediction(stepsMax) = "+ballPositionPrediction(stepsMax));
+					} catch (InvalidArgumentException e) {e.printStackTrace();}
 				}
 			}			
 		}

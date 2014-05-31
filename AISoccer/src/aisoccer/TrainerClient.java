@@ -190,7 +190,7 @@ public class TrainerClient implements Runnable
 			base +=" goalie";
 		}
 		base+= ")";
-		System.out.println(base);
+//		System.out.println(base);
     	return base;
     }
     

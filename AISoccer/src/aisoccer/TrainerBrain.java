@@ -315,7 +315,7 @@ public class TrainerBrain implements Runnable
 			dir = Math.PI*r.nextGaussian()/4+Math.PI/2;
 			System.out.println("dirPos :" + dir);
 		}
-		double dist = Math.random()*34;
+		double dist = Math.random()*34+10;
 		return new Vector2D(dist,dir,true);		
 	}
 	

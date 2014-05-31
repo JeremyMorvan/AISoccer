@@ -1,6 +1,7 @@
 package aisoccer.training.scripts;
 
 import java.io.*;
+import java.util.Calendar;
 
 import math.Vector2D;
 
@@ -17,6 +18,14 @@ public class ShootTraining {
 		currentShootSnapshot = null;
 		try { 
 			out = new BufferedWriter(new FileWriter(logsPath, true));
+			Calendar c = Calendar.getInstance();
+			String date = "%"+c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR);
+			date +=" at "+c.get(Calendar.HOUR_OF_DAY)+"h"+c.get(Calendar.MINUTE)+"m"+c.get(Calendar.SECOND)+"s";
+			out.write("%", 0, 1);
+			out.newLine();
+			out.write(date, 0, date.length());
+			out.newLine();
+			out.flush();
 			System.out.println("Le writer est cree avec succes");
 		} catch (IOException e) {e.printStackTrace();}
 	}
