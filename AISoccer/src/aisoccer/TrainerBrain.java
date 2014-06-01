@@ -26,7 +26,7 @@ public class TrainerBrain implements Runnable
 	private PassTraining	passTrainer;
 	private ShootTraining 	shootTrainer;
 	private TrainingType 	trainingType;
-	private double 	  	  	currentGoalieDir;
+	private Vector2D 	  	currentGoaliePos;
 	private Vector2D 	  	currentBallPos;
 	private int 		 	count;
 	
@@ -54,7 +54,7 @@ public class TrainerBrain implements Runnable
 		this.trainingType = trainingType;
 		this.count = 0;
 		this.currentBallPos = null;
-		this.currentGoalieDir = 0;
+		this.currentGoaliePos = null;
 		switch(trainingType){
 		case PASS :
 			this.passTrainer = new PassTraining("../BiasedTrainingPassLogs.txt");
@@ -182,7 +182,7 @@ public class TrainerBrain implements Runnable
 	private void shootTraining() {
 		if(fullstateInfo.getPlayMode() != null){
 			if(fullstateInfo.getPlayMode().equals("time_over") ){
-				System.out.println("here1");			
+				//System.out.println("here1");			
 				randomShoot();				
 				setPlayOn();
 				return;			
@@ -194,7 +194,7 @@ public class TrainerBrain implements Runnable
 			}
 			if(fullstateInfo.getBall().getPosition().getX()<-SoccerParams.FIELD_LENGTH/2){
 				if(Math.abs(fullstateInfo.getBall().getPosition().getY())<SoccerParams.GOAL_WIDTH/2){
-					System.out.println("goal !!!!!!!!!");
+					//System.out.println("goal !!!!!!!!!");
 					shootTrainer.notify(true);
 					setTimeOver();
 					return;
@@ -257,7 +257,7 @@ public class TrainerBrain implements Runnable
 		case 0:
 			this.currentBallPos = randomBallPos();
 			//System.out.println(this.currentBallPos);
-			this.currentGoalieDir = randomGoalieDir(currentBallPos);
+			this.currentGoaliePos = randomGoaliePos(currentBallPos);
 			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(0, currentBallPos);
 			count ++;
@@ -276,23 +276,24 @@ public class TrainerBrain implements Runnable
 			break;
 		}
 		if(ballPow>=0){
-			System.out.println("here2");
-			this.sendShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
-			shootTrainer.rememberShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
+			//System.out.println("here2");
+			this.sendShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
+			shootTrainer.rememberShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
 		}else{
 			System.out.println("error in new shoot");
 		}
 	}
 	
-	public double randomGoalieDir(Vector2D ballPos){
+	public Vector2D randomGoaliePos(Vector2D ballPos){
 		Random r = new Random();
 		double dir = 100;
 		double ballDir = ballPos.polarAngle()*Math.PI/180;
 		while(dir>Math.PI||dir<0){
-			dir = r.nextGaussian()*Math.PI/3 + ballDir;
+			dir = r.nextGaussian()*Math.PI/4 + ballDir;
 			//System.out.println("GDir :" + dir);
 		}
-		return dir;
+		double dist = Math.abs(r.nextGaussian()*SoccerParams.GOAL_WIDTH/2);
+		return new Vector2D(dist,dir,true);
 	}
 	
 	public double randomBallPow(){
@@ -321,19 +322,19 @@ public class TrainerBrain implements Runnable
 		double dir = 100;
 		while(dir>Math.PI||dir<0){
 			dir = Math.PI*r.nextGaussian()/4+Math.PI/2;
-			System.out.println("dirPos :" + dir);
+			//System.out.println("dirPos :" + dir);
 		}
 		double dist = Math.random()*34+10;
 		return new Vector2D(dist,dir,true);		
 	}
 	
-	public void sendShoot(double gDir,Vector2D bPos, double bPow, double bDir){
-		System.out.println("here3");
+	public void sendShoot(Vector2D gPos,Vector2D bPos, double bPow, double bDir){
+		//System.out.println("here3");
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
 		if(everybody.size()>2){
 			System.out.println("More than 1 player in the field");
 		}else{
-			trainerClient.movePlayer(everybody.get(0), gDir2genPos(gDir));
+			trainerClient.movePlayer(everybody.get(0), relPos2genPos(gPos));
 		}
 		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(bPow,bDir-Math.PI/2,true));		
 	}
@@ -403,7 +404,8 @@ public class TrainerBrain implements Runnable
 				System.out.println("the direction couldn't be classified : " + direction);
 			}
 //			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
-			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+			max = max*(1-SoccerParams.BALL_DECAY);
+			max = Math.min(max, SoccerParams.BALL_SPEED_MAX);
 //			if(max>3){
 //				System.out.println("////////////////////////////////////////////////////");
 //				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
@@ -432,6 +434,7 @@ public class TrainerBrain implements Runnable
 			Random r = new Random();
 			x = shooter.getX()+r.nextGaussian()*3;
 			y = shooter.getY()+r.nextGaussian()*3;
+			//System.out.println(x + "    " + y);
 			if(Math.abs(x)<SoccerParams.FIELD_LENGTH/2&&Math.abs(y)<SoccerParams.FIELD_WIDTH/2){
 				newBallP = new Vector2D(x,y);	
 			}					
@@ -477,8 +480,9 @@ public class TrainerBrain implements Runnable
 			else{
 				System.out.println("the direction couldn't be classified : " + direction);
 			}
-//			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
-			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+			//System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+			max = max*(1-SoccerParams.BALL_DECAY);
+			max = Math.min(max, SoccerParams.BALL_SPEED_MAX);
 //			if(max>3){
 //				System.out.println("////////////////////////////////////////////////////");
 //				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
@@ -487,7 +491,7 @@ public class TrainerBrain implements Runnable
 //				System.out.println("////////////////////////////////////////////////////");
 //			}
 			if(max>min){
-				double dist = newBallP.distanceTo(target)*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+				double dist = newBallP.distanceTo(target)*(1-SoccerParams.BALL_DECAY);
 				double pow = -1;
 				Random r = new Random();
 //				System.out.println(dist);
@@ -512,9 +516,5 @@ public class TrainerBrain implements Runnable
 	
 	private Vector2D relPos2genPos(Vector2D relPos){
 		return new Vector2D(relPos.getY()-SoccerParams.FIELD_LENGTH/2,-relPos.getX());
-	}
-	
-	private Vector2D gDir2genPos(double gDirection){
-		return (new Vector2D(SoccerParams.GOAL_WIDTH/2,gDirection-Math.PI/2,true)).add(new Vector2D(-SoccerParams.FIELD_LENGTH/2,0));
 	}
 }
