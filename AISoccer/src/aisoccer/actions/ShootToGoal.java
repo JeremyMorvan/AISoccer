@@ -23,7 +23,12 @@ public class ShootToGoal extends ShootTo {
 	@Override
 	public void Start() {
 		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
-		brain.setShootVector(goal.subtract(brain.getFullstateInfo().getBall().getPosition()).normalize().multiply(SoccerParams.BALL_SPEED_MAX));
+		
+		//MODIFY THIS TARGET TO DEFINE THE SHOOT DIRECTION
+		Vector2D targetInGoal = goal;
+		
+		Vector2D shootDirection = targetInGoal.subtract(brain.getFullstateInfo().getBall().getPosition()).normalize();
+		brain.setShootVector(shootDirection.multiply(SoccerParams.BALL_SPEED_MAX));
 	}
 
 	@Override

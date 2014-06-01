@@ -19,6 +19,7 @@ public class InterceptBall extends GoTo {
 	@Override
 	public void Start() {
 //		System.out.println(brain.getPlayer().getUniformNumber()+" intercepts the ball");
-		brain.setInterestPos(brain.optimumInterceptionPosition(SoccerParams.PLAYER_SPEED_MAX*0.6));		
+		double margin = (brain.getPlayer().isGoalie()) ? SoccerParams.CATCHABLE_AREA_L*0.8 : 0; 
+		brain.setInterestPos(brain.optimumInterceptionPosition(brain.speedEstimation, margin));		
 	}
 }

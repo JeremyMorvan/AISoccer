@@ -10,14 +10,11 @@ import java.util.HashSet;
 import math.Identity;
 import math.MathFunction;
 import math.MathTools;
-import math.NullVectorException;
 import math.Sigmoide;
 import math.Vector2D;
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
-import aisoccer.fullStateInfo.Ball;
-import aisoccer.fullStateInfo.FullstateInfo;
-import aisoccer.fullStateInfo.Player;
+import aisoccer.fullStateInfo.*;
 import aisoccer.strategy.Strategy;
 import aisoccer.training.scripts.PassTraining;
 import ann.Network;
@@ -50,7 +47,7 @@ public class Brain implements Runnable
 	private Network 				 passNetwork;
 	private Network					 shootNetwork;
 	
-	private final double 			speedEstimation = SoccerParams.PLAYER_SPEED_MAX*0.6;
+	public final double 			speedEstimation = SoccerParams.PLAYER_SPEED_MAX*0.6;
 
 	/*
 	 * =========================================================================
@@ -291,8 +288,9 @@ public class Brain implements Runnable
 	private void actualizeState() {
 		this.state = new State(this.fullstateInfo,this.player);
 	}
-
 	
+	//////////////////////////////////////////
+	// BALL DYNAMICS TOOLS	
 	public Vector2D ballPositionPrediction(double steps){
 		Ball b = fullstateInfo.getBall();
 		double k = SoccerParams.BALL_DECAY;
@@ -313,13 +311,14 @@ public class Brain implements Runnable
 
 	///////////////////////////////////////////////////
 	/////	 INTERCEPTION METHODS
-	public double timeToIntercept(final Player p, final double playerSpeed){
+	public double timeToIntercept(final Player p, final double playerSpeed, final double margin){
 		double time = -1.0;
 		Vector2D ballP = fullstateInfo.getBall().getPosition();
 
 		MathFunction f = new  MathFunction() {
-			public double value(double steps) {	                
-				return p.distanceTo(ballPositionPrediction(steps))/playerSpeed - steps;
+			public double value(double steps) {	          
+				double distance = Math.max(p.distanceTo(ballPositionPrediction(steps)) - margin, 0);
+				return distance/playerSpeed - steps;
 			}
 		};
 		
@@ -369,15 +368,18 @@ public class Brain implements Runnable
 		return time;		
 	}
 	
-	public double timeToIntercept(final Player p){
-		return timeToIntercept(p, speedEstimation);
+	
+	public double timeToIntercept(Player p){
+		return timeToIntercept(p, speedEstimation, 0);
 	}
 
-	public Vector2D optimumInterceptionPosition(double playerSpeed){
-		double time = timeToIntercept(player, playerSpeed);
+	public Vector2D optimumInterceptionPosition(double playerSpeed, double margin){
+		double time = timeToIntercept(player, playerSpeed, margin);
 		return (time>0) ? ballPositionPrediction(time) : null;
 	}
 	
+	//////////////////////////////////////
+	// PASS AND KICK TOOLS	
 	public Vector2D computeNeededVelocity(Vector2D teamMate, double speedTM, Vector2D interceptionPoint){
 		double time = teamMate.distanceTo(interceptionPoint)/speedTM;
 		double dist = interceptionPoint.distanceTo(fullstateInfo.getBall());
@@ -392,10 +394,7 @@ public class Brain implements Runnable
 		return 	computeNeededVelocity(teamMate, speedEstimation, interceptionPoint);
 	}
 
-	
-	
-	/////////////////////////////////////////////
-	
+		
 	public ArrayList<Vector2D> generatePointsAround(Vector2D player, Vector2D goal){
 		return null;
 		
