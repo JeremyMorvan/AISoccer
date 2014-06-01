@@ -17,6 +17,8 @@ import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
 import aisoccer.strategy.Strategy;
+import ann.Network;
+import ann.Sigmoide;
 
 /**
  * 
@@ -40,6 +42,9 @@ public class Brain implements Runnable
 	private Area[]					 allAreas;
 	private HashSet<Area>			 myAreas;
 	private Vector2D 				 posIni;
+	
+	private Network 				passNetwork;
+	private Network					shootNetwork;
 
 	/*
 	 * =========================================================================
@@ -63,6 +68,9 @@ public class Brain implements Runnable
 		this.player = leftSide ? fullstateInfo.getLeftTeam()[playerNumber - 1] : fullstateInfo.getRightTeam()[playerNumber - 1];
 		this.actionsQueue = new ArrayDeque<PlayerAction>();
 		this.player.setUniformNumber(playerNumber);
+		
+//		this.passNetwork = Network.load("", );
+//		this.shootNetwork = Network.load("", );
 	}
 
 	/*
@@ -390,6 +398,8 @@ public class Brain implements Runnable
 		return true;
 	}
 	
+	///////////////////////////////
+	// DANGEROSITY OF AN OPPONENT	
 	public double evalDangerosity(Player op){
 		// The smaller the returned valued, the more dangerous the player is.
 		Vector2D myGoal = new Vector2D(player.isLeftSide() ? -52.5d : 52.5d,0);
@@ -409,7 +419,8 @@ public class Brain implements Runnable
 		}		
 	}
 	
-
+	
+	///////////////////////////////////
 	public double getXLimOffSide(){
 		int p = this.player.isLeftSide() ? 1:-1;		
 		Iterable<Player> opponents = this.fullstateInfo.getOpponents(this.player);
@@ -439,7 +450,6 @@ public class Brain implements Runnable
 			}
 		}
 		return xmin2;
-
 	}
 
 	public Vector2D getPosIni() {
@@ -452,5 +462,16 @@ public class Brain implements Runnable
 
 	public void engage(){
 		this.robocupClient.move(this.posIni.getX(), this.posIni.getY());
+	}
+	
+	///////////////////////////////////////
+	// PASS AND SHOOT EVALUATION
+	
+	public double evalPass(Vector2D teamMate, Vector2D interceptionPoint, Vector2D opponent){
+		return 0;
+	}
+
+	public double evalShoot(Vector2D target){
+		return 0;
 	}
 }

@@ -4,7 +4,7 @@ import math.MathFunction;
 import aisoccer.InvalidArgumentException;
 
 public class Layer {
-	Neuron[] neurons;
+	private Neuron[] neurons;
 	
 	public Layer(double[][] weights, MathFunction f){
 		neurons = new Neuron[weights.length];
@@ -24,6 +24,16 @@ public class Layer {
 			}
 		}
 		return out;
+	}
+	
+	public void setFunction(MathFunction f){
+		for(Neuron n : neurons){
+			n.setFunction(f);			
+		}
+	}
+	
+	public Neuron[] getNeurons(){
+		return neurons;
 	}
 	
 }

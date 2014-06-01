@@ -5,8 +5,8 @@ import math.MathTools;
 import aisoccer.InvalidArgumentException;
 
 public class Neuron {
-	double[] w;
-	MathFunction activFunction;
+	private double[] w;
+	private MathFunction activFunction;
 	
 	public Neuron(double[] weights, MathFunction f){
 		w = weights;
@@ -15,5 +15,13 @@ public class Neuron {
 	
 	public double eval(double[] input) throws InvalidArgumentException{
 		return activFunction.value(MathTools.sp(w, input));		
+	}
+	
+	public void setFunction(MathFunction f){
+		this.activFunction = f;
+	}
+	
+	public double[] getWeights(){
+		return w;
 	}
 }

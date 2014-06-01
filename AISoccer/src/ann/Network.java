@@ -36,7 +36,13 @@ public class Network {
 		return out;
 	}
 	
-	public double[] expand(double[] v){
+	public void setFunction(MathFunction f){
+		for(Layer l : layers){
+			l.setFunction(f);			
+		}
+	}
+	
+	private double[] expand(double[] v){
 		double[] r = new double[v.length+1];
 		for(int i=0; i<v.length; i++){
 			r[i] = v[i];
@@ -54,7 +60,7 @@ public class Network {
 		return null;		
 	}
 	
-	public static ArrayList<double[][]> parseWeights(String path) {
+	private static ArrayList<double[][]> parseWeights(String path) {
 		ArrayList<double[][]> res = new ArrayList<double[][]>();
 		
 		double[][] matrix;
