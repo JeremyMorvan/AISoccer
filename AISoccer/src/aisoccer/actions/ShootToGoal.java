@@ -2,6 +2,7 @@ package aisoccer.actions;
 
 import math.Vector2D;
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 
 public class ShootToGoal extends ShootTo {
 
@@ -21,7 +22,8 @@ public class ShootToGoal extends ShootTo {
 
 	@Override
 	public void Start() {
-		brain.setInterestPos(new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0));
+		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
+		brain.setShootVector(goal.subtract(brain.getFullstateInfo().getBall().getPosition()).normalize().multiply(SoccerParams.BALL_SPEED_MAX));
 	}
 
 	@Override

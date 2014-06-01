@@ -379,20 +379,40 @@ public class FullstateInfo
 	}
     
     public ArrayList<Player> getTeammates(Player player){
-    	ArrayList<Player> answer = (player.isLeftSide()) ? new ArrayList<Player>(Arrays.asList(leftTeam)) : new ArrayList<Player>(Arrays.asList(rightTeam));
-    	answer.remove(player);
+    	Player[] team = (player.isLeftSide()) ? leftTeam : rightTeam;
+    	ArrayList<Player> answer = new ArrayList<Player>();    	
+    	for(Player p : team){
+    		if(!p.equals(player) && p.isConnected()){
+    			answer.add(p);
+    		}
+    	}
     	return answer;
     }
     
     public ArrayList<Player> getOpponents(Player player){
-    	Player[] t = (! player.isLeftSide()) ? leftTeam : rightTeam;
-    	return new ArrayList<Player>(Arrays.asList(t));
+    	Player[] team = (player.isLeftSide()) ? rightTeam : leftTeam;
+    	ArrayList<Player> answer = new ArrayList<Player>();    	
+    	for(Player p : team){
+    		if(p.isConnected()){
+    			answer.add(p);
+    		}
+    	}
+    	return answer;
     }
     
     public ArrayList<Player> getEveryBody(){
-    	ArrayList<Player> reunion = new ArrayList<Player>(Arrays.asList(leftTeam));
-    	reunion.addAll(new ArrayList<Player>(Arrays.asList(rightTeam)));
-    	return reunion;
+    	ArrayList<Player> answer = new ArrayList<Player>();    	
+    	for(Player p : leftTeam){
+    		if(p.isConnected()){
+    			answer.add(p);
+    		}
+    	}	
+    	for(Player p : rightTeam){
+    		if(p.isConnected()){
+    			answer.add(p);
+    		}
+    	}
+    	return answer;
     }
     
     public void parseTrainer(){
