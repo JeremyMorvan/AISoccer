@@ -403,7 +403,8 @@ public class TrainerBrain implements Runnable
 				System.out.println("the direction couldn't be classified : " + direction);
 			}
 //			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
-			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+			max = max*(1-SoccerParams.BALL_DECAY);
+			max = Math.min(max, SoccerParams.BALL_SPEED_MAX);
 //			if(max>3){
 //				System.out.println("////////////////////////////////////////////////////");
 //				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
@@ -432,6 +433,7 @@ public class TrainerBrain implements Runnable
 			Random r = new Random();
 			x = shooter.getX()+r.nextGaussian()*3;
 			y = shooter.getY()+r.nextGaussian()*3;
+			System.out.println(x + "    " + y);
 			if(Math.abs(x)<SoccerParams.FIELD_LENGTH/2&&Math.abs(y)<SoccerParams.FIELD_WIDTH/2){
 				newBallP = new Vector2D(x,y);	
 			}					
@@ -477,8 +479,9 @@ public class TrainerBrain implements Runnable
 			else{
 				System.out.println("the direction couldn't be classified : " + direction);
 			}
-//			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
-			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+			max = max*(1-SoccerParams.BALL_DECAY);
+			max = Math.min(max, SoccerParams.BALL_SPEED_MAX);
 //			if(max>3){
 //				System.out.println("////////////////////////////////////////////////////");
 //				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
@@ -487,7 +490,7 @@ public class TrainerBrain implements Runnable
 //				System.out.println("////////////////////////////////////////////////////");
 //			}
 			if(max>min){
-				double dist = newBallP.distanceTo(target)*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+				double dist = newBallP.distanceTo(target)*(1-SoccerParams.BALL_DECAY);
 				double pow = -1;
 				Random r = new Random();
 //				System.out.println(dist);

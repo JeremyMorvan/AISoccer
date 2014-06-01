@@ -2,9 +2,10 @@ close all;
 clear all;
 clc;
 
-FileNames = {'TrainingLogs.txt','TrainingPassLogs.txt'};
+FileNames = {'TrainingLogs.txt','TrainingPassLogs.txt','BiasedTrainingPassLogs.txt'};
 [X1,X2,T1,T2] = ExtractInfos(FileNames);
 [X,T] = shuffle(X1,X2,T1,T2);
+x = X(1:5,:);
 
 hidden = 15;
 Win = 0.1*randn(hidden,6);
