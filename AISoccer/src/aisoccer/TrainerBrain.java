@@ -2,6 +2,7 @@ package aisoccer;
 import java.util.ArrayList;
 import java.util.Random;
 
+import math.MathTools;
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
@@ -56,7 +57,7 @@ public class TrainerBrain implements Runnable
 		this.currentGoalieDir = 0;
 		switch(trainingType){
 		case PASS :
-			this.passTrainer = new PassTraining("../TrainingPassLogs.txt");
+			this.passTrainer = new PassTraining("../BiasedTrainingPassLogs.txt");
 			break;
 		case SHOOT :
 			this.shootTrainer = new ShootTraining("../TrainingShootLogs.txt");
@@ -214,8 +215,15 @@ public class TrainerBrain implements Runnable
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
 //				System.out.println("here1");
-				movePlayers();				
-				randomPass();				
+				boolean biased = true;
+				if(biased){
+					Vector2D[] pos = movePlayers();				
+					notSoRandomPass(pos);
+				}else{
+					movePlayers();				
+					randomPass();
+				}
+								
 				setPlayOn();
 				return;			
 			}
@@ -330,17 +338,23 @@ public class TrainerBrain implements Runnable
 		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(bPow,bDir-Math.PI/2,true));		
 	}
 	
-	public void movePlayers(){
+	public Vector2D[] movePlayers(){
 		// MOVE THE PLAYERS FOR THE NEXT PASS SIMULATION
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
+		Vector2D[] pos = new Vector2D[everybody.size()];
+		int i=0;
 		double x;
 		double y;
 		for(Player p : everybody){
 			x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
 			y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
 			trainerClient.movePlayer(p,x,y);
-			p.setPosition(new Vector2D(x,y));
+			Vector2D v2 = new Vector2D(x,y);
+			p.setPosition(v2);
+			pos[i] = v2;
+			i++;
 		}
+		return pos;
 	}
 	
 	public void randomPass(){
@@ -403,6 +417,84 @@ public class TrainerBrain implements Runnable
 		}
 		trainerClient.moveBall(newBallP, newBallV);
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);		
+	}
+	
+	public void notSoRandomPass(Vector2D[] pos){
+		Vector2D newBallP = null;
+		Vector2D newBallV = null;
+		
+		
+		// HERE : COMPUTE newBalP AND newBallV
+		double x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
+		double y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
+		newBallP = new Vector2D(x,y);
+		
+		
+		double min;
+		double max;
+		
+		
+		while(newBallV == null){	
+//			System.out.println("I come here 2 - One time");
+			Vector2D target = pos[(int)Math.floor(Math.random()*pos.length)];
+//			System.out.println(target);
+			double direction = MathTools.positiveAngle(Math.toRadians(newBallP.directionOf(target)));
+			min = 0.5;
+			max = 0;
+			if(direction<=Math.PI/4||direction>7*Math.PI/4){
+				max = ((SoccerParams.FIELD_LENGTH/2)-x)/Math.cos(direction);
+//				System.out.println("case 1");
+//				System.out.println((SoccerParams.FIELD_LENGTH/2)-x);
+//				System.out.println(Math.cos(direction));
+			}
+			else if(direction>Math.PI/4&&direction<=3*Math.PI/4){
+				max = ((SoccerParams.FIELD_WIDTH/2)-y)/Math.sin(direction);
+//				System.out.println("case 2");
+//				System.out.println((SoccerParams.FIELD_WIDTH/2)-y);
+//				System.out.println(Math.sin(direction));
+			}
+			else if(direction>3*Math.PI/4&&direction<=5*Math.PI/4){
+				max = -((SoccerParams.FIELD_LENGTH/2)+x)/Math.cos(direction);
+//				System.out.println("case 3");
+//				System.out.println((SoccerParams.FIELD_LENGTH/2)+x);
+//				System.out.println(Math.cos(direction));
+			}
+			else if(direction>5*Math.PI/4&&direction<=7*Math.PI/4){
+				max = -((SoccerParams.FIELD_WIDTH/2)+y)/Math.sin(direction);
+//				System.out.println("case 4");
+//				System.out.println((SoccerParams.FIELD_WIDTH/2)+y);
+//				System.out.println(Math.sin(direction));
+			}
+			else{
+				System.out.println("the direction couldn't be classified : " + direction);
+			}
+//			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+			max = max*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+//			if(max>3){
+//				System.out.println("////////////////////////////////////////////////////");
+//				System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+//				System.out.println(Math.cos(direction));
+//				System.out.println(Math.sin(direction));
+//				System.out.println("////////////////////////////////////////////////////");
+//			}
+			if(max>min){
+				double dist = newBallP.distanceTo(target)*(1-SoccerParams.BALL_DECAY)/SoccerParams.BALL_SPEED_MAX;
+				double pow = -1;
+				Random r = new Random();
+//				System.out.println(dist);
+//				System.out.println(min);
+//				System.out.println(max);
+				if(dist>1.2*max||dist<min/1.2){
+					dist = (max+min)/2;
+				}
+				while(pow>max||pow<min){
+					pow = r.nextGaussian()*0.1+dist;
+				}
+				newBallV = new Vector2D(pow,direction,true);
+			}
+		}
+		trainerClient.moveBall(newBallP, newBallV);
+		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);
 	}
 	
 //	private Vector2D genPos2relPos(Vector2D genPos){

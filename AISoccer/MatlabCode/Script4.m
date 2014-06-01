@@ -2,7 +2,8 @@ close all;
 clear all;
 clc;
 
-[X1,X2,T1,T2] = ExtractInfos('TrainingLogs.txt');
+FileNames = {'TrainingLogs.txt','TrainingPassLogs.txt'};
+[X1,X2,T1,T2] = ExtractInfos(FileNames);
 [X,T] = shuffle(X1,X2,T1,T2);
 
 hidden = 15;

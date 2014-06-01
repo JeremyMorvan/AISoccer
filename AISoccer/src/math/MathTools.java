@@ -41,6 +41,17 @@ public class MathTools
 
         return a;
     }
+    
+    public static double positiveAngle(double a){
+        while(a<0){
+        	a+=2*Math.PI;
+        }
+        while(a>2*Math.PI){
+        	a-=2*Math.PI;
+        }
+        return a;
+    }
+    
 
     /**
      * Quantize the input number according to the input step.
