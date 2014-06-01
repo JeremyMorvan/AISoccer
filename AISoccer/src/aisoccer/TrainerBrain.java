@@ -26,7 +26,7 @@ public class TrainerBrain implements Runnable
 	private PassTraining	passTrainer;
 	private ShootTraining 	shootTrainer;
 	private TrainingType 	trainingType;
-	private double 	  	  	currentGoalieDir;
+	private Vector2D 	  	currentGoaliePos;
 	private Vector2D 	  	currentBallPos;
 	private int 		 	count;
 	
@@ -54,7 +54,7 @@ public class TrainerBrain implements Runnable
 		this.trainingType = trainingType;
 		this.count = 0;
 		this.currentBallPos = null;
-		this.currentGoalieDir = 0;
+		this.currentGoaliePos = null;
 		switch(trainingType){
 		case PASS :
 			this.passTrainer = new PassTraining("../BiasedTrainingPassLogs.txt");
@@ -257,7 +257,7 @@ public class TrainerBrain implements Runnable
 		case 0:
 			this.currentBallPos = randomBallPos();
 			//System.out.println(this.currentBallPos);
-			this.currentGoalieDir = randomGoalieDir(currentBallPos);
+			this.currentGoaliePos = randomGoaliePos(currentBallPos);
 			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(0, currentBallPos);
 			count ++;
@@ -277,22 +277,23 @@ public class TrainerBrain implements Runnable
 		}
 		if(ballPow>=0){
 			//System.out.println("here2");
-			this.sendShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
-			shootTrainer.rememberShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
+			this.sendShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
+			shootTrainer.rememberShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
 		}else{
 			System.out.println("error in new shoot");
 		}
 	}
 	
-	public double randomGoalieDir(Vector2D ballPos){
+	public Vector2D randomGoaliePos(Vector2D ballPos){
 		Random r = new Random();
 		double dir = 100;
 		double ballDir = ballPos.polarAngle()*Math.PI/180;
 		while(dir>Math.PI||dir<0){
-			dir = r.nextGaussian()*Math.PI/3 + ballDir;
+			dir = r.nextGaussian()*Math.PI/4 + ballDir;
 			//System.out.println("GDir :" + dir);
 		}
-		return dir;
+		double dist = Math.abs(r.nextGaussian()*SoccerParams.GOAL_WIDTH/2);
+		return new Vector2D(dist,dir,true);
 	}
 	
 	public double randomBallPow(){
@@ -327,13 +328,13 @@ public class TrainerBrain implements Runnable
 		return new Vector2D(dist,dir,true);		
 	}
 	
-	public void sendShoot(double gDir,Vector2D bPos, double bPow, double bDir){
+	public void sendShoot(Vector2D gPos,Vector2D bPos, double bPow, double bDir){
 		//System.out.println("here3");
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
 		if(everybody.size()>2){
 			System.out.println("More than 1 player in the field");
 		}else{
-			trainerClient.movePlayer(everybody.get(0), gDir2genPos(gDir));
+			trainerClient.movePlayer(everybody.get(0), relPos2genPos(gPos));
 		}
 		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(bPow,bDir-Math.PI/2,true));		
 	}
@@ -515,9 +516,5 @@ public class TrainerBrain implements Runnable
 	
 	private Vector2D relPos2genPos(Vector2D relPos){
 		return new Vector2D(relPos.getY()-SoccerParams.FIELD_LENGTH/2,-relPos.getX());
-	}
-	
-	private Vector2D gDir2genPos(double gDirection){
-		return (new Vector2D(SoccerParams.GOAL_WIDTH/2,gDirection-Math.PI/2,true)).add(new Vector2D(-SoccerParams.FIELD_LENGTH/2,0));
 	}
 }

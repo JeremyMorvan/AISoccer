@@ -30,8 +30,8 @@ public class ShootTraining {
 		} catch (IOException e) {e.printStackTrace();}
 	}
 		
-	public void rememberShoot(double GoalieDirection, Vector2D ballPosition, double ballPower, double ballDirection){
-		currentShootSnapshot = new ShootSnapshot(GoalieDirection,ballPosition,ballPower,ballDirection);
+	public void rememberShoot(Vector2D GoaliePosition, Vector2D ballPosition, double ballPower, double ballDirection){
+		currentShootSnapshot = new ShootSnapshot(GoaliePosition,ballPosition,ballPower,ballDirection);
 	}
 	
 	public void clearMemory(){
@@ -59,20 +59,21 @@ public class ShootTraining {
 	
 	
 	public class ShootSnapshot{
-		double goalieDirection;
+		Vector2D goaliePosition;
 		Vector2D ballPosition;
 		double ballPower;
 		double ballDirection;
 		
-		public ShootSnapshot(double GoalieDirection, Vector2D BallPosition, double BallPower, double BallDirection){
-			goalieDirection = GoalieDirection;
+		public ShootSnapshot(Vector2D GoaliePosition, Vector2D BallPosition, double BallPower, double BallDirection){
+			goaliePosition = GoaliePosition;
 			ballPosition = BallPosition;
 			ballPower = BallPower;
 			ballDirection = BallDirection;
 		}
 		
 		public String toString(){
-			return this.goalieDirection + " " +
+			return this.goaliePosition.getX() + " " +
+					this.goaliePosition.getY() + " " +
 					this.ballPosition.getX() + " " + 
 					this.ballPosition.getY() + " " +
 					this.ballPower + " " + 
