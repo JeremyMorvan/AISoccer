@@ -2,24 +2,19 @@ close all;
 clear all;
 clc;
 
-load('ANNShootParams');
+[X,T] = generateData_GoaliePos(50000);
+
+x = X(1:4,:);
+
+hidden = 8;
+Win = 0.1*randn(hidden,5);
+Vin = 0.1*randn(1,hidden+1);
 
 
-dirb = 100;
-while dirb>pi||dirb<0 
-    dirb = pi*randn(1)/4+pi/2;
-end
-distb = rand(1)*34+10;
-xb = distb*cos(dirb);
-yb = dirb*sin(dirb);
+[W,V,errors] = delta2(X,T,Win,Vin,1/size(X,2),10000,0.7);
 
-dirg = 100;
-while dirg>pi||dirg<0 
-    dirg = randn(1)*pi/4 + dirb;
-end
-distg = abs(randn(1)*7.01);
+save('ANNGoalPosParams','W','V');
 
-xg = distg*cos(dirg);
-yg = dirg*sin(dirg);
+WriteInFile('ANN-Goal.txt',W,V);
 
-func = @(x,y) evalNetwork([xg,yg,xb,yb,x,atan2(y-yb,-xb)],W,V);
+

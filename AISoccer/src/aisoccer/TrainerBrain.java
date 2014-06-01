@@ -275,25 +275,29 @@ public class TrainerBrain implements Runnable
 		default :
 			break;
 		}
-		if(ballPow>=0){
+		if(ballPow>=0&&currentGoaliePos!=null){
 			//System.out.println("here2");
 			this.sendShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
 			shootTrainer.rememberShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
 		}else{
-			System.out.println("error in new shoot");
+			System.out.println("error in new shoot, the goalie may be disconnected");
 		}
 	}
 	
 	public Vector2D randomGoaliePos(Vector2D ballPos){
-		Random r = new Random();
-		double dir = 100;
-		double ballDir = ballPos.polarAngle()*Math.PI/180;
-		while(dir>Math.PI||dir<0){
-			dir = r.nextGaussian()*Math.PI/4 + ballDir;
-			//System.out.println("GDir :" + dir);
+		if(!fullstateInfo.getLeftTeam()[0].isConnected()){
+			return null;
+		}else{
+			Random r = new Random();
+			double dir = 100;
+			double ballDir = ballPos.polarAngle()*Math.PI/180;
+			while(dir>Math.PI||dir<0){
+				dir = r.nextGaussian()*Math.PI/4 + ballDir;
+				//System.out.println("GDir :" + dir);
+			}
+			double dist = Math.abs(r.nextGaussian()*SoccerParams.GOAL_WIDTH/2);
+			return new Vector2D(dist,dir,true);
 		}
-		double dist = Math.abs(r.nextGaussian()*SoccerParams.GOAL_WIDTH/2);
-		return new Vector2D(dist,dir,true);
 	}
 	
 	public double randomBallPow(){

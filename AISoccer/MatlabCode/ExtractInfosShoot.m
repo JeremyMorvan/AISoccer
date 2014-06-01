@@ -1,5 +1,6 @@
 function [X1,X2,T1,T2] = ExtractInfosShoot(FileNames)
 
+
 X1 = [];
 X2 = [];
 T1 = [];
@@ -18,15 +19,15 @@ for f=1:length(FileNames)
     end
     fclose(fid);
 
-    nb = length(flines);    
+    nb = length(flines);
+    if strcmp(FileName,'TrainingShootLogsWithBugDeco.txt')
+        nb = floor(3*nb/4);
+    end
 
     for i=1:nb
         line = flines{i};
         values = sscanf(line, '%f');
         if numel(values)>0
-            if ploter
-             close all;
-            end
             i1 = values(1);
             if i1(1) ~= '%'     
                 i2 = values(2);
@@ -34,14 +35,22 @@ for f=1:length(FileNames)
                 i4 = values(4);
                 i5 = values(5);
                 i6 = values(6);
-                t = values(6);
+                t = values(7);
                 if t
                     T1 = [T1 t];
-                    xp = [i1;i2;i3;i4;i5;i6;1]; 
+                    xp = [i1;i2;i3;i4;i5;i6;1];
+                    X1 = [X1 xp];
+                    
+                    T1 = [T1 t];
+                    xp = [-i1;i2;-i3;i4;i5;i6-sign(i3)*pi/2;1];
                     X1 = [X1 xp];
                 else
                     T2 = [T2 -1];
                     xn = [i1;i2;i3;i4;i5;i6;1]; 
+                    X2 = [X2 xn];
+                    
+                    T2 = [T2 -1];
+                    xn = [-i1;i2;-i3;i4;i5;i6-sign(i3)*pi/2;1]; 
                     X2 = [X2 xn];
                 end
                         
