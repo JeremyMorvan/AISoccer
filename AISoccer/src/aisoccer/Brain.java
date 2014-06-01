@@ -7,9 +7,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
+import math.Identity;
 import math.MathFunction;
 import math.MathTools;
 import math.NullVectorException;
+import math.Sigmoide;
 import math.Vector2D;
 import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
@@ -17,8 +19,8 @@ import aisoccer.fullStateInfo.Ball;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
 import aisoccer.strategy.Strategy;
+import aisoccer.training.scripts.PassTraining;
 import ann.Network;
-import ann.Sigmoide;
 
 /**
  * 
@@ -38,13 +40,17 @@ public class Brain implements Runnable
 	private Player                   player;       // The player this brain controls
 	private Strategy                 strategy;     // Strategy used by this brain
 	private ArrayDeque<PlayerAction> actionsQueue; // Contains the actions to be executed.
-	private Vector2D				 interestPos;
 	private Area[]					 allAreas;
 	private HashSet<Area>			 myAreas;
 	private Vector2D 				 posIni;
+
+	private Vector2D				 interestPos;
+	private Vector2D 				 shootVector;
 	
-	private Network 				passNetwork;
-	private Network					shootNetwork;
+	private Network 				 passNetwork;
+	private Network					 shootNetwork;
+	
+	private final double 			speedEstimation = SoccerParams.PLAYER_SPEED_MAX*0.6;
 
 	/*
 	 * =========================================================================
@@ -69,7 +75,9 @@ public class Brain implements Runnable
 		this.actionsQueue = new ArrayDeque<PlayerAction>();
 		this.player.setUniformNumber(playerNumber);
 		
-//		this.passNetwork = Network.load("", );
+		MathFunction identity = new Identity();
+		MathFunction sigmoide = new Sigmoide();
+		this.passNetwork = Network.load("ANN-passTraining.txt", identity);
 //		this.shootNetwork = Network.load("", );
 	}
 
@@ -162,6 +170,14 @@ public class Brain implements Runnable
 
 	public Vector2D getInterestPos(){
 		return this.interestPos;
+	}
+	
+	public void setShootVector(Vector2D v){
+		this.shootVector = v;
+	}
+
+	public Vector2D getShootVector(){
+		return this.shootVector;
 	}
 
 
@@ -354,14 +370,36 @@ public class Brain implements Runnable
 	}
 	
 	public double timeToIntercept(final Player p){
-		return timeToIntercept(p, SoccerParams.PLAYER_SPEED_MAX*0.6);
+		return timeToIntercept(p, speedEstimation);
 	}
 
 	public Vector2D optimumInterceptionPosition(double playerSpeed){
 		double time = timeToIntercept(player, playerSpeed);
 		return (time>0) ? ballPositionPrediction(time) : null;
 	}
+	
+	public Vector2D computeNeededVelocity(Vector2D teamMate, double speedTM, Vector2D interceptionPoint){
+		double time = teamMate.distanceTo(interceptionPoint)/speedTM;
+		double dist = interceptionPoint.distanceTo(fullstateInfo.getBall());
+		double speed = dist*(1-SoccerParams.BALL_DECAY)/(1-Math.pow(SoccerParams.BALL_DECAY, time));
+		if(speed==0){
+			return new Vector2D(0, 0);
+		}
+		return interceptionPoint.subtract(fullstateInfo.getBall().getPosition()).normalize().multiply(speed);
+	}
+	
+	public Vector2D computeNeededVelocity(Vector2D teamMate, Vector2D interceptionPoint){
+		return 	computeNeededVelocity(teamMate, speedEstimation, interceptionPoint);
+	}
+
+	
+	
 	/////////////////////////////////////////////
+	
+	public ArrayList<Vector2D> generatePointsAround(Vector2D player, Vector2D goal){
+		return null;
+		
+	}
 	
 
 	public double getEffectivePowerRate(){
@@ -467,8 +505,12 @@ public class Brain implements Runnable
 	///////////////////////////////////////
 	// PASS AND SHOOT EVALUATION
 	
-	public double evalPass(Vector2D teamMate, Vector2D interceptionPoint, Vector2D opponent){
-		return 0;
+	public double evalPass(Vector2D ballVelocityAfterKick, Vector2D teamMate, Vector2D opponent){
+		Ball b = fullstateInfo.getBall();
+		Vector2D stdPosTM = PassTraining.Pass.toStandard(b.getPosition(), ballVelocityAfterKick, teamMate);
+		Vector2D stdPosOp = PassTraining.Pass.toStandard(b.getPosition(), ballVelocityAfterKick, opponent);
+		double[] input = new double[]{ballVelocityAfterKick.polarRadius(), stdPosTM.getX(), stdPosTM.getY(), stdPosOp.getX(), stdPosOp.getY()};
+		return passNetwork.eval(input)[0];
 	}
 
 	public double evalShoot(Vector2D target){

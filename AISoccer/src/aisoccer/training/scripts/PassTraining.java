@@ -82,7 +82,7 @@ public class PassTraining {
 	
 	
 	
-	public class Pass{
+	public static class Pass{
 		KickSnapshot kickSnapshot;
 		Player intercepter;
 		
@@ -92,11 +92,11 @@ public class PassTraining {
 		}
 		
 		public boolean isValid(){
-			if(kickSnapshot.ballVelocity.polarRadius()<0.5){
-				System.err.println("Pass too low !");
-				System.out.println("");
-				return false;
-			}
+//			if(kickSnapshot.ballVelocity.polarRadius()<0.5){
+//				System.err.println("Pass too low !");
+//				System.out.println("");
+//				return false;
+//			}
 			for(Player p : kickSnapshot.playersPositions.keySet()){				
 				if(p.equals(intercepter)){
 					return true;
@@ -125,7 +125,7 @@ public class PassTraining {
 		
 		
 		
-		public Vector2D toStandard(Vector2D pBall, Vector2D vBall, Vector2D p){
+		public static Vector2D toStandard(Vector2D pBall, Vector2D vBall, Vector2D p){
 			Vector2D res = p.subtract(pBall);
 			res = res.rotate(-vBall.polarAngle('r'));
 			res.setY(Math.abs(res.getY()));

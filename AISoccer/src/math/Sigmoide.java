@@ -1,6 +1,5 @@
-package ann;
+package math;
 
-import math.MathFunction;
 
 public class Sigmoide extends MathFunction {
 

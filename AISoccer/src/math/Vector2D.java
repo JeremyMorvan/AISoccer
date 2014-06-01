@@ -11,8 +11,7 @@ public class Vector2D implements Cloneable
     private double x;
     private double y;
 
-    public Vector2D(double component1, double component2,
-            boolean arePolarCoordinates)
+    public Vector2D(double component1, double component2, boolean arePolarCoordinates)
     {
         if (arePolarCoordinates)
         { // component1 = radius, component2 = angle.

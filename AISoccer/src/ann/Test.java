@@ -2,6 +2,8 @@ package ann;
 
 import java.util.Arrays;
 
+import math.Sigmoide;
+
 public class Test {
 	public final static String PATH = "ANN-Intercepted1.txt";
 
