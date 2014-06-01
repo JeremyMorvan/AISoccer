@@ -182,7 +182,7 @@ public class TrainerBrain implements Runnable
 	private void shootTraining() {
 		if(fullstateInfo.getPlayMode() != null){
 			if(fullstateInfo.getPlayMode().equals("time_over") ){
-				System.out.println("here1");			
+				//System.out.println("here1");			
 				randomShoot();				
 				setPlayOn();
 				return;			
@@ -194,7 +194,7 @@ public class TrainerBrain implements Runnable
 			}
 			if(fullstateInfo.getBall().getPosition().getX()<-SoccerParams.FIELD_LENGTH/2){
 				if(Math.abs(fullstateInfo.getBall().getPosition().getY())<SoccerParams.GOAL_WIDTH/2){
-					System.out.println("goal !!!!!!!!!");
+					//System.out.println("goal !!!!!!!!!");
 					shootTrainer.notify(true);
 					setTimeOver();
 					return;
@@ -276,7 +276,7 @@ public class TrainerBrain implements Runnable
 			break;
 		}
 		if(ballPow>=0){
-			System.out.println("here2");
+			//System.out.println("here2");
 			this.sendShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
 			shootTrainer.rememberShoot(currentGoalieDir, currentBallPos, ballPow, ballDir);
 		}else{
@@ -321,14 +321,14 @@ public class TrainerBrain implements Runnable
 		double dir = 100;
 		while(dir>Math.PI||dir<0){
 			dir = Math.PI*r.nextGaussian()/4+Math.PI/2;
-			System.out.println("dirPos :" + dir);
+			//System.out.println("dirPos :" + dir);
 		}
 		double dist = Math.random()*34+10;
 		return new Vector2D(dist,dir,true);		
 	}
 	
 	public void sendShoot(double gDir,Vector2D bPos, double bPow, double bDir){
-		System.out.println("here3");
+		//System.out.println("here3");
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
 		if(everybody.size()>2){
 			System.out.println("More than 1 player in the field");
@@ -433,7 +433,7 @@ public class TrainerBrain implements Runnable
 			Random r = new Random();
 			x = shooter.getX()+r.nextGaussian()*3;
 			y = shooter.getY()+r.nextGaussian()*3;
-			System.out.println(x + "    " + y);
+			//System.out.println(x + "    " + y);
 			if(Math.abs(x)<SoccerParams.FIELD_LENGTH/2&&Math.abs(y)<SoccerParams.FIELD_WIDTH/2){
 				newBallP = new Vector2D(x,y);	
 			}					
@@ -479,7 +479,7 @@ public class TrainerBrain implements Runnable
 			else{
 				System.out.println("the direction couldn't be classified : " + direction);
 			}
-			System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
+			//System.out.println("direction : " + direction + "; max : " + max + "; pos : " + newBallP);
 			max = max*(1-SoccerParams.BALL_DECAY);
 			max = Math.min(max, SoccerParams.BALL_SPEED_MAX);
 //			if(max>3){
