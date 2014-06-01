@@ -425,9 +425,18 @@ public class TrainerBrain implements Runnable
 		
 		
 		// HERE : COMPUTE newBalP AND newBallV
-		double x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
-		double y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
-		newBallP = new Vector2D(x,y);
+		double x = 100;
+		double y = 100;
+		while(newBallP == null){
+			Vector2D shooter = pos[(int)Math.floor(Math.random()*pos.length)];
+			Random r = new Random();
+			x = shooter.getX()+r.nextGaussian()*3;
+			y = shooter.getY()+r.nextGaussian()*3;
+			if(Math.abs(x)<SoccerParams.FIELD_LENGTH/2&&Math.abs(y)<SoccerParams.FIELD_WIDTH/2){
+				newBallP = new Vector2D(x,y);	
+			}					
+		}
+		
 		
 		
 		double min;
