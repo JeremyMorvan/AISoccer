@@ -1,5 +1,6 @@
 package aisoccer.actions;
 
+import math.MathTools;
 import math.Vector2D;
 import aisoccer.Brain;
 import aisoccer.PlayerAction;
@@ -21,13 +22,15 @@ public class Shoot extends ActionTask {
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
 		Vector2D neededAcceleration = brain.getShootVector().subtract(ballV);
 		double neededPower = neededAcceleration.polarRadius()/brain.getEffectivePowerRate();
-//		if(neededPower<SoccerParams.POWERMAX){
-//			kickVector = new Vector2D(neededPower, neededAcceleration.polarAngle'), true);
-//			return true;
-//		}else if(ballV.polarRadius()<SPEED_THRESHOLD){
-//			kickVector = new Vector2D(neededPower, neededAcceleration.polarAngle'), true);
-//			return true;		
-//		}
+		double angleKick = MathTools.normalizeAngle(neededAcceleration.polarAngle()-brain.getPlayer().getBodyDirection());
+		if(neededPower<=SoccerParams.POWERMAX){
+			kickVector = new Vector2D(neededPower, angleKick, true);
+			return true;
+		}else if(ballV.polarRadius()<SPEED_THRESHOLD){
+			kickVector = new Vector2D(SoccerParams.POWERMAX, angleKick, true);
+			return true;		
+		}
+		//
 		return false;
 	}
 

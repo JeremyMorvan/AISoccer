@@ -9,11 +9,14 @@ import aisoccer.fullStateInfo.Player;
 
 public class FindUnmarkedTeammate extends ActionTask {
 	
+	boolean allowBackward;
+	
 	public static final double PASS_THRESHOLD = 0.7;
 	private ArrayList<Pass> interestingPasses;
 
-	public FindUnmarkedTeammate(Brain b) {
+	public FindUnmarkedTeammate(Brain b, boolean a) {
 		super(b);
+		allowBackward = a;
 	}
 
 	@Override
@@ -56,42 +59,34 @@ public class FindUnmarkedTeammate extends ActionTask {
 			}			
 		}
 		
-		return !interestingPasses.isEmpty();
-	}	
-
-
-	@Override
-	public void Start() {	
-		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
+		if(interestingPasses.isEmpty()){
+			return false;
+		}
+		
 		Vector2D bestPassVector = null;
 		double bestScore = 0;
 		double score;
 		for(Pass p : interestingPasses){
-			score = Math.pow(p.score,2)/(5+p.point.distanceTo(goal));
+			score = Math.pow(p.score,2)/positionScore(p.teamMate, goal);
 			if(score>bestScore){
 				bestScore = score;
 				bestPassVector = p.ballvelocity;
 			}
-		}
+		}		
 		
-		brain.setShootVector(bestPassVector);		
+		if( allowBackward || bestScore > 0.9/positionScore(brain.getPlayer().getPosition(), goal) ){
+			brain.setShootVector(bestPassVector);
+			return true;
+		}
+		return false;
+	}	
 
-//		Player me = brain.getPlayer();
-//		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
-//		Iterable<Player> opponents = brain.getFullstateInfo().getOpponents(me);
-//		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
-//		double dmin = 300;
-//		if(!brain.getFullstateInfo().getPlayMode().equals("kick_off_l")&&!brain.getFullstateInfo().getPlayMode().equals("kick_off_r")){
-//			dmin = brain.getPlayer().distanceTo(goal);
-//		}
-//		Vector2D bestTeammateP = null;
-//		for(Player tm : teammates){
-//			Vector2D tmRP = tm.getPosition().subtract(me.getPosition());
-//			if(tmRP.polarRadius()<=40 && brain.isFree(tmRP, opponentsRP) && tm.distanceTo(goal)<dmin){
-//				bestTeammateP = tm.getPosition();				
-//			}
-//		}		
-//		brain.setInterestPos(bestTeammateP);	
+	private double positionScore(Vector2D player, Vector2D goal){
+		return 5+player.distanceTo(goal);
+	}
+
+	@Override
+	public void Start() {			
 	}
 	
 	public class Pass{

@@ -8,10 +8,10 @@ import aisoccer.behaviorTree.Task;
 
 public class PassToTeammate extends Sequencer {
 	
-	public PassToTeammate(Brain b){
+	public PassToTeammate(Brain b, boolean allowBackward){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new FindUnmarkedTeammate(brain));
+		children.add(new FindUnmarkedTeammate(brain, allowBackward));
 		children.add(new Pass(brain));
 	}
 	
