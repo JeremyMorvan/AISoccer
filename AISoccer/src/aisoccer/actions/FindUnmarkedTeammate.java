@@ -24,13 +24,15 @@ public class FindUnmarkedTeammate extends ActionTask {
 		Iterable<Player> opponents = brain.getFullstateInfo().getOpponents(me);
 		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
 		
-		ArrayList<Vector2D> kickablePasses = new ArrayList<Vector2D>();
 		for(Player tm : teammates){
 			ArrayList<Vector2D> points = brain.generatePointsAround(tm.getPosition(), goal);
 			Vector2D neededVelocity, neededAcceleration1, neededAcceleration2;
-			double neededPowerKick, neededPowerKick1, neededPowerKick2;
+			double minNeededPowerKick, neededPowerKick1, neededPowerKick2;
 			for(Vector2D point : points){
 				neededVelocity = brain.computeNeededVelocity(tm.getPosition(), point);
+				if(neededVelocity.polarRadius()>SoccerParams.BALL_SPEED_MAX){
+					continue;
+				}
 				
 				// neededAcceleration1 = acceleration needed without controlling
 				//					 2 = 					 after controlling (supposing vball = 0 after controlling)
@@ -39,13 +41,12 @@ public class FindUnmarkedTeammate extends ActionTask {
 				
 				neededPowerKick1 = neededAcceleration1.polarRadius()/brain.getEffectivePowerRate();
 				neededPowerKick2 = neededAcceleration2.polarRadius()/0.8; // we approximate the effectivePowerRate after control by 0.8
-				neededPowerKick = Math.min(neededPowerKick1, neededPowerKick2);
+				minNeededPowerKick = Math.min(neededPowerKick1, neededPowerKick2);
 				
-				if(neededPowerKick<=SoccerParams.POWERMAX){
-					kickablePasses.add(point);
+				if(minNeededPowerKick<=SoccerParams.POWERMAX){
 					double score = 1.0;
 					for(Player op : opponents){
-						score *=1 + (brain.evalPass(neededVelocity, tm.getPosition(), op.getPosition()))/2;
+						score *=( 1+brain.evalPass(neededVelocity, tm.getPosition(), op.getPosition()) )/2;
 					} 
 					
 					if(score>PASS_THRESHOLD){
