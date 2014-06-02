@@ -27,13 +27,13 @@ function [X,T] = generateData_GoaliePos(nbData)
         yg = dirg*sin(dirg);
 
         a=1
-        func = @(x,y) evalNetworkMat(xg,yg,xb,yb,x,y,W,V);
+        func = @(x) evalNetworkMat(xg,yg,xb,yb,x,W,V);
         b=1
 
         xgen = [xg;yg;xb;yb;1];
 
         X = [X xgen];
-        T = [T quad2d(func,0,3,-7.01,7.01)];
+        T = [T integral(func,-7.01,7.01)];
         c=1
     end
 end

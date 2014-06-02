@@ -5,10 +5,10 @@ clc;
 FileNames = {'TrainingShootLogs.txt','TrainingShootLogsWithBugDeco.txt'};
 [X1,X2,T1,T2] = ExtractInfosShoot(FileNames);
 [X,T] = shuffle(X1,X2,T1,T2);
-x = X(1:6,:);
+x = X(1:5,:);
 
 hidden = 15;
-Win = 0.1*randn(hidden,7);
+Win = 0.1*randn(hidden,6);
 Vin = 0.1*randn(1,hidden+1);
 
 

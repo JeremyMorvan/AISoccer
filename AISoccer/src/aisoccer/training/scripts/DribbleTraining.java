@@ -42,9 +42,9 @@ public class DribbleTraining {
 		currentDribbleSnapshot = null;
 	}
 	
-	public void notify(boolean goal){
+	public void notify(int intercepter){
 		if(currentDribbleSnapshot != null){
-			Dribble s = new Dribble(currentDribbleSnapshot, goal);
+			Dribble s = new Dribble(currentDribbleSnapshot, intercepter);
 			String string = s.toString();
 			try {
 				out.write(string, 0, string.length());
@@ -64,42 +64,50 @@ public class DribbleTraining {
 	
 	public class DribbleSnapshot{
 		double ballVelocity;
+		ArrayList<Vector2D> everybodyConnected;
 		ArrayList<Vector2D> everybody;
 		
 		public DribbleSnapshot(Vector2D ballPos, Vector2D ballVelocity, FullstateInfo fsi){
 			this.ballVelocity = ballVelocity.polarRadius();
 			everybody = new ArrayList<Vector2D>();
+			everybodyConnected = new ArrayList<Vector2D>();
 			for(Player p : fsi.getEveryBody()){
-				if (!(p.isLeftSide()&&p.getUniformNumber()==1)&&p.isConnected()){
-					everybody.add(DribbleTraining.toStandard(ballPos, ballVelocity, (Vector2D)p.getPosition().clone()));					
+				if (!(p.isLeftSide()&&p.getUniformNumber()==1)){
+					Vector2D v2 = DribbleTraining.toStandard(ballPos, ballVelocity, (Vector2D)p.getPosition().clone());
+					if(p.isConnected()){
+						everybodyConnected.add(v2);
+					}
+					everybody.add(v2);										
 				}
 			}
 		}
 		
-		public String toString(){
+		public String toString(int intercepter){
 			String output = "" + this.ballVelocity;
-			for(Vector2D v2 : everybody){
-				output = " " + v2.getX() + " " + v2.getY();
+			if(intercepter==0){				
+				for(Vector2D v2 : everybodyConnected){
+					output += " " + v2.getX() + " " + v2.getY();
+				}
+			}else{
+				output += " " + everybody.get(intercepter-1).getX() + " " + everybody.get(intercepter-1).getY();
 			}
-			return output;
+			return output;			
 		}	
 	}
 		
-	
-	
-	
 	public class Dribble{
 		DribbleSnapshot dribbleSnapshot;
 		boolean goal;
+		int intercepter;
 		
-		public Dribble(DribbleSnapshot sS, boolean goal){
+		public Dribble(DribbleSnapshot sS, int intercepter){
 			this.dribbleSnapshot = sS;
-			this.goal = goal;
+			this.intercepter = intercepter;
 		}
 		
 		public String toString(){
-			return this.dribbleSnapshot.toString() + " " + (goal ? 1 : 0);
-		}		
+			return this.dribbleSnapshot.toString(intercepter);
+		}
 	}
 	
 	public static Vector2D toStandard(Vector2D pBall, Vector2D vBall, Vector2D p){

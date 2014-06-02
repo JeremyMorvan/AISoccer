@@ -20,21 +20,17 @@ for f=1:length(FileNames)
     fclose(fid);
 
     nb = length(flines);
-    if strcmp(FileName,'TrainingShootLogsWithBugDeco.txt')
-        nb = floor(3*nb/4);
-    end
 
     for i=1:nb
         line = flines{i};
         values = sscanf(line, '%f');
-        if numel(values)==7
+        if numel(values)==6
             i1 = values(1);
             if i1(1) ~= '%'     
                 i2 = values(2);
                 i3 = values(3);
                 i4 = values(4);
                 i5 = values(5);
-                i6 = values(6);
                 t = values(7);
                 if t
                     T1 = [T1 t];

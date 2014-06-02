@@ -76,9 +76,9 @@ public class Brain implements Runnable
 		
 		MathFunction identity = new Identity();
 		MathFunction sigmoide = new Sigmoide();
-//		this.passNetwork = Network.load("ANN-passTraining.txt", identity);
+//		this.passNetwork = Network.load("ANN-Intercepted.txt", identity);
 //		this.shootNetwork = Network.load("", );
-//		this.dribbleNetwork = Network.load("",); 
+//		this.dribbleNetwork = Network.load("ANN-Dribble.txt",sigmoide); 
 	}
 
 	/*

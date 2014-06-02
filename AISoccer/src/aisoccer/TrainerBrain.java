@@ -188,7 +188,7 @@ public class TrainerBrain implements Runnable
 	}	
 	
 	private void dribbleTraining() {
-		if(fullstateInfo.getPlayMode() != null){
+		if(fullstateInfo.getPlayMode() != null&&fullstateInfo.getLeftTeam()[0].isConnected()){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
 				movePlayers();				
 				randomDribble();								
@@ -196,22 +196,23 @@ public class TrainerBrain implements Runnable
 				return;
 			}
 			
-			Player intercepter = null;
+			int intercepter = -1;
+			int j=0;
 			for(Player p : fullstateInfo.getEveryBody()){
 				if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
-					if(intercepter == null){
-						intercepter = p;
+					if(intercepter == -1){
+						intercepter = j;
 					}else{
-						dribbleTrainer.notify(false);
 						setTimeOver();
 						return;
 					}
 				}
+				j++;
 			}
-			if(intercepter != null){
+			if(intercepter != -1){
 //				System.out.println("here2");
 				// THERE IS AN INTERCEPTER
-				dribbleTrainer.notify(intercepter.equals(fullstateInfo.getLeftTeam()[0]));
+				dribbleTrainer.notify(intercepter);
 				setTimeOver();		
 			}				
 		}			
@@ -253,7 +254,7 @@ public class TrainerBrain implements Runnable
 		if(fullstateInfo.getPlayMode() != null){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
 //				System.out.println("here1");
-				boolean biased = true;
+				boolean biased = false;
 				if(biased){
 					Vector2D[] pos = movePlayers();				
 					notSoRandomPass(pos);
