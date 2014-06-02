@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Random;
 
 import math.Identity;
 import math.MathFunction;
@@ -402,13 +403,22 @@ public class Brain implements Runnable
 		
 	}
 	
-	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal){
-		
+	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal,double intervalLength,double speedMin,double speedMax,int nbPoints){
+		ArrayList<Vector2D> output = new ArrayList<Vector2D>();
+		double dirG = goal.polarAngle();
 		if(Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/6){
-			
-		}else{
-			
+			dirG = player.directionOf(goal);
 		}
+		Random r = new Random();
+		for(int i=0;i<nbPoints;i++){
+			double dir = 10000;
+			while(dir>intervalLength/2||dir>intervalLength/2){
+				dir = r.nextGaussian()*intervalLength/6;
+			}
+			dir = Math.toRadians(MathTools.normalizeAngle(dir+dirG));
+			output.add(new Vector2D(Math.random()*(speedMax-speedMin)+speedMin,dir,true));
+		}
+		return output;
 	}
 	
 
