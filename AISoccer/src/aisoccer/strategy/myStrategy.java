@@ -14,7 +14,7 @@ public class myStrategy extends Selector implements Strategy {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new InterceptBall(brain));
-		children.add(new ShootToGoal(brain, false));
+		children.add(new ShootToGoal(brain));
 	}
 
 	@Override

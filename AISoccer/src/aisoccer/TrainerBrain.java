@@ -6,6 +6,7 @@ import math.MathTools;
 import math.Vector2D;
 import aisoccer.fullStateInfo.FullstateInfo;
 import aisoccer.fullStateInfo.Player;
+import aisoccer.training.scripts.DribbleTraining;
 import aisoccer.training.scripts.PassTraining;
 import aisoccer.training.scripts.ShootTraining;
 
@@ -25,6 +26,7 @@ public class TrainerBrain implements Runnable
 	
 	private PassTraining	passTrainer;
 	private ShootTraining 	shootTrainer;
+	private DribbleTraining dribbleTrainer;
 	private TrainingType 	trainingType;
 	private Vector2D 	  	currentGoaliePos;
 	private Vector2D 	  	currentBallPos;
@@ -61,6 +63,9 @@ public class TrainerBrain implements Runnable
 			break;
 		case SHOOT :
 			this.shootTrainer = new ShootTraining("../TrainingShootLogs.txt");
+			break;
+		case DRIBBLE : 
+			this.dribbleTrainer = new DribbleTraining("../TrainingDribbleLogs.txt");
 			break;
 		default :
 			break;
@@ -148,6 +153,9 @@ public class TrainerBrain implements Runnable
 			case SHOOT : 
 				shootTraining();
 				break;
+			case DRIBBLE :
+				dribbleTraining();
+				break;
 			default :
 				break;					
 			}
@@ -179,6 +187,36 @@ public class TrainerBrain implements Runnable
 		}	
 	}	
 	
+	private void dribbleTraining() {
+		if(fullstateInfo.getPlayMode() != null){
+			if(!fullstateInfo.getPlayMode().equals("play_on") ){
+				movePlayers();				
+				randomDribble();								
+				setPlayOn();
+				return;
+			}
+			
+			Player intercepter = null;
+			for(Player p : fullstateInfo.getEveryBody()){
+				if(p.distanceTo(fullstateInfo.getBall())<SoccerParams.KICKABLE_MARGIN){	
+					if(intercepter == null){
+						intercepter = p;
+					}else{
+						dribbleTrainer.notify(false);
+						setTimeOver();
+						return;
+					}
+				}
+			}
+			if(intercepter != null){
+//				System.out.println("here2");
+				// THERE IS AN INTERCEPTER
+				dribbleTrainer.notify(intercepter.equals(fullstateInfo.getLeftTeam()[0]));
+				setTimeOver();		
+			}				
+		}			
+	}
+
 	private void shootTraining() {
 		if(fullstateInfo.getPlayMode() != null){
 			if(fullstateInfo.getPlayMode().equals("time_over") ){
@@ -509,6 +547,26 @@ public class TrainerBrain implements Runnable
 		}
 		trainerClient.moveBall(newBallP, newBallV);
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);
+	}
+	
+	private void randomDribble() {
+		Vector2D newBallP = null;
+		Vector2D newBallV = null;
+		
+		// HERE : COMPUTE newBalP AND newBallV
+		newBallP = fullstateInfo.getLeftTeam()[0].getPosition();
+		
+		double direction;
+		double min;
+		double max;
+		
+		direction = 2*Math.random()*Math.PI;			
+		min = 0;
+		max = 2*SoccerParams.PLAYER_SPEED_MAX;
+		newBallV = new Vector2D(Math.random()*(max-min)+min,direction,true);
+		
+		trainerClient.moveBall(newBallP, newBallV);
+		dribbleTrainer.rememberDribble(newBallP,newBallV,fullstateInfo);		
 	}
 	
 	private Vector2D relPos2genPos(Vector2D relPos){
