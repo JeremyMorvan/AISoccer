@@ -9,27 +9,17 @@ import aisoccer.PlayerActionType;
 import aisoccer.behaviorTree.ActionTask;
 import aisoccer.fullStateInfo.Player;
 
-public class Dribble extends ActionTask {
+public class DribbleBasic extends ActionTask {
 
-	boolean backwardPassAuthorized;
-	public Dribble(Brain b,boolean bPa) {
+	public DribbleBasic(Brain b,boolean bPa) {
 		super(b);
-		backwardPassAuthorized = bPa;
 	}
 
 	final static double power = 40.0;
 	
 	@Override
 	public boolean CheckConditions() {
-		Player me = brain.getPlayer();
-		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
-		ArrayList<Vector2D> points = brain.generatePointsAround(me.getPosition(), goal);
-		if(backwardPassAuthorized){
-			points.addAll(brain.generatePointsAround(me.getPosition()));
-		}
-		ArrayList<Player> opponents = brain.getFullstateInfo().getOpponents(me);
-		Vector2D bestPoint = null;
-		
+		return true;		
 	}
 
 	@Override

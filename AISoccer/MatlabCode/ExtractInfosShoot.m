@@ -27,7 +27,7 @@ for f=1:length(FileNames)
     for i=1:nb
         line = flines{i};
         values = sscanf(line, '%f');
-        if numel(values)>0
+        if numel(values)==7
             i1 = values(1);
             if i1(1) ~= '%'     
                 i2 = values(2);

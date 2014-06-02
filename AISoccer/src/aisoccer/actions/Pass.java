@@ -5,7 +5,7 @@ import aisoccer.Brain;
 public class Pass extends ShootTo {
 
 	public Pass(Brain b) {
-		super(b, false);
+		super(b);
 	}
 
 	@Override

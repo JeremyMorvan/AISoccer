@@ -13,9 +13,11 @@ public class WithTheBall extends Selector {
 	public WithTheBall(Brain b){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new ShootToGoal(b, true));
-		children.add(new PassToTeammate(b));
-		children.add(new Dribble(b));
+		children.add(new ShootToGoal(b));
+		children.add(new PassToTeammate(b,false));
+		children.add(new Dribble(b,false));
+		children.add(new PassToTeammate(b,true));
+		children.add(new Dribble(b,true));
 	}
 	
 	@Override

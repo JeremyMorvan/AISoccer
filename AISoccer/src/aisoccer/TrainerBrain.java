@@ -258,27 +258,24 @@ public class TrainerBrain implements Runnable
 			this.currentBallPos = randomBallPos();
 			//System.out.println(this.currentBallPos);
 			this.currentGoaliePos = randomGoaliePos(currentBallPos);
-			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(0, currentBallPos);
 			count ++;
 			break;
 		case 1:
-			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(1, currentBallPos);
 			count ++;
 			break;
 		case 2:
-			ballPow = randomBallPow();
 			ballDir = this.randomBallDir(2, currentBallPos);
 			count = 0;
 			break;
 		default :
 			break;
 		}
-		if(ballPow>=0&&currentGoaliePos!=null){
+		if(currentGoaliePos!=null){
 			//System.out.println("here2");
-			this.sendShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
-			shootTrainer.rememberShoot(currentGoaliePos, currentBallPos, ballPow, ballDir);
+			this.sendShoot(currentGoaliePos, currentBallPos, ballDir);
+			shootTrainer.rememberShoot(currentGoaliePos, currentBallPos, ballDir);
 		}else{
 			System.out.println("error in new shoot, the goalie may be disconnected");
 		}
@@ -300,15 +297,15 @@ public class TrainerBrain implements Runnable
 		}
 	}
 	
-	public double randomBallPow(){
-		Random r = new Random();
-		double pow = -1;
-		while(pow<0){
-			pow = SoccerParams.BALL_SPEED_MAX*((3+r.nextGaussian())/4);
-			//System.out.println("pow :" + pow);
-		}
-		return pow;
-	}
+//	public double randomBallPow(){
+//		Random r = new Random();
+//		double pow = -1;
+//		while(pow<0){
+//			pow = SoccerParams.BALL_SPEED_MAX*((3+r.nextGaussian())/4);
+//			//System.out.println("pow :" + pow);
+//		}
+//		return pow;
+//	}
 	
 	public double randomBallDir(int section, Vector2D ballPos){
 		Random r = new Random();
@@ -332,7 +329,7 @@ public class TrainerBrain implements Runnable
 		return new Vector2D(dist,dir,true);		
 	}
 	
-	public void sendShoot(Vector2D gPos,Vector2D bPos, double bPow, double bDir){
+	public void sendShoot(Vector2D gPos,Vector2D bPos, double bDir){
 		//System.out.println("here3");
 		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
 		if(everybody.size()>2){
@@ -340,7 +337,7 @@ public class TrainerBrain implements Runnable
 		}else{
 			trainerClient.movePlayer(everybody.get(0), relPos2genPos(gPos));
 		}
-		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(bPow,bDir-Math.PI/2,true));		
+		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(SoccerParams.BALL_SPEED_MAX*0.95,bDir-Math.PI/2,true));		
 	}
 	
 	public Vector2D[] movePlayers(){
@@ -513,10 +510,6 @@ public class TrainerBrain implements Runnable
 		trainerClient.moveBall(newBallP, newBallV);
 		passTrainer.rememberKick(fullstateInfo, newBallP, newBallV);
 	}
-	
-//	private Vector2D genPos2relPos(Vector2D genPos){
-//		return new Vector2D(-genPos.getY(),genPos.getX()+SoccerParams.FIELD_LENGTH/2);
-//	}
 	
 	private Vector2D relPos2genPos(Vector2D relPos){
 		return new Vector2D(relPos.getY()-SoccerParams.FIELD_LENGTH/2,-relPos.getX());

@@ -7,7 +7,7 @@ FileNames = {'TrainingShootLogs.txt','TrainingShootLogsWithBugDeco.txt'};
 [X,T] = shuffle(X1,X2,T1,T2);
 x = X(1:6,:);
 
-hidden = 10;
+hidden = 15;
 Win = 0.1*randn(hidden,7);
 Vin = 0.1*randn(1,hidden+1);
 

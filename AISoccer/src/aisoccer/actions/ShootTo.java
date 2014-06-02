@@ -8,11 +8,9 @@ import aisoccer.behaviorTree.Task;
 
 public abstract class ShootTo extends Selector {
 	
-	boolean checkDistance;
 	
-	public ShootTo(Brain b, boolean checkDistance){
+	public ShootTo(Brain b){
 		super(b);
-		this.checkDistance = checkDistance;
 		children = new LinkedList<Task>();
 		children.add(new Shoot(brain));
 		children.add(new ControlBall(brain));

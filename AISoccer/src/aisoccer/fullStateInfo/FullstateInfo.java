@@ -512,5 +512,22 @@ public class FullstateInfo
 			
 		}
 	}
+    
+    public Player getGoalie(boolean left){
+    	if(left){
+    		for(Player p : leftTeam){
+    			if(p.isGoalie()){
+    				return p;
+    			}
+    		}
+    	}else{
+    		for(Player p : rightTeam){
+    			if(p.isGoalie()){
+    				return p;
+    			}
+    		}
+    	}
+    	return null;
+    }
 
 }

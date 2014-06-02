@@ -46,6 +46,7 @@ public class Brain implements Runnable
 	
 	private Network 				 passNetwork;
 	private Network					 shootNetwork;
+	private Network					 dribbleNetwork;
 	
 	public final double 			speedEstimation = SoccerParams.PLAYER_SPEED_MAX*0.6;
 
@@ -76,6 +77,7 @@ public class Brain implements Runnable
 		MathFunction sigmoide = new Sigmoide();
 //		this.passNetwork = Network.load("ANN-passTraining.txt", identity);
 //		this.shootNetwork = Network.load("", );
+//		this.dribbleNetwork = Network.load("",); 
 	}
 
 	/*
@@ -400,6 +402,15 @@ public class Brain implements Runnable
 		
 	}
 	
+	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal){
+		
+		if(Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/6){
+			
+		}else{
+			
+		}
+	}
+	
 
 	public double getEffectivePowerRate(){
 		double realDistance = player.distanceTo(fullstateInfo.getBall())-SoccerParams.PLAYER_SIZE-SoccerParams.BALL_SIZE;
@@ -512,7 +523,23 @@ public class Brain implements Runnable
 		return passNetwork.eval(input)[0];
 	}
 
-	public double evalShoot(Vector2D target){
-		return 0;
+	public double evalShoot(double y){
+		Vector2D goaliePos = genPos2relPos(fullstateInfo.getGoalie(player.isLeftSide()).getPosition());
+		Vector2D ballPos = genPos2relPos(fullstateInfo.getBall().getPosition());	
+		double[] input = new double[]{goaliePos.getX(),goaliePos.getY(),ballPos.getX(),ballPos.getY(),y};
+		return (shootNetwork.eval(input)[0]+1.0d)/2.0d;
+	}
+	
+	public double evalDribble(Vector2D ballVelocityAfterKick,Vector2D opponent){
+		Ball b = fullstateInfo.getBall();
+		Vector2D stdPosOp = PassTraining.Pass.toStandard(b.getPosition(), ballVelocityAfterKick, opponent);
+		double[] input = new double[]{ballVelocityAfterKick.polarRadius(), stdPosOp.getX(), stdPosOp.getY()};
+		return (dribbleNetwork.eval(input)[0]+1.0d)/2.0d;
+	}
+	
+	private Vector2D genPos2relPos(Vector2D genPos){
+		double x = (player.isLeftSide() ? 1 : -1 )*genPos.getY();
+		double y = (player.isLeftSide() ? -1 : 1 )*genPos.getX()+SoccerParams.FIELD_LENGTH/2;
+		return new Vector2D(x,y);
 	}
 }
