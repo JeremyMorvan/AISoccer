@@ -3,6 +3,8 @@ package aisoccer.training.scripts;
 import java.io.*;
 import java.util.Calendar;
 
+import aisoccer.training.scripts.ShootTraining.ShootSnapshot;
+
 import math.Vector2D;
 
 public class ShootTraining {

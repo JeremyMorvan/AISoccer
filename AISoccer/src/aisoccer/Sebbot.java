@@ -91,7 +91,8 @@ public class Sebbot
                 }
             }
             //initTrainingPass(hostname,port,portTrainer,team);
-            initTrainingShoot(hostname,port,portTrainer,team);
+            initTrainingDribble(hostname,port,portTrainer,team);
+            //initTrainingShoot(hostname,port,portTrainer,team);
             //initGame(hostname,port,portTrainer,team,7);
         }
         catch (InvalidArgumentException e)
@@ -154,7 +155,7 @@ public class Sebbot
     {   		
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 11;
+        int nbOfPlayers = 9;
         connected = new HashMap<RobocupClient, Long>();
         threads = new HashMap<RobocupClient, Thread>();
         for (int i = 0; i < nbOfPlayers; i++)
@@ -207,7 +208,7 @@ public class Sebbot
     {   		
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 11;
+        int nbOfPlayers = 9;
         connected = new HashMap<RobocupClient, Long>();
         threads = new HashMap<RobocupClient, Thread>();
         for (int i = 0; i < nbOfPlayers; i++)

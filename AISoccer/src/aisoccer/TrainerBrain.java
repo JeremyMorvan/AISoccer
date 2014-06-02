@@ -289,22 +289,21 @@ public class TrainerBrain implements Runnable
 	}
 	
 	private void randomShoot() {
-		double ballPow = -1;
 		double ballDir = -1;
 		switch(count){
 		case 0:
 			this.currentBallPos = randomBallPos();
 			//System.out.println(this.currentBallPos);
 			this.currentGoaliePos = randomGoaliePos(currentBallPos);
-			ballDir = this.randomBallDir(0, currentBallPos);
+			ballDir = this.randomBallDir(0);
 			count ++;
 			break;
 		case 1:
-			ballDir = this.randomBallDir(1, currentBallPos);
+			ballDir = this.randomBallDir(1);
 			count ++;
 			break;
 		case 2:
-			ballDir = this.randomBallDir(2, currentBallPos);
+			ballDir = this.randomBallDir(2);
 			count = 0;
 			break;
 		default :
@@ -345,7 +344,7 @@ public class TrainerBrain implements Runnable
 //		return pow;
 //	}
 	
-	public double randomBallDir(int section, Vector2D ballPos){
+	public double randomBallDir(int section){
 		Random r = new Random();
 		double a = 100;
 		while(Math.abs(a)>SoccerParams.GOAL_WIDTH/6){
@@ -353,7 +352,7 @@ public class TrainerBrain implements Runnable
 			//System.out.println("dir :" + a);
 		}
 		a = a+(section-1)*SoccerParams.GOAL_WIDTH/3;
-		return ballPos.directionOf(new Vector2D(a,0))*Math.PI/180;
+		return a;
 	}
 	
 	public Vector2D randomBallPos(){
@@ -375,7 +374,7 @@ public class TrainerBrain implements Runnable
 		}else{
 			trainerClient.movePlayer(everybody.get(0), relPos2genPos(gPos));
 		}
-		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(SoccerParams.BALL_SPEED_MAX*0.95,bDir-Math.PI/2,true));		
+		trainerClient.moveBall(relPos2genPos(bPos), new Vector2D(SoccerParams.BALL_SPEED_MAX*0.95,Math.toRadians(relPos2genPos(bPos).directionOf(new Vector2D(-SoccerParams.FIELD_LENGTH/2,-bDir))),true));		
 	}
 	
 	public Vector2D[] movePlayers(){
