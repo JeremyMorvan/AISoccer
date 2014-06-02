@@ -154,13 +154,13 @@ public class Sebbot
     {   		
         RobocupClient client;
         Brain brain;
-        int nbOfPlayers = 6;
+        int nbOfPlayers = 11;
         connected = new HashMap<RobocupClient, Long>();
         threads = new HashMap<RobocupClient, Thread>();
         for (int i = 0; i < nbOfPlayers; i++)
 		{
 		    client = new RobocupClient(InetAddress.getByName(hostname), port, team);
-		    client.init(nbOfPlayers, i==0);
+		    client.init(nbOfPlayers, false);
 
 		    brain = client.getBrain();
 		    brain.computeAreas();
@@ -176,7 +176,7 @@ public class Sebbot
 		for (int i = 0; i < nbOfPlayers; i++)
 		{
 		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
-		    client.init(nbOfPlayers, i==0);
+		    client.init(nbOfPlayers, false);
 
 		    brain = client.getBrain();
 		    brain.computeAreas();
@@ -193,6 +193,59 @@ public class Sebbot
 		
 		trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
 		trainerClient.init(nbOfPlayers,TrainingType.PASS);
+		
+		trainerBrain = trainerClient.getBrain();
+		tcConnected = new Date().getTime();
+		
+		trainerThread = new Thread(trainerClient);
+		trainerThread.start();
+		
+		new Thread(trainerBrain).start();
+    }
+    
+    public static void initTrainingDribble(String hostname,int port,int portTrainer,String team) throws IOException
+    {   		
+        RobocupClient client;
+        Brain brain;
+        int nbOfPlayers = 11;
+        connected = new HashMap<RobocupClient, Long>();
+        threads = new HashMap<RobocupClient, Thread>();
+        for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, team);
+		    client.init(nbOfPlayers, false);
+
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    brain.setStrategy(new TrainingPassStrategy(brain));
+		    
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
+		
+		for (int i = 0; i < nbOfPlayers; i++)
+		{
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
+		    client.init(nbOfPlayers, false);
+
+		    brain = client.getBrain();
+		    brain.computeAreas();
+		    brain.setStrategy(new TrainingPassStrategy(brain));
+
+		    connected.put(client, new Date().getTime());
+		    Thread thread = new Thread(client);
+		    threads.put(client,thread);
+		    thread.start();
+		    new Thread(brain).start();
+		}
+		
+		TrainerBrain trainerBrain;
+		
+		trainerClient = new TrainerClient(InetAddress.getByName(hostname),portTrainer);
+		trainerClient.init(nbOfPlayers,TrainingType.DRIBBLE);
 		
 		trainerBrain = trainerClient.getBrain();
 		tcConnected = new Date().getTime();
