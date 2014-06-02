@@ -324,6 +324,12 @@ public class FullstateInfo
 		}else if(playMode.equals("corner_kick_r")){
 			ballPrediction = ball.getPosition();
 			leftGotBall = false;			
+		}else if(playMode.equals("goal_kick_l")){
+			ballPrediction = ball.getPosition();
+			leftGotBall = true;			
+		}else if(playMode.equals("goal_kick_r")){
+			ballPrediction = ball.getPosition();
+			leftGotBall = false;			
 		}else if(playMode.equals("play_on")){
 			if(ballPrediction != null && ballPrediction.subtract(ball.getPosition()).polarRadius()>threshold){
 				Player closest = null;

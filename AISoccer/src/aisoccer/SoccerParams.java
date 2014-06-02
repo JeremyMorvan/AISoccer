@@ -28,4 +28,7 @@ public class SoccerParams
     
     public final static float CATCHABLE_AREA_L   = 2.0f;
     public final static float CATCHABLE_AREA_W   = 1.0f;
+    
+    public final static double PENALTY_AREA_W = 40;
+    public final static double PENALTY_AREA_L = 16;
 }

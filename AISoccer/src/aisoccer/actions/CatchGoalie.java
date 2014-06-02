@@ -14,14 +14,11 @@ public class CatchGoalie extends ActionTask {
 
 	@Override
 	public void DoAction() {
-		// TODO Auto-generated method stub
 		brain.doAction(new PlayerAction(PlayerActionType.CATCH,0,brain.getPlayer().angleFromBody(brain.getFullstateInfo().getBall()),brain.getRobocupClient()));
 	}
 
 	@Override
 	public void Start() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

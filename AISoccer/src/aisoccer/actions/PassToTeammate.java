@@ -18,7 +18,7 @@ public class PassToTeammate extends Sequencer {
 	
 	@Override
 	public boolean CheckConditions() {
-		return true;
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall())<=SoccerParams.KICKABLE_MARGIN;
 	}
 	
 	@Override

@@ -4,9 +4,11 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 import aisoccer.actions.CatchGoalie;
+import aisoccer.actions.FreeKickGoalie;
 import aisoccer.actions.motion.AttackTheBallGoalie;
 import aisoccer.actions.playModes.BeforeKickOff;
 import aisoccer.actions.playModes.PlayOn;
+import aisoccer.actions.playModes.PlayOnGoalie;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
@@ -16,6 +18,7 @@ public class myGoalieStrategy extends Selector implements Strategy {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new BeforeKickOff(b));
+		children.add(new FreeKickGoalie(b));
 		children.add(new PlayOnGoalie(b));
 		Formation442.setMyAreas(numberOfPlayers, b);
 	}
