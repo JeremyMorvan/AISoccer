@@ -74,7 +74,11 @@ public class FindUnmarkedTeammate extends ActionTask {
 		}
 		
 		brain.setShootVector(bestPassVector);		
-		
+
+//		Player me = brain.getPlayer();
+//		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
+//		Iterable<Player> opponents = brain.getFullstateInfo().getOpponents(me);
+//		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
 //		double dmin = 300;
 //		if(!brain.getFullstateInfo().getPlayMode().equals("kick_off_l")&&!brain.getFullstateInfo().getPlayMode().equals("kick_off_r")){
 //			dmin = brain.getPlayer().distanceTo(goal);
@@ -85,8 +89,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 //			if(tmRP.polarRadius()<=40 && brain.isFree(tmRP, opponentsRP) && tm.distanceTo(goal)<dmin){
 //				bestTeammateP = tm.getPosition();				
 //			}
-//		}
-		
+//		}		
 //		brain.setInterestPos(bestTeammateP);	
 	}
 	
