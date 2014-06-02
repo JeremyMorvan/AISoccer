@@ -22,7 +22,7 @@ public class Shoot extends ActionTask {
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
 		Vector2D neededAcceleration = brain.getShootVector().subtract(ballV);
 		double neededPower = neededAcceleration.polarRadius()/brain.getEffectivePowerRate();
-		double angleKick = MathTools.normalizeAngle(neededAcceleration.polarAngle()-brain.getPlayer().getBodyDirection());
+		double angleKick = Math.toRadians(MathTools.normalizeAngle(neededAcceleration.polarAngle()-brain.getPlayer().getBodyDirection()));
 		if(neededPower<=SoccerParams.POWERMAX){
 			kickVector = new Vector2D(neededPower, angleKick, true);
 			return true;

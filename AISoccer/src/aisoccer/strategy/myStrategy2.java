@@ -12,7 +12,7 @@ import aisoccer.behaviorTree.Task;
 
 public class myStrategy2 extends Selector implements Strategy {
 
-	public myStrategy2(int numberOfPlayers,Brain b) {
+	public myStrategy2(int numberOfPlayers, Brain b) {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new BeforeKickOff(b));

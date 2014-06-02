@@ -399,6 +399,25 @@ public class Brain implements Runnable
 
 		
 	public ArrayList<Vector2D> generatePointsAround(Vector2D player, Vector2D goal){
+		int	nbRandomPass = 10;
+		double maxRange = SoccerParams.FIELD_LENGTH/6;
+		double angleDeviation = Math.PI/8;		
+		double angleMax = Math.PI/4;
+
+		ArrayList<Vector2D> points = new ArrayList<Vector2D>(nbRandomPass);
+		Random generator = new Random();
+		boolean closeToGoal = Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/6;
+		Vector2D pointRP;
+		double angle;
+		for(int i=0; i<nbRandomPass; i++){
+			angle = generator.nextGaussian()*angleDeviation;
+			angle = Math.signum(angle)*Math.min(Math.abs(angle), angleMax);
+			pointRP = new Vector2D(generator.nextDouble()*maxRange, angle, true);
+			if(closeToGoal){
+				pointRP = pointRP.rotate(Math.toRadians(player.directionOf(goal)));
+			}
+			points.add(player.add(pointRP));
+		}
 		return null;
 		
 	}

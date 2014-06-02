@@ -302,7 +302,7 @@ public class Sebbot
 		    brain = client.getBrain();
 		    brain.computeAreas();
 		    if(i==0){
-		    	brain.setStrategy(new myGoalieStrategy(brain));
+		    	brain.setStrategy(new myGoalieStrategy(nbOfPlayers, brain));
 		    }else{
 		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
 		    }		    
@@ -321,7 +321,7 @@ public class Sebbot
 		    brain = client.getBrain();
 		    brain.computeAreas();
 		    if(i==0){
-		    	brain.setStrategy(new myGoalieStrategy(brain));
+		    	brain.setStrategy(new myGoalieStrategy(nbOfPlayers, brain));
 		    }else{
 		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
 		    }
