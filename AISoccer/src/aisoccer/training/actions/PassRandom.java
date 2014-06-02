@@ -3,7 +3,7 @@ package aisoccer.training.actions;
 import java.util.LinkedList;
 
 import aisoccer.Brain;
-import aisoccer.actions.Pass;
+import aisoccer.actions.ShootTo;
 import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
 
@@ -13,7 +13,7 @@ public class PassRandom extends Sequencer {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new SetRandomPos(brain));
-		children.add(new Pass(brain));
+		children.add(new ShootTo(brain));
 	}
 	
 	@Override
