@@ -13,11 +13,13 @@ public class WithTheBall extends Selector {
 	public WithTheBall(Brain b){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new ShootToGoal(b));
-		children.add(new PassToTeammate(b,false));
-		children.add(new Dribble(b,false));
+		children.add(new ShootToGoalBasic(b));
+//		children.add(new ShootToGoal(b));
+//		children.add(new PassToTeammate(b,false));
+//		children.add(new Dribble(b,false));
 		children.add(new PassToTeammate(b,true));
-		children.add(new Dribble(b,true));
+		children.add(new DribbleBasic(b));
+//		children.add(new Dribble(b,true));
 	}
 	
 	@Override
@@ -26,7 +28,9 @@ public class WithTheBall extends Selector {
 	}
 
 	@Override
-	public void Start() {}
+	public void Start() {
+//		System.out.println(brain.getPlayer().toString()+" : 'The ball is next to me ! '");
+	}
 
 	@Override
 	public void End() {}

@@ -8,10 +8,9 @@ public class GoToBall extends GoTo {
 		super(b);
 	}
 
-
 	@Override
-	public void Start() {
-		brain.setInterestPos(brain.getFullstateInfo().getBall().getPosition());		
+	public void defineInterestPosition() {
+		brain.setInterestPos(brain.getFullstateInfo().getBall().getPosition());			
 	}
 
 }

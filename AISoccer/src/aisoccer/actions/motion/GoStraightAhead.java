@@ -13,7 +13,8 @@ public class GoStraightAhead extends ActionTask {
 
 	@Override
 	public boolean CheckConditions() {
-		return brain.getInterestPos().distanceTo(brain.getPlayer())>SoccerParams.KICKABLE_MARGIN/2;
+		return brain.getInterestPos() != null 
+				&& brain.getInterestPos().distanceTo(brain.getPlayer())>SoccerParams.KICKABLE_MARGIN/2;
 	}
 
 	@Override

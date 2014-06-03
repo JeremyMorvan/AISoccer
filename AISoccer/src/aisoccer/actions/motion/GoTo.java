@@ -6,7 +6,7 @@ import aisoccer.Brain;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
-public class GoTo extends Selector {
+public abstract class GoTo extends Selector {
 	
 	public GoTo(Brain b){
 		super(b);
@@ -21,9 +21,12 @@ public class GoTo extends Selector {
 	public boolean CheckConditions(){
 		return true;
 	}
+	
+	public abstract void defineInterestPosition();
 
 	@Override
-	public void Start(){		
+	public final void Start(){	
+		defineInterestPosition();
 	}
 
 	@Override

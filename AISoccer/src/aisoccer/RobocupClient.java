@@ -198,6 +198,9 @@ public class RobocupClient implements Runnable
         { // Fullstate information
             brain.getFullstateInfo().setFullstateMsg(message);
             brain.getFullstateInfo().parse();
+//            if(brain.getPlayer().isLeftSide() && brain.getPlayer().getUniformNumber()==1){
+//            	System.out.println("leftGotTheBall = "+brain.getFullstateInfo().LeftGotBall());
+//            }
         }
 
         else if (message.charAt(1) == 'e')

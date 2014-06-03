@@ -18,6 +18,9 @@ public class Shoot extends ActionTask {
 
 	@Override
 	public boolean CheckConditions() {
+		if (brain.getShootVector()==null){
+			return false;
+		}
 		kickVector = null;
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
 		Vector2D neededAcceleration = brain.getShootVector().subtract(ballV);

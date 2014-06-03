@@ -30,7 +30,7 @@ public class Network {
 		double[] in = expand(input);		
 		for(int i=0; i<layers.length; i++){
 			out = layers[i].eval(in);
-			System.out.println(Arrays.toString(out));
+//			System.out.println(Arrays.toString(out));
 			in = expand(out);
 		}
 		return out;
@@ -73,18 +73,18 @@ public class Network {
 			while(line != null){
 				line = in.readLine();
 				if (line == null  || line.isEmpty()){
-					System.out.println("Oh une ligne vide !");
+//					System.out.println("Oh une ligne vide !");
 					if(!buffer.isEmpty()){
 						matrix = new double[buffer.size()][buffer.get(0).length];
 						for(int i=0; i<buffer.size();i++){
 							matrix[i] = buffer.get(i);
 						}
-						System.out.println("nb de neurones dans ce layer : "+matrix.length);
+//						System.out.println("nb de neurones dans ce layer : "+matrix.length);
 						buffer = new ArrayList<double[]>();
 						res.add(matrix);
 					}
 				}else{
-					System.out.println("ligne = "+line);
+//					System.out.println("ligne = "+line);
 					neuron = line.split(" ");
 					n = new double[neuron.length];
 					for(int i=0; i<neuron.length; i++){

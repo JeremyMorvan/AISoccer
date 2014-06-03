@@ -75,9 +75,9 @@ public class Brain implements Runnable
 		this.actionsQueue = new ArrayDeque<PlayerAction>();
 		this.player.setUniformNumber(playerNumber);
 		
-		MathFunction identity = new Identity();
+//		MathFunction identity = new Identity();
 		MathFunction sigmoide = new Sigmoide();
-//		this.passNetwork = Network.load("ANN-Intercepted.txt", identity);
+		this.passNetwork = Network.load("../ANN-Intercepted.txt", sigmoide);
 //		this.shootNetwork = Network.load("", );
 //		this.dribbleNetwork = Network.load("ANN-Dribble.txt",sigmoide); 
 //		this.goalNetwork = Network.load("ANN-Goal.txt",sigmoide);
@@ -401,26 +401,34 @@ public class Brain implements Runnable
 
 		
 	public ArrayList<Vector2D> generatePointsAround(Vector2D player, Vector2D goal){
-		int	nbRandomPass = 10;
-		double maxRange = SoccerParams.FIELD_LENGTH/6;
-		double angleDeviation = Math.PI/8;		
-		double angleMax = Math.PI/4;
+		int	nbRandomPass = 20;
+		double passRange = 5;
+		double depthPassMaxRange = 25;
+		double angleDeviation = Math.PI/3;		
+		double angleMax = Math.PI/2;
 
 		ArrayList<Vector2D> points = new ArrayList<Vector2D>(nbRandomPass);
 		Random generator = new Random();
-		boolean closeToGoal = Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/6;
+		boolean closeToGoal = Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/4;
+		double rotationAngle = Math.toRadians(player.directionOf(goal));
+		
 		Vector2D pointRP;
 		double angle;
 		for(int i=0; i<nbRandomPass; i++){
-			angle = generator.nextGaussian()*angleDeviation;
-			angle = Math.signum(angle)*Math.min(Math.abs(angle), angleMax);
-			pointRP = new Vector2D(generator.nextDouble()*maxRange, angle, true);
-			if(closeToGoal){
-				pointRP = pointRP.rotate(Math.toRadians(player.directionOf(goal)));
+			if(i<nbRandomPass){
+				angle = generator.nextDouble()*2*Math.PI;
+				pointRP = new Vector2D(generator.nextDouble()*passRange, angle, true);
+			}else{
+				angle = generator.nextGaussian()*angleDeviation;
+				angle = Math.signum(angle)*Math.min(Math.abs(angle), angleMax);
+				pointRP = new Vector2D(generator.nextDouble()*(depthPassMaxRange-passRange)+passRange, angle, true);
+				if(closeToGoal){
+					pointRP = pointRP.rotate(rotationAngle);
+				}				
 			}
 			points.add(player.add(pointRP));
 		}
-		return null;
+		return points;		
 	}
 	
 	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal,double intervalLength,double speedMin,double speedMax,int nbPoints){

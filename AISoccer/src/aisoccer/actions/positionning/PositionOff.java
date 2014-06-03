@@ -22,7 +22,7 @@ public class PositionOff extends GoTo {
 	}
 
 	@Override
-	public void Start() {
+	public void defineInterestPosition() {
 		Player me = brain.getPlayer();
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
 		Iterable<Player> ops = brain.getFullstateInfo().getOpponents(me);
@@ -108,5 +108,7 @@ public class PositionOff extends GoTo {
 		best.addM(new Vector2D(ballP.getX()/10.0,ballP.getY()/7.0));
 		brain.setInterestPos(best);
 	}
+
+
 
 }

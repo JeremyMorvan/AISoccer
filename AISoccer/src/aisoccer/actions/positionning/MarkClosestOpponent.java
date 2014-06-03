@@ -45,9 +45,9 @@ public class MarkClosestOpponent extends GoTo {
 	}
 
 	@Override
-	public void Start() {	
+	public void defineInterestPosition() {
 		Vector2D b = brain.getFullstateInfo().getBall().getPosition();	
-		brain.setInterestPos( b.multiply(0.2).add(toMark.getPosition().multiply(0.8)) );
+		brain.setInterestPos( b.multiply(0.2).add(toMark.getPosition().multiply(0.8)) );		
 	}
 
 }

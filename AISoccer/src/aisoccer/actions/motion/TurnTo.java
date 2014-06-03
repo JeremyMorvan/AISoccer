@@ -15,7 +15,9 @@ public class TurnTo extends ActionTask {
 	
 	@Override
 	public boolean CheckConditions() {
-		return brain.getPlayer().distanceTo(brain.getInterestPos())>SoccerParams.KICKABLE_MARGIN && Math.abs(((float) brain.getPlayer().angleFromBody(brain.getInterestPos()))) > angleLimit;
+		return brain.getInterestPos()!=null 
+				&& brain.getPlayer().distanceTo(brain.getInterestPos())>SoccerParams.KICKABLE_MARGIN 
+				&& Math.abs(((float) brain.getPlayer().angleFromBody(brain.getInterestPos()))) > angleLimit;
 	}	
 	
 	@Override

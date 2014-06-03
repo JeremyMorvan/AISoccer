@@ -31,9 +31,15 @@ public class AttackTheBall extends Sequencer {
 
 	@Override
 	public void Start() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void End() {}
+	public void End() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
