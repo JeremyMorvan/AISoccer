@@ -2,7 +2,7 @@ close all;
 clear all;
 clc;
 
-FileNames = {'TrainingShootLogs.txt','TrainingShootLogsWithBugDeco.txt'};
+FileNames = {'TrainingShootLogs.txt','TrainingShootLogsMe.txt'};
 [X1,X2,T1,T2] = ExtractInfosShoot(FileNames);
 [X,T] = shuffle(X1,X2,T1,T2);
 x = X(1:5,:);

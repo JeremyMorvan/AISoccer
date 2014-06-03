@@ -91,6 +91,7 @@ public class Sebbot
                 }
             }
             initTrainingPass(hostname,port,portTrainer,team);
+            //initTrainingPass(hostname,port,portTrainer,team);
             //initTrainingDribble(hostname,port,portTrainer,team);
 			//initTrainingShoot(hostname,port,portTrainer,team);
             //initGame(hostname,port,portTrainer,team,7);

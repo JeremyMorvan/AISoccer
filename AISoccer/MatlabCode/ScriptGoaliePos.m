@@ -6,12 +6,12 @@ clc;
 
 x = X(1:4,:);
 
-hidden = 8;
+hidden = 5;
 Win = 0.1*randn(hidden,5);
 Vin = 0.1*randn(1,hidden+1);
 
 
-[W,V,errors] = delta2(X,T,Win,Vin,1/size(X,2),10000,0.7);
+[W,V,errors] = delta2(X,T,Win,Vin,1/size(X,2),5000,0.7);
 
 save('ANNGoalPosParams','W','V');
 
