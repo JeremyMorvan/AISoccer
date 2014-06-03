@@ -10,16 +10,13 @@ public class InterceptBall extends GoTo {
 	}
 
 	public static float angleLimit = 5f;
-
-//	@Override
-//	public boolean CheckConditions() {
-//		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall()) > SoccerParams.KICKABLE_MARGIN;
-//	}
+	
 
 	@Override
-	public void Start() {
+	public void defineInterestPosition() {
 //		System.out.println(brain.getPlayer().getUniformNumber()+" intercepts the ball");
 		double margin = (brain.getPlayer().isGoalie()) ? SoccerParams.CATCHABLE_AREA_L*0.8 : 0; 
-		brain.setInterestPos(brain.optimumInterceptionPosition(brain.speedEstimation, margin));		
+		brain.setInterestPos(brain.optimumInterceptionPosition(brain.speedEstimation, margin));
 	}
+	
 }

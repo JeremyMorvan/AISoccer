@@ -10,8 +10,13 @@ public class GoToBall extends GoTo {
 
 
 	@Override
-	public void Start() {
-		brain.setInterestPos(brain.getFullstateInfo().getBall().getPosition());		
+	public void Start() {	
+	}
+
+
+	@Override
+	public void defineInterestPosition() {
+		brain.setInterestPos(brain.getFullstateInfo().getBall().getPosition());			
 	}
 
 }

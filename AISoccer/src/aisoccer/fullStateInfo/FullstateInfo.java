@@ -75,6 +75,7 @@ public class FullstateInfo
 	private boolean 	leftGotBall;
 	private Vector2D	ballPrediction;
 	private final double threshold = 0.1;
+	private int 		lastTimeStep;
 	private String 		   nameLeft;
     private String 	 	   nameRight;
 	/**
@@ -331,7 +332,7 @@ public class FullstateInfo
 			ballPrediction = ball.getPosition();
 			leftGotBall = false;			
 		}else if(playMode.equals("play_on")){
-			if(ballPrediction != null && ballPrediction.subtract(ball.getPosition()).polarRadius()>threshold){
+			if(ballPrediction != null && timeStep==lastTimeStep+1 && ballPrediction.subtract(ball.getPosition()).polarRadius()>threshold){
 				Player closest = null;
 				Vector2D pp, pb;
 				double min = Double.POSITIVE_INFINITY;
@@ -356,6 +357,7 @@ public class FullstateInfo
 			}
 			
 			ballPrediction = ball.getPosition().add(ball.getVelocity());
+			lastTimeStep = timeStep;
 		}
 		
 //		if(before != leftGotBall)

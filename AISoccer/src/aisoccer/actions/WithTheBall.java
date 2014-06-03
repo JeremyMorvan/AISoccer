@@ -28,7 +28,9 @@ public class WithTheBall extends Selector {
 	}
 
 	@Override
-	public void Start() {}
+	public void Start() {
+//		System.out.println(brain.getPlayer().toString()+" : 'The ball is next to me ! '");
+	}
 
 	@Override
 	public void End() {}

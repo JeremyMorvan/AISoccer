@@ -75,21 +75,23 @@ public class FindUnmarkedTeammate extends ActionTask {
 			return false;
 		}
 		
-		Vector2D bestPassVector = null;
+		Pass bestPass = null;
 		double bestScore = 0;
 		double score;
 		for(Pass p : interestingPasses){
 			score = Math.pow(p.score,2)*positionScore(p.teamMate, opGoal);
 			if(score>bestScore){
 				bestScore = score;
-				bestPassVector = p.ballvelocity;
+				bestPass = p;
 			}
 		}		
 		
 		if( allowBackward || bestScore > 0.9*positionScore(brain.getPlayer().getPosition(), opGoal) ){
-			brain.setShootVector(bestPassVector);
+			brain.setShootVector(bestPass.ballvelocity);
+			brain.setInterestPos(bestPass.point);
 			return true;
 		}
+		brain.setShootVector(null);
 		return false;
 	}	
 
