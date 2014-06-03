@@ -30,7 +30,7 @@ public class Network {
 		double[] in = expand(input);		
 		for(int i=0; i<layers.length; i++){
 			out = layers[i].eval(in);
-			System.out.println(Arrays.toString(out));
+//			System.out.println(Arrays.toString(out));
 			in = expand(out);
 		}
 		return out;

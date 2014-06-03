@@ -27,12 +27,12 @@ public class CatchBallGoalie extends CatchGoalie {
 		}
 		
 		boolean b = super.CheckConditions(); 		
-		boolean ok = brain.getFullstateInfo().LeftGotBall() != brain.getPlayer().isLeftSide();		 
-		 return b && ok && inBox;
-//			System.out.println("Le gardien dit : ");
-//			System.out.println("la balle est dans ma penalty area");
-//			System.out.println("la balle est dans ma catchable area : "+b);
-//			System.out.println("la balle ne vient pas de ma team : "+ok);
+		boolean ok = brain.getFullstateInfo().LeftGotBall() != brain.getPlayer().isLeftSide();	
+//		System.out.println("Le gardien dit : ");
+//		System.out.println("la balle est dans ma penalty area");
+//		System.out.println("la balle est dans ma catchable area : "+b);
+//		System.out.println("la balle ne vient pas de ma team : "+ok);	 
+		return b && ok && inBox;
 	}
 
 }

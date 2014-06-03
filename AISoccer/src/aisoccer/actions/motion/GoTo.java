@@ -25,7 +25,7 @@ public abstract class GoTo extends Selector {
 	public abstract void defineInterestPosition();
 
 	@Override
-	public void Start(){	
+	public final void Start(){	
 		defineInterestPosition();
 	}
 

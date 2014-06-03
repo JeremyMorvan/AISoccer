@@ -426,8 +426,7 @@ public class Brain implements Runnable
 			}
 			points.add(player.add(pointRP));
 		}
-		return null;
-		
+		return points;		
 	}
 	
 	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal,double intervalLength,double speedMin,double speedMax,int nbPoints){
