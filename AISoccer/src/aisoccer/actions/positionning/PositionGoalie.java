@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import math.Vector2D;
 import aisoccer.Brain;
-import aisoccer.behaviorTree.ActionTask;
+import aisoccer.actions.motion.GoTo;
 
-public class PositionGoalie extends ActionTask {
+public class PositionGoalie extends GoTo {
 
 	public PositionGoalie(Brain b) {
 		super(b);
@@ -18,7 +18,7 @@ public class PositionGoalie extends ActionTask {
 	}
 
 	@Override
-	public void DoAction() {
+	public void defineInterestPosition() {
 		int nbPoints = 20;
 		ArrayList<Vector2D> points = brain.generateClosePoints(2, nbPoints);
 		Vector2D ballPos = brain.getFullstateInfo().getBall().getPosition();
@@ -33,12 +33,11 @@ public class PositionGoalie extends ActionTask {
 		}
 		if(bestPos==null){
 			System.out.println("error in positionningGoalie");
+			brain.setInterestPos(brain.getPlayer().getPosition());
 			return;
 		}
+		brain.setInterestPos(bestPos);
 		
 	}
-
-	@Override
-	public void Start() {}
 
 }

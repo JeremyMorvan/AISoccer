@@ -80,7 +80,7 @@ public class Brain implements Runnable
 		this.passNetwork = Network.load("../ANN-Intercepted.txt", sigmoide);
 //		this.shootNetwork = Network.load("", );
 //		this.dribbleNetwork = Network.load("ANN-Dribble.txt",sigmoide); 
-//		this.goalNetwork = Network.load("ANN-Goal.txt",sigmoide);
+		this.goalNetwork = Network.load("ANN-Goal.txt",sigmoide);
 	}
 
 	/*
