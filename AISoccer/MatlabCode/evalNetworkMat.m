@@ -4,7 +4,13 @@ out = zeros(size(x));
 
 for i=1:size(x,1)
     for j=1:size(x,2)
-        out(i,j) = evalNetwork([xg;yg;xb;yb;x(i,j);1],W,V);
+        a = xg-x(i,j);
+        b = xb-x(i,j);
+        if a<0
+            a=-a;
+            b=-b;
+        end
+        out(i,j) = evalNetwork([a;yg;b;yb;1],W,V);
     end
 end
 

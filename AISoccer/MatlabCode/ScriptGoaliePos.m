@@ -2,11 +2,11 @@ close all;
 clear all;
 clc;
 
-[X,T] = generateData_GoaliePos(50000);
+[X,T] = generateData_GoaliePos(25000);
 
 x = X(1:4,:);
 
-hidden = 5;
+hidden = 10;
 Win = 0.1*randn(hidden,5);
 Vin = 0.1*randn(1,hidden+1);
 

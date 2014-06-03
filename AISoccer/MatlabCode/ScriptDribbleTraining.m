@@ -2,9 +2,9 @@ close all;
 clear all;
 clc;
 
-FileNames = {'TrainingDribbleLogs.txt'};
+FileNames = {'TrainingDribbleLogs.txt','TrainingDribbleLogs1.txt'};
 [X1,X2,T1,T2] = ExtractInfosDribble(FileNames);
-[X,T] = shuffle(X1,X2,T1,T2);
+[X,T] = shuffleEqualize(X1,X2,T1,T2);
 x = X(1:3,:);
 
 hidden = 5;
