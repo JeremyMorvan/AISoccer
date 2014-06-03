@@ -31,22 +31,22 @@ for f=1:length(FileNames)
                 i3 = values(3);
                 i4 = values(4);
                 i5 = values(5);
-                t = values(7);
+                t = values(6);
                 if t
                     T1 = [T1 t];
-                    xp = [i1;i2;i3;i4;i5;i6;1];
+                    xp = [i1;i2;i3;i4;i5;1];
                     X1 = [X1 xp];
                     
                     T1 = [T1 t];
-                    xp = [-i1;i2;-i3;i4;i5;i6-sign(i3)*pi/2;1];
+                    xp = [-i1;i2;-i3;i4;-i5;1];
                     X1 = [X1 xp];
                 else
                     T2 = [T2 -1];
-                    xn = [i1;i2;i3;i4;i5;i6;1]; 
+                    xn = [i1;i2;i3;i4;i5;1]; 
                     X2 = [X2 xn];
                     
                     T2 = [T2 -1];
-                    xn = [-i1;i2;-i3;i4;i5;i6-sign(i3)*pi/2;1]; 
+                    xn = [-i1;i2;-i3;i4;-i5;1]; 
                     X2 = [X2 xn];
                 end
                         
