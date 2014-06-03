@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import math.Vector2D;
 import aisoccer.Brain;
+import aisoccer.SoccerParams;
 import aisoccer.actions.motion.GoTo;
 
 public class PositionGoalie extends GoTo {
@@ -19,14 +20,18 @@ public class PositionGoalie extends GoTo {
 
 	@Override
 	public void defineInterestPosition() {
-		int nbPoints = 20;
-		ArrayList<Vector2D> points = brain.generateClosePoints(2, nbPoints);
+		if(brain.getPlayer().getPosition().distanceTo(brain.getFullstateInfo().getBall())>40){
+			brain.setInterestPos(brain.getPosIni().rotate(brain.getPlayer().isLeftSide() ? 0 : Math.PI));
+			return;
+		}
+		int nbPoints = 50;
+		ArrayList<Vector2D> points = brain.generateClosePoints(10, nbPoints);
 		Vector2D ballPos = brain.getFullstateInfo().getBall().getPosition();
-		double scMax = -1;
+		double scMax = 2;
 		Vector2D bestPos = null;
 		for(Vector2D p : points){
 			double sc = brain.evalGoal(ballPos, p);
-			if(sc>scMax){
+			if(sc<scMax){
 				scMax = sc;
 				bestPos = p;
 			}

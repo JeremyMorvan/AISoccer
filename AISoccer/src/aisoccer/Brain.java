@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Random;
 
-import math.Identity;
+
 import math.MathFunction;
 import math.MathTools;
 import math.Sigmoide;
@@ -17,7 +17,6 @@ import aisoccer.ballcapture.Action;
 import aisoccer.ballcapture.State;
 import aisoccer.fullStateInfo.*;
 import aisoccer.strategy.Strategy;
-import aisoccer.training.scripts.PassTraining;
 import ann.Network;
 
 /**
@@ -80,7 +79,7 @@ public class Brain implements Runnable
 		this.passNetwork = Network.load("../ANN-Intercepted.txt", sigmoide);
 //		this.shootNetwork = Network.load("", );
 //		this.dribbleNetwork = Network.load("ANN-Dribble.txt",sigmoide); 
-		this.goalNetwork = Network.load("ANN-Goal.txt",sigmoide);
+		this.goalNetwork = Network.load("../ANN-Goal.txt",sigmoide);
 	}
 
 	/*
@@ -455,7 +454,15 @@ public class Brain implements Runnable
 		for(int i=0;i<nbPoints-1;i++){
 			double dir = Math.random()*Math.PI*2;
 			double dist = r.nextGaussian()*std;
-			output.add((new Vector2D(dist,dir,true)).add(player.getPosition()));
+			Vector2D toAdd = (new Vector2D(dist,dir,true)).add(player.getPosition());
+			if(Math.abs(toAdd.getX())>SoccerParams.FIELD_LENGTH/2){
+				if(player.isLeftSide()&&toAdd.getX()<-SoccerParams.FIELD_LENGTH/2){
+					toAdd.setX(-SoccerParams.FIELD_LENGTH/2+Math.abs(-SoccerParams.FIELD_LENGTH/2-toAdd.getX()));
+				}else if(!player.isLeftSide()&&toAdd.getX()>SoccerParams.FIELD_LENGTH/2) {
+					toAdd.setX(SoccerParams.FIELD_LENGTH/2-Math.abs(SoccerParams.FIELD_LENGTH/2-toAdd.getX()));
+				}
+			}
+			output.add(toAdd);
 		}
 		output.add(player.getPosition());
 		return output;

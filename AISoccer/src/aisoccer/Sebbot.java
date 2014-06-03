@@ -91,9 +91,9 @@ public class Sebbot
                 }
             }
             //initTrainingPass(hostname,port,portTrainer,team);
-            initTrainingDribble(hostname,port,portTrainer,team);
+            //initTrainingDribble(hostname,port,portTrainer,team);
             //initTrainingShoot(hostname,port,portTrainer,team);
-            //initGame(hostname,port,portTrainer,team,7);
+            initGame(hostname,port,portTrainer,team,6);
         }
         catch (InvalidArgumentException e)
         {
