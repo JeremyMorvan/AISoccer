@@ -55,10 +55,7 @@ public class MarkOpponent extends GoTo {
 		return target != null;
 	}
 
-	@Override
-	public void Start() {			
-	}
-
+	
 	@Override
 	public void defineInterestPosition() {
 		brain.setInterestPos(target);		
