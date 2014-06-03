@@ -28,7 +28,7 @@ public class ShootToGoalBasic extends ShootTo {
 
 	@Override
 	public void Start() {		
-		System.out.println("I am going to Shoot to the goal basicly");
+//		System.out.println("I am going to Shoot to the goal basicly");
 		Vector2D shootDirection = brain.getInterestPos().subtract(brain.getFullstateInfo().getBall().getPosition()).normalize();
 		brain.setShootVector(shootDirection.multiply(SoccerParams.BALL_SPEED_MAX));
 	}
