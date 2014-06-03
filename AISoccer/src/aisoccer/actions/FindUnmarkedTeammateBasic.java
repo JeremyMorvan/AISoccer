@@ -14,12 +14,6 @@ public class FindUnmarkedTeammateBasic extends ActionTask {
 
 	@Override
 	public boolean CheckConditions() {
-		return true;
-	}	
-
-
-	@Override
-	public void Start() {	
 		Player me = brain.getPlayer();
 		Iterable<Player> teammates = brain.getFullstateInfo().getTeammates(me);
 		Iterable<Player> opponents = brain.getFullstateInfo().getOpponents(me);
@@ -39,7 +33,14 @@ public class FindUnmarkedTeammateBasic extends ActionTask {
 				bestTeammateP = tm.getPosition();				
 			}
 		}		
-		brain.setInterestPos(bestTeammateP);	
+		brain.setInterestPos(bestTeammateP);
+		
+		return brain.getInterestPos() != null;
+	}	
+
+
+	@Override
+	public void Start() {		
 	}
 
 	@Override

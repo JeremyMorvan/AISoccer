@@ -11,7 +11,7 @@ import aisoccer.fullStateInfo.Player;
 
 public class DribbleBasic extends ActionTask {
 
-	public DribbleBasic(Brain b,boolean bPa) {
+	public DribbleBasic(Brain b) {
 		super(b);
 	}
 
@@ -61,7 +61,7 @@ public class DribbleBasic extends ActionTask {
 
 	@Override
 	public void DoAction() {
-//		System.out.println(" I am moving with the ball ! : " + brain.getFullstateInfo().getPlayMode());
+		System.out.println(brain.getPlayer().toString()+" : I dribble basicly !");
         brain.doAction(new PlayerAction(PlayerActionType.KICK,power, brain.getPlayer().angleFromBody(brain.getInterestPos()), brain.getRobocupClient()));
 	}
 

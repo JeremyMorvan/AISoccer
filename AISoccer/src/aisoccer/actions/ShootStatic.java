@@ -19,7 +19,7 @@ public class ShootStatic extends ActionTask {
 	@Override
 	public boolean CheckConditions() {
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
-		return ballV.polarRadius()<0.1;
+		return brain.getInterestPos()!=null && ballV.polarRadius()<0.1;
 	}
 
 	@Override

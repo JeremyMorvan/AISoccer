@@ -74,9 +74,9 @@ public class Brain implements Runnable
 		this.actionsQueue = new ArrayDeque<PlayerAction>();
 		this.player.setUniformNumber(playerNumber);
 		
-		MathFunction identity = new Identity();
+//		MathFunction identity = new Identity();
 		MathFunction sigmoide = new Sigmoide();
-//		this.passNetwork = Network.load("ANN-Intercepted.txt", identity);
+		this.passNetwork = Network.load("../ANN-Intercepted.txt", sigmoide);
 //		this.shootNetwork = Network.load("", );
 //		this.dribbleNetwork = Network.load("ANN-Dribble.txt",sigmoide); 
 	}

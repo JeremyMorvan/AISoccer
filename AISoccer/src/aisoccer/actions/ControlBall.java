@@ -27,12 +27,13 @@ public class ControlBall extends ActionTask {
 		Vector2D accNeeded = ballV.multiply(-1);
 		Vector2D powerNeeded = accNeeded.multiply(1/brain.getEffectivePowerRate());
 		double angleKick = MathTools.normalizeAngle(accNeeded.polarAngle()-brain.getPlayer().getBodyDirection());
-//		System.out.println(brain.getPlayer().getUniformNumber() + " : I am going to control");
         brain.doAction(new PlayerAction(PlayerActionType.KICK, powerNeeded.polarRadius(), angleKick, brain.getRobocupClient()));
 	}
 
 	@Override
-	public void Start() {}
+	public void Start() {
+			System.out.println(brain.getPlayer().toString() + " : I am going to control");
+	}
 
 	@Override
 	public boolean CheckConditions() {
