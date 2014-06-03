@@ -20,7 +20,7 @@ public abstract class Formation442{
 						answer.add(brain.getArea(i, j));
 					}
 				}
-				posIni = new Vector2D(-50,0);
+				posIni = new Vector2D(-45,0);
 			}else if(brain.getPlayer().getUniformNumber()==2){//DefL
 				System.out.println("DefL");
 				for(int i=0;i<5;i++){

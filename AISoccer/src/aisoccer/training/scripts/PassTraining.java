@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import math.MathTools;
 import math.Vector2D;
 import aisoccer.fullStateInfo.*;
 
@@ -57,9 +58,7 @@ public class PassTraining {
 			System.out.println("Warning : notifyInterception was called whereas there was no kick in memory");
 		}
 		currentKickSnapshot = null;
-	}
-	
-		
+	}		
 	
 	
 	public class KickSnapshot{
@@ -112,7 +111,7 @@ public class PassTraining {
 			String others = "";
 			Vector2D standPos;
 			for(Player p : kickSnapshot.playersPositions.keySet()){
-				standPos = toStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocity, kickSnapshot.playersPositions.get(p));
+				standPos = MathTools.toPassStandard(kickSnapshot.ballPosition, kickSnapshot.ballVelocity, kickSnapshot.playersPositions.get(p));
 				if(p.equals(intercepter)){
 //					System.out.println("je suis l'intercepteur : "+p);
 					res +=" "+standPos.getX()+" "+standPos.getY();
@@ -121,15 +120,6 @@ public class PassTraining {
 				}
 			}
 			return res+others;
-		}
-		
-		
-		
-		public static Vector2D toStandard(Vector2D pBall, Vector2D vBall, Vector2D p){
-			Vector2D res = p.subtract(pBall);
-			res = res.rotate(-vBall.polarAngle('r'));
-			res.setY(Math.abs(res.getY()));
-			return res;
 		}
 		
 	}

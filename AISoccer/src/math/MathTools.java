@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import aisoccer.InvalidArgumentException;
+import aisoccer.SoccerParams;
 import aisoccer.ballcapture.State;
 
 
@@ -298,6 +299,23 @@ public class MathTools
     		return val;
     	}
     	throw new InvalidArgumentException();
+    }
+    
+    public static Vector2D toPassStandard(Vector2D pBall, Vector2D vBall, Vector2D p){
+		Vector2D res = p.subtract(pBall);
+		res = res.rotate(-vBall.polarAngle('r'));
+		res.setY(Math.abs(res.getY()));
+		return res;
+	}
+    
+    public static Vector2D toShootStandard(boolean leftGoal, double target, Vector2D pos){
+    	Vector2D t = (new Vector2D(SoccerParams.FIELD_LENGTH/2,target)).multiply(leftGoal ? -1 : 1);
+    	return pos.subtract(t).rotate(leftGoal ? Math.PI/2 : -Math.PI/2);
+    }
+    
+    public static Vector2D toGoalStandard(boolean leftGoal, Vector2D pos){
+    	Vector2D t = (new Vector2D(SoccerParams.FIELD_LENGTH/2,0)).multiply(leftGoal ? -1 : 1);
+    	return pos.subtract(t).rotate(leftGoal ? Math.PI/2 : -Math.PI/2);
     }
 
 }

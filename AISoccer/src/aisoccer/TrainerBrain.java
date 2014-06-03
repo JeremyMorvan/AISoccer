@@ -190,7 +190,7 @@ public class TrainerBrain implements Runnable
 	private void dribbleTraining() {
 		if(fullstateInfo.getPlayMode() != null&&fullstateInfo.getLeftTeam()[0].isConnected()){
 			if(!fullstateInfo.getPlayMode().equals("play_on") ){
-				movePlayers();				
+				movePlayersDribble();				
 				randomDribble();								
 				setPlayOn();
 				return;
@@ -388,6 +388,33 @@ public class TrainerBrain implements Runnable
 		for(Player p : everybody){
 			x = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
 			y = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
+			trainerClient.movePlayer(p,x,y);
+			Vector2D v2 = new Vector2D(x,y);
+			p.setPosition(v2);
+			pos[i] = v2;
+			i++;
+		}
+		return pos;
+	}
+	
+	public Vector2D[] movePlayersDribble(){
+		// MOVE THE PLAYERS FOR THE NEXT PASS SIMULATION
+		ArrayList<Player> everybody = fullstateInfo.getEveryBody();
+		Vector2D[] pos = new Vector2D[everybody.size()];
+		int i=0;
+		double x1 = SoccerParams.FIELD_LENGTH*(Math.random()-0.5);
+		double y1 = SoccerParams.FIELD_WIDTH*(Math.random()-0.5);
+		Random r = new Random();
+		double x;
+		double y;
+		for(Player p : everybody){
+			if(p.isLeftSide()&&p.getUniformNumber()==1){
+				x = x1;
+				y = y1;
+			}else{
+				x = x1+r.nextGaussian()*10;
+				y = y1+r.nextGaussian()*10;
+			}
 			trainerClient.movePlayer(p,x,y);
 			Vector2D v2 = new Vector2D(x,y);
 			p.setPosition(v2);

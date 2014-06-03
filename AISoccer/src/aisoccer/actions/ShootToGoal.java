@@ -30,7 +30,7 @@ public class ShootToGoal extends ShootTo {
 			double y = i*step-SoccerParams.GOAL_WIDTH/2;
 			double tScore = brain.evalShoot(y);
 			if(tScore>scoreForTarget){
-				Vector2D target = (new Vector2D(-SoccerParams.FIELD_LENGTH,y)).multiply(me.isLeftSide() ? -1 : 1);
+				Vector2D target = (new Vector2D(SoccerParams.FIELD_LENGTH,y)).multiply(me.isLeftSide() ? 1 : -1);
 				try {
 					double timeToGoal = brain.timeDistanceBall(target.distanceTo(brain.getFullstateInfo().getBall()),SoccerParams.BALL_SPEED_MAX*0.95);
 					ArrayList<Player> opponents = brain.getFullstateInfo().getOpponents(me);
