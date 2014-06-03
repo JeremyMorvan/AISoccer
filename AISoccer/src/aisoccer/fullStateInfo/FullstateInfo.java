@@ -486,8 +486,6 @@ public class FullstateInfo
 			if (playerNumber > nbPlayers){continue;}
 			player = rightTeam[playerNumber - 1];
 			
-			player.setConnected(true);
-
 			player.setUniformNumber(playerNumber);
 			player.getPosition().setX(Double.valueOf(matcher.group(3)));
 			player.getPosition().setY(Double.valueOf(matcher.group(4)));

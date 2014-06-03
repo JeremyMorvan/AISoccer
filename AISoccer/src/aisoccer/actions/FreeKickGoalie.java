@@ -1,7 +1,6 @@
 package aisoccer.actions;
 
 import aisoccer.Brain;
-import aisoccer.SoccerParams;
 
 public class FreeKickGoalie extends PassToTeammate {
 
@@ -10,12 +9,9 @@ public class FreeKickGoalie extends PassToTeammate {
 	}
 	
 	@Override
-	public boolean CheckConditions() {
-		boolean a = super.CheckConditions();
-		
+	public boolean CheckConditions() {		
 		String s = "free_kick_"+(brain.getPlayer().isLeftSide() ? "l" : "r");
-		
-		return a && brain.getFullstateInfo().getPlayMode().equals(s);
+		return brain.getFullstateInfo().getPlayMode().equals(s);
 	}
 
 

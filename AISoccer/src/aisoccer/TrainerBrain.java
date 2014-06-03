@@ -219,7 +219,7 @@ public class TrainerBrain implements Runnable
 	}
 
 	private void shootTraining() {
-		if(fullstateInfo.getPlayMode() != null){
+		if(fullstateInfo.getPlayMode() != null && fullstateInfo.getGoalie(true).isConnected()){
 			if(fullstateInfo.getPlayMode().equals("time_over") ){
 				//System.out.println("here1");			
 				randomShoot();				
