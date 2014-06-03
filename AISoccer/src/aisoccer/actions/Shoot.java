@@ -28,6 +28,7 @@ public class Shoot extends ActionTask {
 			double angle = Math.toRadians(brain.getFullstateInfo().getBall().getPosition().directionOf(brain.getInterestPos()));
 			brain.setShootVector(new Vector2D(speed, angle,true));
 		}
+		
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
 		
 //		System.out.println("ShootVector = "+brain.getShootVector());
