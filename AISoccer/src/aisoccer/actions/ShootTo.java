@@ -28,7 +28,9 @@ public class ShootTo extends Selector {
 
 
 	@Override
-	public void End() {		
+	public void End() {	
+		brain.setShootVector(null);
+		brain.setInterestPos(null);
 	}
 	
 

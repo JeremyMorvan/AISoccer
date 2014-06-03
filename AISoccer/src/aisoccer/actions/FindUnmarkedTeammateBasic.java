@@ -7,9 +7,11 @@ import aisoccer.behaviorTree.ActionTask;
 import aisoccer.fullStateInfo.Player;
 
 public class FindUnmarkedTeammateBasic extends ActionTask {
+	boolean allowBackward;
 	
-	public FindUnmarkedTeammateBasic(Brain b) {
+	public FindUnmarkedTeammateBasic(Brain b, boolean allow) {
 		super(b);
+		allowBackward = allow;
 	}
 
 	@Override
@@ -23,7 +25,7 @@ public class FindUnmarkedTeammateBasic extends ActionTask {
 			opponentsRP.add(op.getPosition().subtract(brain.getFullstateInfo().getBall().getPosition()));
 		}
 		double dmin = 300;
-		if(!brain.getFullstateInfo().getPlayMode().equals("kick_off_l")&&!brain.getFullstateInfo().getPlayMode().equals("kick_off_r")){
+		if(!allowBackward && !brain.getFullstateInfo().getPlayMode().equals("kick_off_l")&&!brain.getFullstateInfo().getPlayMode().equals("kick_off_r")){
 			dmin = brain.getPlayer().distanceTo(goal);
 		}
 		Vector2D bestTeammateP = null;

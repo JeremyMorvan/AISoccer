@@ -19,16 +19,21 @@ public class Shoot extends ActionTask {
 	@Override
 	public boolean CheckConditions() {
 		kickVector = null;
+
 		if (brain.getShootVector()==null){
 			if(brain.getInterestPos() == null){
-				return false;				
+				System.out.println("tout est null !!!! ");
+				return false;
 			}
-			System.out.println("Je veux shooter vers "+brain.getInterestPos());
+//			if(brain.getPlayer().getUniformNumber() == 6){
+//				brain.setInterestPos(new Vector2D(50,20));
+//			}
+//			System.out.println("Je veux shooter vers "+brain.getInterestPos());
 			double speed = (1-SoccerParams.BALL_DECAY)*brain.getFullstateInfo().getBall().distanceTo(brain.getInterestPos()) + 0.8;
 			double angle = Math.toRadians(brain.getFullstateInfo().getBall().getPosition().directionOf(brain.getInterestPos()));
 			brain.setShootVector(new Vector2D(speed, angle,true));
 		}
-		
+
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
 		
 //		System.out.println("ShootVector = "+brain.getShootVector());
@@ -47,6 +52,7 @@ public class Shoot extends ActionTask {
 			return true;		
 		}
 		//
+//		System.out.println("Vitesse de la balle : "+ballV.polarRadius());
 		return false;
 	}
 

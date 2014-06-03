@@ -22,9 +22,9 @@ public class Dribble extends ShootTo {
 		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
 		ArrayList<Vector2D> velocities = new ArrayList<Vector2D>();
 		if(backwardPassAuthorized){
-			velocities.addAll(brain.generateVelocityVectors(me.getPosition(), goal, 10000, 0, 2*SoccerParams.PLAYER_SPEED_MAX, 40));
+			velocities.addAll(brain.generateVelocityVectors(me.getPosition(), goal, 10000, SoccerParams.PLAYER_SPEED_MAX, 2*SoccerParams.PLAYER_SPEED_MAX, 40));
 		}else{
-			velocities.addAll(brain.generateVelocityVectors(me.getPosition(), goal, 140, 0, 2*SoccerParams.PLAYER_SPEED_MAX, 40));
+			velocities.addAll(brain.generateVelocityVectors(me.getPosition(), goal, 140, SoccerParams.PLAYER_SPEED_MAX, 2*SoccerParams.PLAYER_SPEED_MAX, 40));
 		}
 		ArrayList<Player> opponents = brain.getFullstateInfo().getOpponents(me);
 		bestVelocity = null;
@@ -39,7 +39,7 @@ public class Dribble extends ShootTo {
 				bestVelocity = vel;
 			}
 		}
-		if(bestScore>0.9){
+		if(bestScore>0.6){
 			return true;
 		}
 		return false;
@@ -47,6 +47,8 @@ public class Dribble extends ShootTo {
 
 	@Override
 	public void Start() {
+		System.out.println(brain.getPlayer()+ " : Je veux dribbler");
+		System.out.println(bestVelocity);
 		brain.setShootVector(bestVelocity);
 	}
 

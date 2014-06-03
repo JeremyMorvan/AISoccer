@@ -12,7 +12,7 @@ public class PassToTeammate extends Sequencer {
 	public PassToTeammate(Brain b, boolean allowBackward){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new FindUnmarkedTeammateBasic(brain));
+		children.add(new FindUnmarkedTeammateBasic(brain, allowBackward));
 //		children.add(new FindUnmarkedTeammate(brain, allowBackward));
 		children.add(new ShootTo(brain));
 	}

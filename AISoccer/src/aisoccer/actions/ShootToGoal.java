@@ -61,7 +61,8 @@ public class ShootToGoal extends ShootTo {
 	}
 
 	@Override
-	public void Start() {		
+	public void Start() {	
+		System.out.println("Je tire !!");
 		Vector2D shootDirection = targetInGoal.subtract(brain.getFullstateInfo().getBall().getPosition()).normalize();
 		brain.setShootVector(shootDirection.multiply(SoccerParams.BALL_SPEED_MAX));
 	}

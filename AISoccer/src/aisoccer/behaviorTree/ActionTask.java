@@ -19,7 +19,9 @@ public abstract class ActionTask extends Task {
 		}
 		return false;		
 	}
-	
-	public abstract void Start();
 
+	
+	public void Start(){
+	}
+	
 }
