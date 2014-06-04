@@ -12,6 +12,10 @@ public class InterceptBall extends GoTo {
 	public static float angleLimit = 5f;
 	
 
+	public boolean CheckConditions(){
+		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall())>SoccerParams.KICKABLE_MARGIN;
+	}
+	
 	@Override
 	public void defineInterestPosition() {
 //		System.out.println(brain.getPlayer().getUniformNumber()+" intercepts the ball");

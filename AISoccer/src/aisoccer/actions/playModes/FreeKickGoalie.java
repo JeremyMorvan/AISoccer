@@ -1,12 +1,20 @@
 package aisoccer.actions.playModes;
 
+import java.util.LinkedList;
+
 import aisoccer.Brain;
 import aisoccer.actions.Clear;
+import aisoccer.actions.motion.InterceptBall;
+import aisoccer.behaviorTree.Selector;
+import aisoccer.behaviorTree.Task;
 
-public class FreeKickGoalie extends Clear {
+public class FreeKickGoalie extends Selector {
 
 	public FreeKickGoalie(Brain b) {
 		super(b);
+		children = new LinkedList<Task>();
+		children.add(new InterceptBall(b));
+		children.add(new Clear(b));
 	}
 	
 	@Override
@@ -16,5 +24,15 @@ public class FreeKickGoalie extends Clear {
 		return brain.getFullstateInfo().getPlayMode().equals(s)||brain.getFullstateInfo().getPlayMode().equals(f);
 	}
 
+	@Override
+	public void Start() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void End() {
+		// TODO Auto-generated method stub
+		
+	}
 }

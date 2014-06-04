@@ -32,6 +32,7 @@ public class ShootToGoal extends ShootTo {
 		
 		for(int i=0;i!=nbSamples;i++){
 			double y = i*step-SoccerParams.GOAL_WIDTH/2;
+			System.out.println(y);
 			double tScore = brain.evalShoot(y);
 			if(tScore>scoreForTarget){
 				Vector2D target = (new Vector2D(SoccerParams.FIELD_LENGTH,y)).multiply(me.isLeftSide() ? 1 : -1);
@@ -67,7 +68,7 @@ public class ShootToGoal extends ShootTo {
 	@Override
 	public void Start() {	
 		System.out.println("Je tire !!");
-		Vector2D shootDirection = targetInGoal.subtract(brain.getFullstateInfo().getBall().getPosition()).normalize();
+		Vector2D shootDirection = targetInGoal.subtract(brain.getPlayer().getPosition()).normalize();
 		brain.setShootVector(shootDirection.multiply(SoccerParams.BALL_SPEED_MAX));
 	}
 

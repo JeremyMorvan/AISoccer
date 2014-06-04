@@ -46,7 +46,7 @@ public class Dribble extends ShootTo {
 				}
 			}			
 		}
-		if(bestScore>0.6){
+		if(!backwardDribbleAuthorized&&bestScore>0.6||backwardDribbleAuthorized){
 			return true;
 		}
 		return false;
