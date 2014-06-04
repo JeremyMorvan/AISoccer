@@ -101,7 +101,11 @@ public class FindUnmarkedTeammateBad extends ActionTask {
 		if( allowBackward || bestScore > 0.9*positionScore(brain.getPlayer().getPosition(), opGoal) ){
 			brain.setShootVector(bestPass.ballvelocity);
 			brain.setInterestPos(bestPass.point);
-			System.out.println(brain.getPlayer()+" a choisi de faire une passe vers"+ bestPass.point);
+			if(allowBackward){
+				System.out.println("Passe potentiellement en retrait");
+			}else{
+				System.out.println("Passe offensive");
+			}
 			return true;
 		}
 		brain.setShootVector(null);

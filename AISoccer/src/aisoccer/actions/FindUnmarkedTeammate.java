@@ -13,10 +13,10 @@ public class FindUnmarkedTeammate extends ActionTask {
 	
 	boolean allowBackward;
 
-	public static final double SUCCESS_PASS_THRESHOLD = 0.8;
+	public static final double SUCCESS_PASS_THRESHOLD = 0.9;
 	// if evalPass > SUCESS_PASS_THRESHOLD, we consider the given opponent cannot intercept the ball at all
-	public static final double PASS_THRESHOLD_DEF = 0.7;
-	public static final double PASS_THRESHOLD_OFF = 0.4;
+	public static final double PASS_THRESHOLD_DEF = 0.8;
+	public static final double PASS_THRESHOLD_OFF = 0.5;
 	// we keep only the passes for which the product of evalPass for every Opponent is >PASS_THRESHOLD
 	private ArrayList<Pass> interestingPasses;
 
@@ -37,7 +37,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 		double standardSpeed, minSpeed, maxSpeed;
 		
 		for(Player tm : teammates){
-			System.out.println("points autours de "+tm);
+//			System.out.println("points autours de "+tm);
 			
 //			double angle = Math.PI/2 - Math.abs( Math.PI/2 - Math.toRadians(me.getPosition().directionOf(tm)) );
 //			direction = tm.getPosition().subtract(me.getPosition()).rotate(angle);
@@ -57,12 +57,12 @@ public class FindUnmarkedTeammate extends ActionTask {
 				neededPowerKick1 = neededAcceleration1.polarRadius()/brain.getEffectivePowerRate();
 				neededPowerKick2 = neededAcceleration2.polarRadius()/(0.8*SoccerParams.KICK_POWER_RATE); // we approximate the effectivePowerRate after control by 0.8
 				minNeededPowerKick = Math.min(neededPowerKick1, neededPowerKick2);
-				System.out.println("Needed Acc1 = "+neededAcceleration1);
-				System.out.println("Needed Acc2 = "+neededAcceleration2);
-				System.out.println("Needed Pow1 = "+neededPowerKick1);
-				System.out.println("Needed Pow2 = "+neededPowerKick2);
-				System.out.println("min Needed Pow = "+minNeededPowerKick);
-				
+//				System.out.println("Needed Acc1 = "+neededAcceleration1);
+//				System.out.println("Needed Acc2 = "+neededAcceleration2);
+//				System.out.println("Needed Pow1 = "+neededPowerKick1);
+//				System.out.println("Needed Pow2 = "+neededPowerKick2);
+//				System.out.println("min Needed Pow = "+minNeededPowerKick);
+				Vector2D inter = brain.optimumInterceptionPosition(tm, brain.speedEstimation, 0);
 				
 				if(minNeededPowerKick<=SoccerParams.POWERMAX){
 					double score = 1.0;
@@ -73,7 +73,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 							score *= localScore;
 						}
 					}
-					System.out.println("Score de "+v+" : "+ score);
+//					System.out.println("Score de "+v+" : "+ score);
 					
 					double distanceRatio = Math.abs(brain.getPlayer().getPosition().getX()-myGoal.getX())/SoccerParams.FIELD_LENGTH;
 					double threshold = PASS_THRESHOLD_OFF*distanceRatio + PASS_THRESHOLD_DEF*(1-distanceRatio);
@@ -99,18 +99,21 @@ public class FindUnmarkedTeammate extends ActionTask {
 			}
 		}		
 		
-		if( allowBackward || bestScore > 0.7*positionScore(brain.getPlayer().getPosition(), opGoal) ){
+		if( allowBackward || bestScore > 0.9*positionScore(brain.getPlayer().getPosition(), opGoal) ){
 			brain.setShootVector(bestPass.ballvelocity);
-			
-			System.out.println(brain.getPlayer()+" a choisi de faire une passe de vecteur vitesse"+ bestPass.ballvelocity);
+			if(allowBackward){
+				System.out.println("Passe potentiellement en retrait");
+			}else{
+				System.out.println("Passe offensive");
+			}			
 			return true;
 		}
 		brain.setShootVector(null);
 		return false;
 	}	
 
-	private double positionScore(Vector2D player, Vector2D goal){
-		return 1/(5+player.distanceTo(goal));
+	private double positionScore(Vector2D player, Vector2D opGoal){
+		return 1/(5+player.distanceTo(opGoal));
 	}
 
 	@Override
