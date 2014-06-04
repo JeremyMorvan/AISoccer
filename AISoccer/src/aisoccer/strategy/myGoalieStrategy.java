@@ -4,9 +4,9 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 import aisoccer.actions.CatchGoalie;
-import aisoccer.actions.FreeKickGoalie;
 import aisoccer.actions.motion.AttackTheBallGoalie;
 import aisoccer.actions.playModes.BeforeKickOff;
+import aisoccer.actions.playModes.FreeKickGoalie;
 import aisoccer.actions.playModes.PlayOn;
 import aisoccer.actions.playModes.PlayOnGoalie;
 import aisoccer.behaviorTree.Selector;

@@ -21,6 +21,10 @@ public class ShootToGoal extends ShootTo {
 	@Override
 	public boolean CheckConditions() {
 		Player me = brain.getPlayer();
+		Vector2D goal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
+		if(me.distanceTo(goal)>40){
+			return false;
+		}
 		int nbSamples = 21;
 		double step = SoccerParams.GOAL_WIDTH/(nbSamples-1);
 		targetInGoal = null;

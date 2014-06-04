@@ -1,29 +1,21 @@
 package aisoccer.actions.playModes;
 
 import aisoccer.Brain;
-import aisoccer.behaviorTree.ActionTask;
+import aisoccer.actions.PassToTeammate;
 
-public class FreeKick extends ActionTask {
+public class FreeKick extends PassToTeammate {
 
 	public FreeKick(Brain b) {
-		super(b);
+		super(b,false);
 	}
 
 	@Override
 	public boolean CheckConditions() {
-		//String pm = brain.getFullstateInfo().getPlayMode();
-		return false;
-//		return pm.equals("free_kick_l") && brain.getPlayer().isLeftSide() || pm.equals("free_kick_r") && !brain.getPlayer().isLeftSide();
+		String pm = brain.getFullstateInfo().getPlayMode();
+		boolean condition =  pm.equals("goalie_catch_ball_l") && brain.getPlayer().isLeftSide() || pm.equals("goalie_catch_ball_r") && !brain.getPlayer().isLeftSide();
+		return condition;
 	}
 
-	@Override
-	public void Start() {}
-
-	@Override
-	public void DoAction() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }
