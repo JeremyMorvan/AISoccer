@@ -376,10 +376,14 @@ public class Brain implements Runnable
 	public double timeToIntercept(Player p){
 		return timeToIntercept(p, speedEstimation, 0);
 	}
+	
+	public Vector2D optimumInterceptionPosition(Player p, double playerSpeed, double margin){
+		double time = timeToIntercept(p, playerSpeed, margin);
+		return (time>0) ? ballPositionPrediction(time) : null;
+	}
 
 	public Vector2D optimumInterceptionPosition(double playerSpeed, double margin){
-		double time = timeToIntercept(player, playerSpeed, margin);
-		return (time>0) ? ballPositionPrediction(time) : null;
+		return optimumInterceptionPosition(this.player, playerSpeed, margin);
 	}
 	
 	//////////////////////////////////////
