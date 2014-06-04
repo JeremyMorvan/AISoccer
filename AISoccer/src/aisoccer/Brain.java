@@ -430,7 +430,7 @@ public class Brain implements Runnable
 		return points;		
 	}
 	
-	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal,double intervalLength,double speedMin,double speedMax,int nbPoints){
+	public ArrayList<Vector2D> generateVelocityVectors(Vector2D player, Vector2D goal, double intervalLength,double speedMin,double speedMax,int nbPoints){
 		ArrayList<Vector2D> output = new ArrayList<Vector2D>();
 		double dirG = goal.polarAngle();
 		if(Math.abs((player.getX()-goal.getX()))<SoccerParams.FIELD_LENGTH/6){
@@ -447,6 +447,8 @@ public class Brain implements Runnable
 		}
 		return output;
 	}
+	
+
 	
 	public ArrayList<Vector2D> generateClosePoints(double std,int nbPoints){
 		ArrayList<Vector2D> output = new ArrayList<Vector2D>();

@@ -9,7 +9,7 @@ import aisoccer.SoccerParams;
 import aisoccer.behaviorTree.ActionTask;
 import aisoccer.fullStateInfo.Player;
 
-public class FindUnmarkedTeammate extends ActionTask {
+public class FindUnmarkedTeammateBad extends ActionTask {
 	
 	boolean allowBackward;
 
@@ -20,7 +20,7 @@ public class FindUnmarkedTeammate extends ActionTask {
 	// we keep only the passes for which the product of evalPass for every Opponent is >PASS_THRESHOLD
 	private ArrayList<Pass> interestingPasses;
 
-	public FindUnmarkedTeammate(Brain b, boolean a) {
+	public FindUnmarkedTeammateBad(Brain b, boolean a) {
 		super(b);
 		allowBackward = a;
 	}
@@ -33,30 +33,29 @@ public class FindUnmarkedTeammate extends ActionTask {
 		Collection<Player> opponents = brain.getFullstateInfo().getOpponents(me);
 		Vector2D opGoal = new Vector2D(brain.getPlayer().isLeftSide() ? 52.5d : -52.5d,0);
 		Vector2D myGoal = new Vector2D(brain.getPlayer().isLeftSide() ? -52.5d : 52.5d,0);
-		ArrayList<Vector2D> velocities;
-		double standardSpeed, minSpeed, maxSpeed;
 		
 		for(Player tm : teammates){
 			System.out.println("points autours de "+tm);
-			
-//			double angle = Math.PI/2 - Math.abs( Math.PI/2 - Math.toRadians(me.getPosition().directionOf(tm)) );
-//			direction = tm.getPosition().subtract(me.getPosition()).rotate(angle);
-			Vector2D direction = tm.getPosition().subtract(me.getPosition());
-			
-			standardSpeed = tm.distanceTo(brain.getPlayer())*(1-SoccerParams.BALL_DECAY); 
-			minSpeed = Math.min(0.8*standardSpeed, SoccerParams.BALL_SPEED_MAX);
-			maxSpeed = Math.min(3*standardSpeed, SoccerParams.BALL_SPEED_MAX);			
-			velocities = brain.generateVelocityVectors(me.getPosition(), me.getPosition().add(direction), 150, minSpeed, maxSpeed, 40);
-
-			Vector2D neededAcceleration1, neededAcceleration2;
+			ArrayList<Vector2D> points = brain.generatePointsAround(tm.getPosition(), opGoal);
+			Vector2D neededVelocity, neededAcceleration1, neededAcceleration2;
 			double minNeededPowerKick, neededPowerKick1, neededPowerKick2;
-			for(Vector2D v : velocities){
-				neededAcceleration1 = v.subtract(brain.getFullstateInfo().getBall().getVelocity());
-				neededAcceleration2 = v;				
+			for(Vector2D point : points){
+				neededVelocity = brain.computeNeededVelocity(tm.getPosition(), point);
+				System.out.println("Point : "+point);
+				System.out.println("Needed Velocity : "+neededVelocity);
+				if(neededVelocity.polarRadius()>SoccerParams.BALL_SPEED_MAX){
+					continue;
+				}
+				
+				// neededAcceleration1 = acceleration needed without controlling
+				//					 2 = 					 after controlling (supposing vball = 0 after controlling)
+				neededAcceleration1 = neededVelocity.subtract(brain.getFullstateInfo().getBall().getVelocity());
+				neededAcceleration2 = neededVelocity;				
 				
 				neededPowerKick1 = neededAcceleration1.polarRadius()/brain.getEffectivePowerRate();
 				neededPowerKick2 = neededAcceleration2.polarRadius()/(0.8*SoccerParams.KICK_POWER_RATE); // we approximate the effectivePowerRate after control by 0.8
 				minNeededPowerKick = Math.min(neededPowerKick1, neededPowerKick2);
+				
 				System.out.println("Needed Acc1 = "+neededAcceleration1);
 				System.out.println("Needed Acc2 = "+neededAcceleration2);
 				System.out.println("Needed Pow1 = "+neededPowerKick1);
@@ -68,17 +67,17 @@ public class FindUnmarkedTeammate extends ActionTask {
 					double score = 1.0;
 					double localScore;
 					for(Player op : opponents){
-						localScore = (1+brain.evalPass(v, tm.getPosition(), op.getPosition()) )/2;
+						localScore = (1+brain.evalPass(neededVelocity, tm.getPosition(), op.getPosition()) )/2;
 						if(localScore<SUCCESS_PASS_THRESHOLD){
 							score *= localScore;
 						}
 					}
-					System.out.println("Score de "+v+" : "+ score);
+					System.out.println("Score de "+point+" : "+ score);
 					
 					double distanceRatio = Math.abs(brain.getPlayer().getPosition().getX()-myGoal.getX())/SoccerParams.FIELD_LENGTH;
-					double threshold = PASS_THRESHOLD_OFF*distanceRatio + PASS_THRESHOLD_DEF*(1-distanceRatio);
+					double threshold = PASS_THRESHOLD_OFF*distanceRatio + PASS_THRESHOLD_OFF*(1-distanceRatio);
 					if(score>threshold){
-						interestingPasses.add(new Pass(tm.getPosition(), v, score));
+						interestingPasses.add(new Pass(tm.getPosition(), point, neededVelocity, score));
 					}
 				}				
 			}			
@@ -99,10 +98,10 @@ public class FindUnmarkedTeammate extends ActionTask {
 			}
 		}		
 		
-		if( allowBackward || bestScore > 0.7*positionScore(brain.getPlayer().getPosition(), opGoal) ){
+		if( allowBackward || bestScore > 0.9*positionScore(brain.getPlayer().getPosition(), opGoal) ){
 			brain.setShootVector(bestPass.ballvelocity);
-			
-			System.out.println(brain.getPlayer()+" a choisi de faire une passe de vecteur vitesse"+ bestPass.ballvelocity);
+			brain.setInterestPos(bestPass.point);
+			System.out.println(brain.getPlayer()+" a choisi de faire une passe vers"+ bestPass.point);
 			return true;
 		}
 		brain.setShootVector(null);
@@ -119,11 +118,13 @@ public class FindUnmarkedTeammate extends ActionTask {
 	
 	public class Pass{
 		Vector2D teamMate;
+		Vector2D point;
 		Vector2D ballvelocity;
 		double score;
 		
-		public Pass(Vector2D tm, Vector2D v, double s){
+		public Pass(Vector2D tm, Vector2D pt, Vector2D v, double s){
 			teamMate = tm;
+			point = pt;
 			ballvelocity = v;
 			score = s;
 		}
