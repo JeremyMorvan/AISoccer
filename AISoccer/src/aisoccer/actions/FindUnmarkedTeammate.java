@@ -37,39 +37,55 @@ public class FindUnmarkedTeammate extends ActionTask {
 		double standardSpeed, minSpeed, maxSpeed;
 		
 		for(Player tm : teammates){
-			Vector2D tmDirToGoal = opGoal.subtract(tm.getPosition()).normalize();
-			Vector2D behind = tm.getPosition().subtract(tmDirToGoal.multiply(5));
-			Vector2D front = tm.getPosition().subtract(tmDirToGoal.multiply(20));
-			
 			Vector2D dir = tm.getPosition().subtract(me.getPosition()).normalize();
-			Vector2D dirBehind = behind.subtract(me.getPosition()).normalize();
-			Vector2D dirFront = front.subtract(me.getPosition()).normalize();
+			if(!allowBackward && dir.getX()<0 == me.isLeftSide() ){
+				continue;
+			}
 			
-			double leftAngle = 45;
-			double rightAngle = 45;
-			if(Math.abs(dir.polarAngle()-dirBehind.polarAngle())>45);{
-				if(Vector2D.det(dir,dirBehind)>0){
-					leftAngle = Math.abs(dir.polarAngle()-dirBehind.polarAngle());
-				}else{
-					rightAngle = Math.abs(dir.polarAngle()-dirBehind.polarAngle());					
-				}
-			}
-			if(Math.abs(dir.polarAngle()-dirFront.polarAngle())>45);{
-				if(Vector2D.det(dir,dirFront)>0){
-					leftAngle = Math.abs(dir.polarAngle()-dirFront.polarAngle());
-				}else{
-					rightAngle = Math.abs(dir.polarAngle()-dirFront.polarAngle());					
-				}
-			}
-			double finalDirection = (leftAngle-rightAngle)/2 + brain.getPlayer().getBodyDirection();
-			Vector2D finalDirectionV = new Vector2D(1, Math.toRadians(finalDirection), true);
-			Vector2D target = me.getPosition().add(finalDirectionV);
-			double intervalWidth = (leftAngle+rightAngle);
-						
 			standardSpeed = tm.distanceTo(brain.getPlayer())*(1-SoccerParams.BALL_DECAY); 
+			Vector2D target;
+			double intervalWidth;
+			if(dir.getX()<0 == me.isLeftSide()){
+				target = tm.getPosition();
+				intervalWidth = 70; 
+				minSpeed = Math.min(0.8*standardSpeed, SoccerParams.BALL_SPEED_MAX);
+				maxSpeed = Math.min(1.5*standardSpeed, SoccerParams.BALL_SPEED_MAX);
+			}else{
+				Vector2D tmDirToGoal = opGoal.subtract(tm.getPosition()).normalize();
+				Vector2D behind = tm.getPosition().subtract(tmDirToGoal.multiply(5));
+				Vector2D front = tm.getPosition().add(tmDirToGoal.multiply(25));
+				
+				Vector2D dirBehind = behind.subtract(me.getPosition()).normalize();
+				Vector2D dirFront = front.subtract(me.getPosition()).normalize();
+				
+				double leftAngle = 35;
+				double rightAngle = 35;
+				if(Math.abs(dir.polarAngle()-dirBehind.polarAngle())>35);{
+					if(Vector2D.det(dir,dirBehind)>0){
+						leftAngle = Math.abs(dir.polarAngle()-dirBehind.polarAngle());
+					}else{
+						rightAngle = Math.abs(dir.polarAngle()-dirBehind.polarAngle());					
+					}
+				}
+				if(Math.abs(dir.polarAngle()-dirFront.polarAngle())>35);{
+					if(Vector2D.det(dir,dirFront)>0){
+						leftAngle = Math.abs(dir.polarAngle()-dirFront.polarAngle());
+					}else{
+						rightAngle = Math.abs(dir.polarAngle()-dirFront.polarAngle());					
+					}
+				}
+				double finalDirection = (leftAngle-rightAngle)/2 + brain.getPlayer().getBodyDirection();
+				Vector2D finalDirectionV = new Vector2D(1, Math.toRadians(finalDirection), true);
+				target = me.getPosition().add(finalDirectionV);
+				intervalWidth = (leftAngle+rightAngle);
+
+				minSpeed = Math.min(1.2*standardSpeed, SoccerParams.BALL_SPEED_MAX);
+				maxSpeed = Math.min(2.5*standardSpeed, SoccerParams.BALL_SPEED_MAX);
+			}
+						
 			minSpeed = Math.min(1*standardSpeed, SoccerParams.BALL_SPEED_MAX);
 			maxSpeed = Math.min(2.5*standardSpeed, SoccerParams.BALL_SPEED_MAX);			
-			velocities = brain.generateVelocityVectors(me.getPosition(), target, intervalWidth, minSpeed, maxSpeed, 40);
+			velocities = brain.generateVelocityVectors(me.getPosition(), target, intervalWidth, minSpeed, maxSpeed, 80);
 
 			Vector2D neededAcceleration1, neededAcceleration2;
 			double minNeededPowerKick, neededPowerKick1, neededPowerKick2;
@@ -87,6 +103,10 @@ public class FindUnmarkedTeammate extends ActionTask {
 //				System.out.println("min Needed Pow = "+minNeededPowerKick);
 				Vector2D inter = brain.optimumInterceptionPosition(tm, brain.speedEstimation, 0);
 				if(Math.abs(inter.getX())>SoccerParams.FIELD_LENGTH/2-5 || Math.abs(inter.getY())>SoccerParams.FIELD_WIDTH/2-5){
+					continue;
+				}
+				Vector2D diff = inter.subtract(tm.getPosition());
+				if(!allowBackward && diff.getX()<0 == tm.isLeftSide()){
 					continue;
 				}
 				
