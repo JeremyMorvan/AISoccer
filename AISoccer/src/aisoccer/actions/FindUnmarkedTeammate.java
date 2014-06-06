@@ -13,10 +13,10 @@ public class FindUnmarkedTeammate extends ActionTask {
 	
 	boolean allowBackward;
 
-	public static final double SUCCESS_PASS_THRESHOLD = 0.9;
+	public static final double SUCCESS_PASS_THRESHOLD = 0.8;
 	// if evalPass > SUCESS_PASS_THRESHOLD, we consider the given opponent cannot intercept the ball at all
-	public static final double PASS_THRESHOLD_DEF = 0.8;
-	public static final double PASS_THRESHOLD_OFF = 0.5;
+	public static final double PASS_THRESHOLD_DEF = 0.6;
+	public static final double PASS_THRESHOLD_OFF = 0.4;
 	// we keep only the passes for which the product of evalPass for every Opponent is >PASS_THRESHOLD
 	private ArrayList<Pass> interestingPasses;
 
@@ -37,15 +37,15 @@ public class FindUnmarkedTeammate extends ActionTask {
 		double standardSpeed, minSpeed, maxSpeed;
 		
 		for(Player tm : teammates){
-//			System.out.println("points autours de "+tm);
-			
-//			double angle = Math.PI/2 - Math.abs( Math.PI/2 - Math.toRadians(me.getPosition().directionOf(tm)) );
-//			direction = tm.getPosition().subtract(me.getPosition()).rotate(angle);
+//			Vector2D tmDirToGoal = opGoal.subtract(tm.getPosition()).normalize();
+//			Vector2D behind = tm.getPosition().subtract(tmDirToGoal.multiply(5));
+//			Vector2D front = tm.getPosition().subtract(tmDirToGoal.multiply(20));
+
 			Vector2D direction = tm.getPosition().subtract(me.getPosition());
 			
 			standardSpeed = tm.distanceTo(brain.getPlayer())*(1-SoccerParams.BALL_DECAY); 
 			minSpeed = Math.min(0.8*standardSpeed, SoccerParams.BALL_SPEED_MAX);
-			maxSpeed = Math.min(3*standardSpeed, SoccerParams.BALL_SPEED_MAX);			
+			maxSpeed = Math.min(2*standardSpeed, SoccerParams.BALL_SPEED_MAX);			
 			velocities = brain.generateVelocityVectors(me.getPosition(), me.getPosition().add(direction), 150, minSpeed, maxSpeed, 40);
 
 			Vector2D neededAcceleration1, neededAcceleration2;
@@ -63,6 +63,9 @@ public class FindUnmarkedTeammate extends ActionTask {
 //				System.out.println("Needed Pow2 = "+neededPowerKick2);
 //				System.out.println("min Needed Pow = "+minNeededPowerKick);
 				Vector2D inter = brain.optimumInterceptionPosition(tm, brain.speedEstimation, 0);
+				if(Math.abs(inter.getX())>SoccerParams.FIELD_LENGTH/2-5 || Math.abs(inter.getY())>SoccerParams.FIELD_WIDTH/2-5){
+					continue;
+				}
 				
 				if(minNeededPowerKick<=SoccerParams.POWERMAX){
 					double score = 1.0;
@@ -92,14 +95,15 @@ public class FindUnmarkedTeammate extends ActionTask {
 		double bestScore = 0;
 		double score;
 		for(Pass p : interestingPasses){
-			score = Math.pow(p.score,2)*positionScore(p.teamMate, opGoal);
+//			score = Math.pow(p.score,2)*positionScore(p.teamMate, opGoal);
+			score = positionScore(p.teamMate, opGoal);
 			if(score>bestScore){
 				bestScore = score;
 				bestPass = p;
 			}
 		}		
 		
-		if( allowBackward || bestScore > 0.9*positionScore(brain.getPlayer().getPosition(), opGoal) ){
+		if( allowBackward || bestScore > positionScore(brain.getPlayer().getPosition(), opGoal) ){
 			brain.setShootVector(bestPass.ballvelocity);
 			if(allowBackward){
 				System.out.println("Passe potentiellement en retrait");
@@ -135,6 +139,6 @@ public class FindUnmarkedTeammate extends ActionTask {
 	@Override
 	public void DoAction() {
 	}
-	
+		
 
 }

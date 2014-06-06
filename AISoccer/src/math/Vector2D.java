@@ -141,6 +141,10 @@ public class Vector2D implements Cloneable
 
         return x * v.getX() + y * v.getY();
     }
+    
+    public static double det(Vector2D v1, Vector2D v2){
+    	return v1.getX()*v2.getY() - v1.getY()*v2.getX();
+    }
 
     /**
      * @param rthe angle must be in RADIAN !!!!

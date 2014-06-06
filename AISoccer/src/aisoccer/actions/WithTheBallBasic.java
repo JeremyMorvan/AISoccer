@@ -7,17 +7,15 @@ import aisoccer.SoccerParams;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
-public class WithTheBall extends Selector {
+public class WithTheBallBasic extends Selector {
 
 	
-	public WithTheBall(Brain b){
+	public WithTheBallBasic(Brain b){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new ShootToGoal(b));
-		children.add(new PassToTeammate(b,false));
-		children.add(new Dribble(b,false));
-		children.add(new PassToTeammate(b,true));
-		children.add(new Dribble(b,true));
+		children.add(new ShootToGoalBasic(b));
+		children.add(new PassToTeammateBasic(b,false));
+		children.add(new DribbleBasic(b));
 	}
 	
 	@Override

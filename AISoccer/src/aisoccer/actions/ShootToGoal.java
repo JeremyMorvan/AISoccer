@@ -59,7 +59,7 @@ public class ShootToGoal extends ShootTo {
 			}			
 		}
 		
-		if(scoreForTarget>0.6){
+		if(scoreForTarget>0.8){
 			return true;
 		}
 		return false;

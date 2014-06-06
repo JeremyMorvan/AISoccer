@@ -13,6 +13,7 @@ public class ShootTo extends Selector {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new Shoot(brain));
+//		children.add(new ShootStatic(brain, true));
 		children.add(new ControlBall(brain));
 	}
 	

@@ -7,13 +7,13 @@ import aisoccer.SoccerParams;
 import aisoccer.behaviorTree.Sequencer;
 import aisoccer.behaviorTree.Task;
 
-public class PassToTeammate extends Sequencer {
+public class PassToTeammateBasic extends Sequencer {
 	
-	public PassToTeammate(Brain b, boolean allowBackward){
+	public PassToTeammateBasic(Brain b, boolean allowBackward){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new FindUnmarkedTeammate(brain, allowBackward));
-		children.add(new ShootTo(brain));
+		children.add(new FindUnmarkedTeammateBasic(brain, allowBackward));
+		children.add(new ShootToBasic(brain));
 	}
 	
 	@Override

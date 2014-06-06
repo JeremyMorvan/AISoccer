@@ -14,11 +14,6 @@ public class PositionGoalie extends GoTo {
 	}
 
 	@Override
-	public boolean CheckConditions() {
-		return true;
-	}
-
-	@Override
 	public void defineInterestPosition() {
 		if(brain.getPlayer().getPosition().distanceTo(brain.getFullstateInfo().getBall())>40){
 			brain.setInterestPos(brain.getPosIni().rotate(brain.getPlayer().isLeftSide() ? 0 : Math.PI));

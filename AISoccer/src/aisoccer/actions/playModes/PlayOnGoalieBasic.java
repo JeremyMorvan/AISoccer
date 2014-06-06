@@ -6,18 +6,20 @@ import aisoccer.Brain;
 import aisoccer.actions.CatchBallGoalie;
 import aisoccer.actions.CatchGoalie;
 import aisoccer.actions.WithTheBall;
+import aisoccer.actions.WithTheBallBasic;
 import aisoccer.actions.WithoutTheBallGoalie;
+import aisoccer.actions.WithoutTheBallGoalieBasic;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
-public class PlayOnGoalie extends Selector {
+public class PlayOnGoalieBasic extends Selector {
 
-	public PlayOnGoalie(Brain b) {
+	public PlayOnGoalieBasic(Brain b) {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new CatchBallGoalie(b));
-		children.add(new WithTheBall(b));
-		children.add(new WithoutTheBallGoalie(b));
+		children.add(new WithTheBallBasic(b));
+		children.add(new WithoutTheBallGoalieBasic(b));
 	}
 
 	@Override

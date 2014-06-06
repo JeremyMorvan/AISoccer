@@ -1,6 +1,5 @@
 package aisoccer.actions;
 
-import java.util.ArrayList;
 
 import math.Vector2D;
 import aisoccer.Brain;

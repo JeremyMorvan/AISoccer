@@ -11,8 +11,7 @@ import java.util.HashMap;
 
 import aisoccer.training.strategies.TrainingGoalie;
 import aisoccer.training.strategies.TrainingPassStrategy;
-import aisoccer.strategy.myGoalieStrategy;
-import aisoccer.strategy.myStrategy2;
+import aisoccer.strategy.*;
 
 
 /**
@@ -90,7 +89,7 @@ public class Sebbot
                     throw new InvalidArgumentException(args[i]);
                 }
             }
-            //initTrainingPass(hostname,port,portTrainer,team);
+//            initTrainingPass(hostname,port,portTrainer,team);
             //initTrainingDribble(hostname,port,portTrainer,team);
             //initTrainingShoot(hostname,port,portTrainer,team);
             initGame(hostname,port,portTrainer,team,6);
@@ -304,7 +303,7 @@ public class Sebbot
 		    if(i==0){
 		    	brain.setStrategy(new myGoalieStrategy(nbOfPlayers, brain));
 		    }else{
-		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
+		    	brain.setStrategy(new myPlayerStrategy(nbOfPlayers, brain));
 		    }		    
 		    connected.put(client, new Date().getTime());
 		    Thread thread = new Thread(client);
@@ -321,9 +320,9 @@ public class Sebbot
 		    brain = client.getBrain();
 		    brain.computeAreas();
 		    if(i==0){
-		    	brain.setStrategy(new myGoalieStrategy(nbOfPlayers, brain));
+		    	brain.setStrategy(new myGoalieStrategyBasic(nbOfPlayers, brain));
 		    }else{
-		    	brain.setStrategy(new myStrategy2(nbOfPlayers, brain));
+		    	brain.setStrategy(new myPlayerStrategyBasic(nbOfPlayers, brain));
 		    }
 		    connected.put(client, new Date().getTime());
 		    Thread thread = new Thread(client);

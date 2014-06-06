@@ -15,6 +15,11 @@ public class ControlBall extends ActionTask {
 	}
 
 	@Override
+	public boolean CheckConditions() {
+		return true;
+	}
+
+	@Override
 	public void DoAction() {	
 		Vector2D ballP = brain.getFullstateInfo().getBall().getPosition();
 		Vector2D ballV = brain.getFullstateInfo().getBall().getVelocity();
@@ -33,11 +38,6 @@ public class ControlBall extends ActionTask {
 	@Override
 	public void Start() {
 			System.out.println(brain.getPlayer().toString() + " : I am going to control");
-	}
-
-	@Override
-	public boolean CheckConditions() {
-		return true;
 	}
 
 }

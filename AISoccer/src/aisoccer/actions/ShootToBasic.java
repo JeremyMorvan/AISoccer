@@ -4,30 +4,35 @@ import java.util.LinkedList;
 
 import aisoccer.Brain;
 import aisoccer.SoccerParams;
-import aisoccer.behaviorTree.Sequencer;
+import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
-public class PassToTeammate extends Sequencer {
+public class ShootToBasic extends Selector {	
 	
-	public PassToTeammate(Brain b, boolean allowBackward){
+	public ShootToBasic(Brain b){
 		super(b);
 		children = new LinkedList<Task>();
-		children.add(new FindUnmarkedTeammate(brain, allowBackward));
-		children.add(new ShootTo(brain));
+		children.add(new ShootStatic(brain));
+		children.add(new ControlBall(brain));
 	}
 	
-	@Override
+
 	public boolean CheckConditions() {
 		return brain.getPlayer().distanceTo(brain.getFullstateInfo().getBall())<=SoccerParams.KICKABLE_MARGIN;
 	}
-	
-	@Override
-	public void Start() {
-//		System.out.println(brain.getPlayer().toString() + " : Let's find a teammate !");
-	}
+
 
 	@Override
-	public void End() {}
+	public void Start() {		
+	}
+
+
+	@Override
+	public void End() {	
+		brain.setShootVector(null);
+		brain.setInterestPos(null);
+	}
+	
 
 
 }
