@@ -105,7 +105,7 @@ public class PositionOff extends GoTo {
 			count++;
 		}
 		best.multiplyM(1/((double)count));
-		best.addM(new Vector2D(ballP.getX()/10.0,ballP.getY()/7.0));
+		best.addM(new Vector2D((me.isLeftSide() ? 1 : -1)*Math.abs(ballP.getX()/5.0),ballP.getY()/3.0));
 		brain.setInterestPos(best);
 	}
 

@@ -320,9 +320,9 @@ public class Sebbot
 		    brain = client.getBrain();
 		    brain.computeAreas();
 		    if(i==0){
-		    	brain.setStrategy(new myGoalieStrategyBasic(nbOfPlayers, brain));
+		    	brain.setStrategy(new myGoalieStrategy(nbOfPlayers, brain));
 		    }else{
-		    	brain.setStrategy(new myPlayerStrategyBasic(nbOfPlayers, brain));
+		    	brain.setStrategy(new myPlayerStrategy(nbOfPlayers, brain));
 		    }
 		    connected.put(client, new Date().getTime());
 		    Thread thread = new Thread(client);

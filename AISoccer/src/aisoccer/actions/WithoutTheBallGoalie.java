@@ -6,7 +6,6 @@ import aisoccer.Brain;
 import aisoccer.SoccerParams;
 import aisoccer.actions.motion.AttackTheBallGoalie;
 import aisoccer.actions.positionning.PositionGoalie;
-import aisoccer.actions.positionning.PositionGoalieGeometric;
 import aisoccer.behaviorTree.Selector;
 import aisoccer.behaviorTree.Task;
 
@@ -17,7 +16,7 @@ public class WithoutTheBallGoalie extends Selector {
 		super(b);
 		children = new LinkedList<Task>();
 		children.add(new AttackTheBallGoalie(b));
-		children.add(new PositionGoalieGeometric(b));
+		children.add(new PositionGoalie(b));
 	}
 
 	@Override
