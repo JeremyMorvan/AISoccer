@@ -26,12 +26,12 @@ public class ShootToGoal extends ShootTo {
 			return false;
 		}
 		int nbSamples = 21;
-		double step = SoccerParams.GOAL_WIDTH/(nbSamples-1);
+		double step = (SoccerParams.GOAL_WIDTH-0.6)/(nbSamples-1);
 		targetInGoal = null;
 		scoreForTarget = 0;
 		
 		for(int i=0;i!=nbSamples;i++){
-			double y = i*step-SoccerParams.GOAL_WIDTH/2;
+			double y = i*step-(SoccerParams.GOAL_WIDTH-0.6)/2;
 			System.out.println(y);
 			double tScore = brain.evalShoot(y);
 			if(tScore>scoreForTarget){
