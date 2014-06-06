@@ -33,6 +33,7 @@ public class Shoot extends ActionTask {
 		}
 
 		if(!useShootVector){
+			System.out.println("SAluuuuuuuuuuuuuuuut");
 //			if(brain.getPlayer().getUniformNumber() == 6){
 //				brain.setInterestPos(new Vector2D(50,20));
 //			}
