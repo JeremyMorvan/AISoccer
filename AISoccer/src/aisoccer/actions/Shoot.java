@@ -64,7 +64,9 @@ public class Shoot extends ActionTask {
 	}
 
 	@Override
-	public void Start() {}
+	public void Start() {
+		System.out.println(brain.getShootVector());
+	}
 
 	@Override
 	public void DoAction() {		
