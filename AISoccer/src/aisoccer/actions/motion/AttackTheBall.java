@@ -21,10 +21,12 @@ public class AttackTheBall extends Sequencer {
 		Player me = brain.getPlayer();
 		double myDist = brain.timeToIntercept(me);
 		for(Player tm : brain.getFullstateInfo().getTeammates(me) ){
-			double t = brain.timeToIntercept(tm);
-			if(t>0 && t<myDist){
-				return false;
-			}
+			if(!tm.isGoalie()){
+				double t = brain.timeToIntercept(tm);
+				if(t>0 && t<myDist){
+					return false;
+				}
+			}			
 		}
 		return true;
 	}

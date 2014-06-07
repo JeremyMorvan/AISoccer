@@ -89,9 +89,9 @@ public class Sebbot
                     throw new InvalidArgumentException(args[i]);
                 }
             }
-//            initTrainingPass(hostname,port,portTrainer,team);
-            //initTrainingDribble(hostname,port,portTrainer,team);
-            //initTrainingShoot(hostname,port,portTrainer,team);
+            //initTrainingPass(hostname,port,portTrainer,"pass");
+            //initTrainingDribble(hostname,port,portTrainer,"dribble");
+            //initTrainingShoot(hostname,port,portTrainer,"shoot");
             initGame(hostname,port,portTrainer,team,6);
         }
         catch (InvalidArgumentException e)
@@ -175,7 +175,7 @@ public class Sebbot
 		
 		for (int i = 0; i < nbOfPlayers; i++)
 		{
-		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, "training");
 		    client.init(nbOfPlayers, false);
 
 		    brain = client.getBrain();
@@ -228,7 +228,7 @@ public class Sebbot
 		
 		for (int i = 0; i < nbOfPlayers; i++)
 		{
-		    client = new RobocupClient(InetAddress.getByName(hostname), port, "team2");
+		    client = new RobocupClient(InetAddress.getByName(hostname), port, "training");
 		    client.init(nbOfPlayers, false);
 
 		    brain = client.getBrain();

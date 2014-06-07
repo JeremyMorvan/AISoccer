@@ -51,8 +51,10 @@ public class MarkOpponent extends GoTo {
 				return true;
 			}
 		}
-		
-		return target != null;
+		if(target != null & target.distanceTo(me)<30){
+			return true;
+		}
+		return false;
 	}
 
 	
